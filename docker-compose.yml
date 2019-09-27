@@ -1,0 +1,24 @@
+version: '3.6'
+services:
+  ss_db:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: s9f6sd759r32r7f0dsf5673894956
+  ss_mail:
+    image: mailhog/mailhog:latest
+    ports:
+    - 8081:8025 # SMTP is 1025 internal
+  ss_www:
+    depends_on:
+    - ss_db
+    image: wordpress:latest
+    volumes:
+    - ".:/var/www/html/wp-content/plugins/simple-smtp"
+    ports:
+    - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: ss_db
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: s9f6sd759r32r7f0dsf5673894956
+      WORDPRESS_DEBUG: 1
