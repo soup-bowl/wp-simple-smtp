@@ -5,6 +5,17 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: s9f6sd759r32r7f0dsf5673894956
+  ss_db_pma:
+    image: phpmyadmin/phpmyadmin:latest
+    links:
+    - ss_db:db
+    ports:
+    - 8082:80
+    environment:
+      MYSQL_ROOT_PASSWORD: s9f6sd759r32r7f0dsf5673894956
+      PMA_USER: root
+      PMA_PASSWORD: s9f6sd759r32r7f0dsf5673894956
+
   ss_mail:
     image: mailhog/mailhog:latest
     ports:
