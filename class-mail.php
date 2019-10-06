@@ -9,15 +9,26 @@
 
 namespace wpsimplesmtp;
 
+use wpsimplesmtp\Options;
+
 /**
  * Configures PHPMailer to use our settings rather than the default.
  */
 class Mail {
 	/**
+	 * SMTP mailer options.
+	 *
+	 * @var Options
+	 */
+	protected $options;
+
+	/**
 	 * Registers the relevant WordPress hooks upon creation.
 	 */
 	public function __construct() {
 		add_action( 'phpmailer_init', [ &$this, 'process_mail' ] );
+
+		$this->options = new Options();
 	}
 
 	/**
@@ -30,11 +41,11 @@ class Mail {
 
 		if ( ! empty( $config ) ) {
 			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			$phpmailer->Host     = ( empty( $_ENV['SMTP_HOST'] ) ) ? $config['host'] : $_ENV['SMTP_HOST'];
-			$phpmailer->Port     = ( empty( $_ENV['SMTP_PORT'] ) ) ? $config['port'] : $_ENV['SMTP_PORT'];
-			$phpmailer->Username = ( empty( $_ENV['SMTP_USER'] ) ) ? $config['username'] : $_ENV['SMTP_USER'];
-			$phpmailer->Password = ( empty( $_ENV['SMTP_PASS'] ) ) ? $config['password'] : $_ENV['SMTP_PASS'];
-			$phpmailer->SMTPAuth = ( empty( $_ENV['SMTP_AUTH'] ) ) ? (bool) $config['auth'] : $_ENV['SMTP_AUTH'];
+			$phpmailer->Host     = $this->options->get( 'host' )->value;
+			$phpmailer->Port     = $this->options->get( 'port' )->value;
+			$phpmailer->Username = $this->options->get( 'user' )->value;
+			$phpmailer->Password = $this->options->get( 'pass' )->value;
+			$phpmailer->SMTPAuth = $this->options->get( 'auth' )->value;
 			// phpcs:enable
 
 			$phpmailer->IsSMTP();

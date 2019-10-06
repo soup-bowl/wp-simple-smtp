@@ -4,6 +4,7 @@
     "autoload": {
         "classmap": [
 			"class-settings.php",
+			"class-options.php",
 			"class-mail.php"
 		]
     },

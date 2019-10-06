@@ -9,10 +9,19 @@
 
 namespace wpsimplesmtp;
 
+use wpsimplesmtp\Options;
+
 /**
  * Handles the visibility and setup with the WordPress Settings API.
  */
 class Settings {
+	/**
+	 * SMTP mailer options.
+	 *
+	 * @var Options
+	 */
+	protected $options;
+
 	/**
 	 * Registers the relevant WordPress hooks upon creation.
 	 */
@@ -21,6 +30,8 @@ class Settings {
 		add_action( 'admin_init', [ &$this, 'settings_init' ] );
 		add_action( 'admin_init', [ &$this, 'settings_test_init' ] );
 		add_action( 'admin_post_ss_test_email', [ &$this, 'test_email_handler' ] );
+
+		$this->options = new Options();
 	}
 
 	/**
@@ -78,10 +89,8 @@ class Settings {
 
 		$options = get_option( 'wpssmtp_smtp' );
 
-		$this->settings_field_generator( 'host', 'Host', $options['host'], 'text', 'SMTP_HOST', 'smtp.example.com' );
-		$this->settings_field_generator( 'username', 'Username', $options['username'], 'text', 'SMTP_USER', 'foobar@example.com' );
-		$this->settings_field_generator( 'password', 'Password', $options['password'], 'password', 'SMTP_PASS', '' );
-		$this->settings_field_generator( 'port', 'Port', $options['port'], 'number', 'SMTP_PORT', '587' );
+		$this->settings_field_generator( 'host', 'Host', 'text', 'smtp.example.com' );
+		$this->settings_field_generator( 'port', 'Port', 'number', '587' );
 
 		add_settings_field(
 			'wpssmtp_smtp_auth',
@@ -100,6 +109,9 @@ class Settings {
 			'wpsimplesmtp_smtp',
 			'wpsimplesmtp_smtp_section'
 		);
+
+		$this->settings_field_generator( 'user', 'Username', 'text', 'foobar@example.com' );
+		$this->settings_field_generator( 'pass', 'Password', 'password', '' );
 	}
 
 	/**
@@ -107,24 +119,22 @@ class Settings {
 	 *
 	 * @param string $name        Code name of input.
 	 * @param string $name_pretty Name shown to user.
-	 * @param string $val         Existing value of the relevant input.
 	 * @param string $type        Input element type. Normally 'text'.
-	 * @param string $envvar      Environment label for this entity.
 	 * @param string $example     Text shown as a placeholder.
 	 */
-	public function settings_field_generator( $name, $name_pretty, $val, $type, $envvar, $example ) {
+	public function settings_field_generator( $name, $name_pretty, $type, $example ) {
+		$value = $this->options->get( $name );
+
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $val, $type, $example, $envvar ) {
-				$opt_val = ( isset( $val ) ) ? $val : '';
+			function () use ( $name, $value, $type, $example ) {
 				$has_env = '';
-				if ( ! empty( $_ENV[ $envvar ] ) ) {
-					$opt_val = $_ENV[ $envvar ];
+				if ( 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
 				?>
-				<input type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $opt_val ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
+				<input type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
 				<?php
 			},
 			'wpsimplesmtp_smtp',
