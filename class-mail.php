@@ -29,15 +29,17 @@ class Mail {
 		$config = get_option( 'wpssmtp_smtp' );
 
 		if ( ! empty( $config ) ) {
-			$phpmailer->Host     = $config['host'];
-			$phpmailer->Port     = $config['port'];
-			$phpmailer->Username = $config['username'];
-			$phpmailer->Password = $config['password'];
-			$phpmailer->SMTPAuth = (bool) $config['auth'];
+			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$phpmailer->Host     = ( empty( $_ENV['SMTP_HOST'] ) ) ? $config['host'] : $_ENV['SMTP_HOST'];
+			$phpmailer->Port     = ( empty( $_ENV['SMTP_PORT'] ) ) ? $config['port'] : $_ENV['SMTP_PORT'];
+			$phpmailer->Username = ( empty( $_ENV['SMTP_USER'] ) ) ? $config['username'] : $_ENV['SMTP_USER'];
+			$phpmailer->Password = ( empty( $_ENV['SMTP_PASS'] ) ) ? $config['password'] : $_ENV['SMTP_PASS'];
+			$phpmailer->SMTPAuth = ( empty( $_ENV['SMTP_AUTH'] ) ) ? (bool) $config['auth'] : $_ENV['SMTP_AUTH'];
+			// phpcs:enable
 
 			$phpmailer->IsSMTP();
 		}
-		
+
 		return $phpmailer;
 	}
 }

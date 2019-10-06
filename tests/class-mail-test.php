@@ -1,14 +1,33 @@
 <?php
+/**
+ * Simple email configuration within WordPress.
+ *
+ * @package sb-simple-smtp
+ * @author soup-bowl <code@soupbowl.io>
+ * @license MIT
+ */
 
 use wpsimplesmtp\Mail;
 
 use PHPUnit\Framework\TestCase;
 
-// Mock the add_action and get_option of the constructor.
-function add_action( $a, $b ) {
+/**
+ * Mocks the WordPress add_action function.
+ *
+ * @param mixed $a Not used.
+ * @param mixed $b Not used.
+ * @return null
+ */
+function add_action( $a, $b = '' ) {
 	return null;
 }
 
+/**
+ * Mocks the WordPress get_option function.
+ *
+ * @param mixed $a Not used.
+ * @return string[]
+ */
 function get_option( $a ) {
 	$env_loc = __DIR__ . '/../.env';
 	if ( file_exists( $env_loc ) ) {
@@ -26,26 +45,42 @@ function get_option( $a ) {
 }
 
 /**
- * Test entries for Money.
+ * Tests the mail functionality.
  */
 class MailTest extends TestCase {
+	/**
+	 * Mail rep.
+	 *
+	 * @var Mail
+	 */
 	protected $mail;
+
+	/**
+	 * Constructor.
+	 */
 	public function setUp():void {
 		$this->mail = new Mail();
 	}
 
+	/**
+	 * Tests using the environment mailer to ensure the plugin is functioning.
+	 *
+	 * @throws Exception Throws a PHPMailer exception.
+	 */
 	public function test_smtp_communication() {
 		$phpmailer = new PHPMailer( true );
 		$phpmailer = $this->mail->process_mail( $phpmailer );
 
 		$phpmailer->addAddress( 'hello@example.com', 'Example User' );
 
+		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$phpmailer->Subject = 'Simple SMTP Test Unit';
-    	$phpmailer->Body    = 'This is a test email from the WordPress simple SMTP plugin.';
+		$phpmailer->Body    = 'This is a test email from the WordPress simple SMTP plugin.';
+		// phpcs:enable
 
 		try {
 			$phpmailer->send();
-		} catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			throw $e;
 		}
 
