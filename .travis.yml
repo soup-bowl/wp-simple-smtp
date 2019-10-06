@@ -1,3 +1,4 @@
-branches:
-  only:
-    - init-travis-implementation
+language: php
+before_script:
+  - composer install
+script: vendor/bin/phpunit
