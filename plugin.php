@@ -22,4 +22,8 @@
  */
 require_once __DIR__ . '/vendor/autoload.php';
 
-new wpsimplesmtp\Settings();
+if ( is_admin() ) {
+	new wpsimplesmtp\Settings();
+}
+
+new wpsimplesmtp\Mail();

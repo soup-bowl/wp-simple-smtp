@@ -3,7 +3,13 @@
 	"description": "Gives WordPress the missing SMTP configuration panel it needed.",
     "autoload": {
         "classmap": [
-			"class-settings.php"
+			"class-settings.php",
+			"class-mail.php"
 		]
-    }
+    },
+	"require-dev": {
+		"phpunit/phpunit": "8",
+		"phpmailer/phpmailer": "^5.2",
+		"symfony/dotenv": "^4.3"
+	}
 }

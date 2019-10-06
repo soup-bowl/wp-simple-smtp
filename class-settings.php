@@ -55,6 +55,19 @@ class Settings {
 		$this->settings_field_generator( 'username', 'Username', $options['username'], 'text', 'foobar@example.com' );
 		$this->settings_field_generator( 'password', 'Password', $options['password'], 'password', '' );
 		$this->settings_field_generator( 'port', 'Port', $options['port'], 'number', '587' );
+
+		add_settings_field(
+			'wpssmtp_smtp_auth',
+			'Authenticate',
+			function () use ( $options ) {
+				$opt_val = ( ! empty( $options['auth'] ) ) ? $options['auth'] : 0;
+				?>
+				<input type='checkbox' name='wpssmtp_smtp[auth]' <?php checked( $opt_val, 1 ); ?> value='1'>
+				<?php
+			},
+			'wpsimplesmtp_smtp',
+			'wpsimplesmtp_smtp_section'
+		);
 	}
 
 	/**
