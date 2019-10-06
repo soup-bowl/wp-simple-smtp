@@ -19,6 +19,33 @@ class Settings {
 	public function __construct() {
 		add_action( 'admin_menu', [ &$this, 'add_admin_menu' ] );
 		add_action( 'admin_init', [ &$this, 'settings_init' ] );
+		add_action( 'admin_init', [ &$this, 'settings_test_init' ] );
+		add_action( 'admin_post_ss_test_email', [ &$this, 'test_email_handler' ] );
+	}
+
+	/**
+	 * Intialises the options page.
+	 */
+	public function options_page() {
+		?>
+		<form action='options.php' method='post'>
+		<h2>Mail Settings</h2>
+		<?php
+		settings_fields( 'wpsimplesmtp_smtp' );
+		do_settings_sections( 'wpsimplesmtp_smtp' );
+		submit_button();
+		?>
+		</form>
+		<form action='admin-post.php' method='post'>
+		<input type="hidden" name="action" value="ss_test_email">
+		<?php
+		wp_nonce_field( 'simple-smtp-test-email' );
+		do_settings_sections( 'wpsimplesmtp_smtp_test' );
+		submit_button( 'Send', 'secondary' );
+		?>
+		</form>
+		<?php
+
 	}
 
 	/**
@@ -106,19 +133,46 @@ class Settings {
 	}
 
 	/**
-	 * Intialises the options page.
+	 * Settings fields for the email test module.
 	 */
-	public function options_page() {
-		?>
-			<form action='options.php' method='post'>
-			<h2>Mail Settings</h2>
-			<?php
-			settings_fields( 'wpsimplesmtp_smtp' );
-			do_settings_sections( 'wpsimplesmtp_smtp' );
-			submit_button();
-			?>
-			</form>
-			<?php
+	public function settings_test_init() {
+		add_settings_section(
+			'wpsimplesmtp_test_email',
+			__( 'Test Email', 'wpsimplesmtp' ),
+			function () {
+				esc_html_e( 'Sends a simple test email to check your settings.', 'wpsimplesmtp' );
+			},
+			'wpsimplesmtp_smtp_test'
+		);
 
+		add_settings_field(
+			'wpssmtp_smtp_email_test',
+			'Email recipient',
+			function () {
+				?>
+				<input type='email' name='wpssmtp_test_email_recipient' value='<?php echo esc_attr( wp_get_current_user()->user_email ); ?>'>
+				<?php
+			},
+			'wpsimplesmtp_smtp_test',
+			'wpsimplesmtp_test_email'
+		);
+	}
+
+	/**
+	 * Custom admin endpoint to dispatch a test email.
+	 */
+	public function test_email_handler() {
+		if ( isset( $_REQUEST['_wpnonce'], $_REQUEST['_wp_http_referer'], $_REQUEST['wpssmtp_test_email_recipient'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'simple-smtp-test-email' ) ) {
+			wp_mail(
+				sanitize_email( wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) ),
+				'Test email from ' . get_bloginfo( 'name' ),
+				'This email proves that your settings are correct.' . PHP_EOL . get_bloginfo( 'url' )
+			);
+
+			wp_safe_redirect( urldecode( sanitize_text_field( wp_unslash( $_REQUEST['_wp_http_referer'] ) ) ) );
+			exit;
+		} else {
+			wp_die( 'You are not permitted to send a test email.' );
+		}
 	}
 }
