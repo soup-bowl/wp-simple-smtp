@@ -87,23 +87,20 @@ class Settings {
 			'wpsimplesmtp_smtp'
 		);
 
-		$options = get_option( 'wpssmtp_smtp' );
-
 		$this->settings_field_generator( 'host', 'Host', 'text', 'smtp.example.com' );
 		$this->settings_field_generator( 'port', 'Port', 'number', '587' );
 
 		add_settings_field(
 			'wpssmtp_smtp_auth',
 			'Authenticate',
-			function () use ( $options ) {
-				$opt_val = ( ! empty( $options['auth'] ) ) ? $options['auth'] : 0;
+			function () {
+				$value = $this->options->get( 'auth' );
 				$has_env = '';
-				if ( ! empty( $_ENV['SMTP_AUTH'] ) ) {
-					$opt_val = $_ENV['SMTP_AUTH'];
+				if ( 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
 				?>
-				<input type='checkbox' name='wpssmtp_smtp[auth]' <?php checked( $opt_val, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
+				<input type='checkbox' name='wpssmtp_smtp[auth]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
 				<?php
 			},
 			'wpsimplesmtp_smtp',
