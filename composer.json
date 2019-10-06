@@ -1,0 +1,9 @@
+{
+	"name": "soup-bowl/wpsimplesmtp",
+	"description": "Gives WordPress the missing SMTP configuration panel it needed.",
+    "autoload": {
+        "classmap": [
+			"class-settings.php"
+		]
+    }
+}

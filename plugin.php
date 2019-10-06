@@ -3,7 +3,7 @@
  * Adds mail configuration to WordPress in a simple, standardised plugin.
  *
  * @package sb-simple-smtp
- * @author soup-bowl
+ * @author soup-bowl <code@soupbowl.io>
  * @license MIT
  *
  * @wordpress-plugin
@@ -14,7 +14,12 @@
  * Author:            soup-bowl
  * Author URI:        https://soupbowl.io
  * License:           MIT
+ * Text Domain:       wpsimplesmtp
  */
 
- // TODO
- //phpinfo();
+/**
+ * Autoloader.
+ */
+require_once __DIR__ . '/vendor/autoload.php';
+
+new wpsimplesmtp\Settings();
