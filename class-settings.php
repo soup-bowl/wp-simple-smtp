@@ -87,7 +87,7 @@ class Settings {
 	public function options_page() {
 		?>
 			<form action='options.php' method='post'>
-			<h2>foobar</h2>
+			<h2>Mail Settings</h2>
 			<?php
 			settings_fields( 'wpsimplesmtp_smtp' );
 			do_settings_sections( 'wpsimplesmtp_smtp' );
