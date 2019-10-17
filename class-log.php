@@ -69,6 +69,30 @@ class Log {
 			$query      .= " LIMIT {$offset_calc}, {$limit}";
 		}
 
-		return $wpdb->get_results( $query );
+		$response = $wpdb->get_results( $query );
+
+		if ( ! empty( $response ) ) {
+			return $response;
+		} else {
+			$this->create_log_table();
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the log pagination.
+	 *
+	 * @param integer $limit How many were retrieved in the call.
+	 * @return integer
+	 */
+	public function get_log_entry_pages( $limit ) {
+		global $wpdb;
+
+		$count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpss_email_log" );
+		if ( $count === 0 || $limit === 0 ) {
+			return 1;
+		} else {
+			return floor( $count / $limit );
+		}
 	}
 }

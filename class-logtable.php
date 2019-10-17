@@ -35,8 +35,11 @@ class LogTable {
 	 * @param integer $page             The page to be displayed.
 	 * @param integer $maximum_per_page Limits the table display.
 	 */
-	public function display( $page, $maximum_per_page = 10 ) {
+	public function display( $page, $maximum_per_page = 5 ) {
 		$entries = $this->log->get_log_entries( $page, $maximum_per_page );
+		$pages   = $this->log->get_log_entry_pages( $maximum_per_page );
+
+		
 
 		echo wp_kses(
 			'<table class="wp-list-table widefat fixed striped">
@@ -45,12 +48,21 @@ class LogTable {
 			$this->allowed_table_html()
 		);
 
-		foreach ( $entries as $entry ) {
+		if ( ! empty( $entries ) ) {
+			foreach ( $entries as $entry ) {
+				echo wp_kses(
+					"<tr>
+					<td>{$entry->recipient}</td>
+					<td>{$entry->body}</td>
+					<td>{$entry->timestamp}</td>
+					</tr>",
+					$this->allowed_table_html()
+				);
+			}
+		} else {
 			echo wp_kses(
 				"<tr>
-				<td>{$entry->recipient}</td>
-				<td>{$entry->body}</td>
-				<td>{$entry->timestamp}</td>
+				<td colspan='3'>Nothing to display.</td>
 				</tr>",
 				$this->allowed_table_html()
 			);
@@ -61,6 +73,16 @@ class LogTable {
 			<tfoot><th>Recipient</th><th>Body</th><th>Date</th></tfoot>
 			</table>',
 			$this->allowed_table_html()
+		);
+
+		$page_cu = ( $page + 1 );
+		$page_co = ( $pages + 1 );
+		echo wp_kses(
+			"<p><i>Showing page {$page_cu} of {$page_co}.</i></p>",
+			[
+				'p' => [],
+				'i' => [],
+			]
 		);
 	}
 
@@ -79,7 +101,9 @@ class LogTable {
 			'tbody' => [],
 			'th'    => [],
 			'tr'    => [],
-			'td'    => [],
+			'td'    => [
+				'colspan' => [],
+			],
 		];
 	}
 }
