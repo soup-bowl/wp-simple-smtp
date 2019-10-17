@@ -39,8 +39,6 @@ class LogTable {
 		$entries = $this->log->get_log_entries( $page, $maximum_per_page );
 		$pages   = $this->log->get_log_entry_pages( $maximum_per_page );
 
-		
-
 		echo wp_kses(
 			'<table class="wp-list-table widefat fixed striped">
 			<thead><th>Recipient</th><th>Body</th><th>Date</th></thead>
