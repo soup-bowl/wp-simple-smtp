@@ -73,6 +73,7 @@ class Settings {
 			}
 			// phpcs:enable
 
+			echo wp_kses( '<h2>Email Log</h2>', [ 'h2' => [] ] );
 			$this->log_table->display( $page );
 		}
 		?>
