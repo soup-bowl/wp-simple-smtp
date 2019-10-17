@@ -10,6 +10,7 @@
 namespace wpsimplesmtp;
 
 use wpsimplesmtp\Options;
+use wpsimplesmtp\LogTable;
 
 /**
  * Handles the visibility and setup with the WordPress Settings API.
@@ -23,6 +24,13 @@ class Settings {
 	protected $options;
 
 	/**
+	 * Controls the display of the log table.
+	 *
+	 * @var LogTable
+	 */
+	protected $log_table;
+
+	/**
 	 * Registers the relevant WordPress hooks upon creation.
 	 */
 	public function __construct() {
@@ -31,7 +39,8 @@ class Settings {
 		add_action( 'admin_init', [ &$this, 'settings_test_init' ] );
 		add_action( 'admin_post_ss_test_email', [ &$this, 'test_email_handler' ] );
 
-		$this->options = new Options();
+		$this->options   = new Options();
+		$this->log_table = new LogTable();
 	}
 
 	/**
@@ -53,6 +62,16 @@ class Settings {
 		wp_nonce_field( 'simple-smtp-test-email' );
 		do_settings_sections( 'wpsimplesmtp_smtp_test' );
 		submit_button( 'Send', 'secondary' );
+
+		$page = 0;
+		// Felt this wasn't necessary for such a field. Feel free to raise an issue if you disagree.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_REQUEST, $_REQUEST['wpss_page'] ) && is_numeric( $_REQUEST['wpss_page'] ) ) {
+			$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
+		}
+		// phpcs:enable
+
+		$this->log_table->display( $page );
 		?>
 		</form>
 		<?php
@@ -94,7 +113,7 @@ class Settings {
 			'wpssmtp_smtp_auth',
 			'Authenticate',
 			function () {
-				$value = $this->options->get( 'auth' );
+				$value   = $this->options->get( 'auth' );
 				$has_env = '';
 				if ( 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
@@ -114,7 +133,7 @@ class Settings {
 			'wpssmtp_smtp_log',
 			'Logging',
 			function () {
-				$value = $this->options->get( 'log' );
+				$value   = $this->options->get( 'log' );
 				$has_env = '';
 				if ( 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
