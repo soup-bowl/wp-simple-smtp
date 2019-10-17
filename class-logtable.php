@@ -42,9 +42,10 @@ class LogTable {
 		echo wp_kses(
 			'<table class="wp-list-table widefat fixed striped">
 			<thead>
-			<th scope="col" class="manage-column column-primary">Recipient</th>
+			<th scope="col" class="manage-column column-primary">Recipient(s)</th>
 			<th scope="col" class="manage-column">Body</th>
 			<th scope="col" class="manage-column">Date</th>
+			<th scope="col" class="manage-column">Success</th>
 			</thead>
 			<tbody>',
 			$this->allowed_table_html()
@@ -52,11 +53,14 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
+				$recipients = implode( ', ', unserialize( $entry->recipient ) );
+				$has_error  = ( 'N/A' === $entry->error ) ? 'Yes' : 'No';
 				echo wp_kses(
 					"<tr>
-					<td>{$entry->recipient}</td>
+					<td>{$recipients}</td>
 					<td>{$entry->body}</td>
 					<td>{$entry->timestamp}</td>
+					<td>{$has_error}</td>
 					</tr>",
 					$this->allowed_table_html()
 				);
@@ -73,9 +77,10 @@ class LogTable {
 		echo wp_kses(
 			'</tbody>
 			<tfoot>
-			<th scope="col" class="manage-column">Recipient</th>
+			<th scope="col" class="manage-column">Recipient(s)</th>
 			<th scope="col" class="manage-column">Body</th>
 			<th scope="col" class="manage-column">Date</th>
+			<th scope="col" class="manage-column">Success</th>
 			</tfoot>
 			</table>',
 			$this->allowed_table_html()
