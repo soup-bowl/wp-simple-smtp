@@ -41,7 +41,11 @@ class LogTable {
 
 		echo wp_kses(
 			'<table class="wp-list-table widefat fixed striped">
-			<thead><th>Recipient</th><th>Body</th><th>Date</th></thead>
+			<thead>
+			<th scope="col" class="manage-column column-primary">Recipient</th>
+			<th scope="col" class="manage-column">Body</th>
+			<th scope="col" class="manage-column">Date</th>
+			</thead>
 			<tbody>',
 			$this->allowed_table_html()
 		);
@@ -68,7 +72,11 @@ class LogTable {
 
 		echo wp_kses(
 			'</tbody>
-			<tfoot><th>Recipient</th><th>Body</th><th>Date</th></tfoot>
+			<tfoot>
+			<th scope="col" class="manage-column">Recipient</th>
+			<th scope="col" class="manage-column">Body</th>
+			<th scope="col" class="manage-column">Date</th>
+			</tfoot>
 			</table>',
 			$this->allowed_table_html()
 		);
@@ -97,7 +105,10 @@ class LogTable {
 			'thead' => [],
 			'tfoot' => [],
 			'tbody' => [],
-			'th'    => [],
+			'th'    => [
+				'scope' => [],
+				'class' => [],
+			],
 			'tr'    => [],
 			'td'    => [
 				'colspan' => [],
