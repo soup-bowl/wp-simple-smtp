@@ -24,6 +24,7 @@ class Log {
 		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpss_email_log (
 		log_id mediumint(9) NOT NULL AUTO_INCREMENT,
 		recipient text NOT NULL,
+		subject text NOT NULL,
 		body text NOT NULL,
 		timestamp datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 		error text,
@@ -38,17 +39,19 @@ class Log {
 	 * Creates a new log entry.
 	 *
 	 * @param string $recipients The person(s) who recieved the email.
+	 * @param string $subject    Subject headline from the email.
 	 * @param string $content    Whatever was inside the dispatched email.
 	 * @param string $timestamp  The time the email was sent.
 	 * @param string $error      Any errors encountered during the exchange.
 	 */
-	public function new_log_entry( $recipients, $content, $timestamp, $error = 'N/A' ) {
+	public function new_log_entry( $recipients, $subject, $content, $timestamp, $error = 'N/A' ) {
 		global $wpdb;
 
 		$wpdb->insert(
 			$wpdb->prefix . 'wpss_email_log',
 			[
 				'recipient' => $recipients,
+				'subject'   => $subject,
 				'body'      => $content,
 				'timestamp' => $timestamp,
 				'error'     => $error,
@@ -66,7 +69,7 @@ class Log {
 	public function get_log_entries( $offset = 0, $limit = 0 ) {
 		global $wpdb;
 
-		$query = "SELECT log_id, recipient, body, timestamp, error FROM {$wpdb->prefix}wpss_email_log ORDER BY log_id DESC";
+		$query = "SELECT log_id, recipient, subject, body, timestamp, error FROM {$wpdb->prefix}wpss_email_log ORDER BY log_id DESC";
 		if ( $limit > 0 ) {
 			$offset_calc = $offset * $limit;
 			$query      .= " LIMIT {$offset_calc}, {$limit}";

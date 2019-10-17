@@ -43,6 +43,7 @@ class LogTable {
 			'<table class="wp-list-table widefat fixed striped">
 			<thead>
 			<th scope="col" class="manage-column column-primary">Recipient(s)</th>
+			<th scope="col" class="manage-column">Subject</th>
 			<th scope="col" class="manage-column">Body</th>
 			<th scope="col" class="manage-column">Date</th>
 			<th scope="col" class="manage-column">Message</th>
@@ -57,6 +58,7 @@ class LogTable {
 				echo wp_kses(
 					"<tr>
 					<td>{$recipients}</td>
+					<td>{$entry->subject}</td>
 					<td>{$entry->body}</td>
 					<td>{$entry->timestamp}</td>
 					<td>{$entry->error}</td>
@@ -77,6 +79,7 @@ class LogTable {
 			'</tbody>
 			<tfoot>
 			<th scope="col" class="manage-column">Recipient(s)</th>
+			<th scope="col" class="manage-column">Subject</th>
 			<th scope="col" class="manage-column">Body</th>
 			<th scope="col" class="manage-column">Date</th>
 			<th scope="col" class="manage-column">Message</th>

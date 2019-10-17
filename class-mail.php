@@ -74,6 +74,7 @@ class Mail {
 
 				$this->log->new_log_entry(
 					serialize( $recipient_array ),
+					$phpmailer->Subject,
 					$phpmailer->Body,
 					current_time( 'mysql' )
 				);
@@ -92,6 +93,7 @@ class Mail {
 	public function process_error( $error ) {
 		$this->log->new_log_entry(
 			serialize( $error->get_error_data( 'wp_mail_failed' )['to'] ),
+			$error->get_error_data( 'wp_mail_failed' )['subject'],
 			$error->get_error_data( 'wp_mail_failed' )['message'],
 			current_time( 'mysql' ),
 			$error->get_error_message( 'wp_mail_failed' )
