@@ -63,15 +63,18 @@ class Settings {
 		do_settings_sections( 'wpsimplesmtp_smtp_test' );
 		submit_button( 'Send', 'secondary' );
 
-		$page = 0;
-		// Felt this wasn't necessary for such a field. Feel free to raise an issue if you disagree.
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		if ( isset( $_REQUEST, $_REQUEST['wpss_page'] ) && is_numeric( $_REQUEST['wpss_page'] ) ) {
-			$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
-		}
-		// phpcs:enable
+		$log_status = $this->options->get( 'log' );
+		if ( ! empty ( $log_status ) && '1' === $log_status->value ) {
+			$page = 0;
+			// Felt this wasn't necessary for such a field. Feel free to raise an issue if you disagree.
+			// phpcs:disable WordPress.Security.NonceVerification.Recommended
+			if ( isset( $_REQUEST, $_REQUEST['wpss_page'] ) && is_numeric( $_REQUEST['wpss_page'] ) ) {
+				$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
+			}
+			// phpcs:enable
 
-		$this->log_table->display( $page );
+			$this->log_table->display( $page );
+		}
 		?>
 		</form>
 		<?php
