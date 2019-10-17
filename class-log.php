@@ -89,7 +89,7 @@ class Log {
 		global $wpdb;
 
 		$count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpss_email_log" );
-		if ( $count === 0 || $limit === 0 ) {
+		if ( 0 === $count || 0 === $limit ) {
 			return 1;
 		} else {
 			return floor( $count / $limit );

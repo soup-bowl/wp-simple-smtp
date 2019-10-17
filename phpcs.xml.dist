@@ -2,4 +2,12 @@
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<rule ref="WordPress" />
+
+	<!-- Suggestions welcome. -->
+	<rule ref="WordPress.DB.DirectDatabaseQuery">
+        <exclude-pattern>class-log.php</exclude-pattern>
+    </rule>
+	<rule ref="WordPress.DB.PreparedSQL.NotPrepared">
+        <exclude-pattern>class-log.php</exclude-pattern>
+    </rule>
 </ruleset>
