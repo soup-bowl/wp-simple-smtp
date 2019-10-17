@@ -10,6 +10,7 @@
 namespace wpsimplesmtp;
 
 use wpsimplesmtp\Options;
+use wpsimplesmtp\Log;
 
 /**
  * Configures PHPMailer to use our settings rather than the default.
@@ -23,12 +24,20 @@ class Mail {
 	protected $options;
 
 	/**
+	 * SMTP logging.
+	 *
+	 * @var Log
+	 */
+	protected $log;
+
+	/**
 	 * Registers the relevant WordPress hooks upon creation.
 	 */
 	public function __construct() {
 		add_action( 'phpmailer_init', [ &$this, 'process_mail' ] );
 
 		$this->options = new Options();
+		$this->log     = new Log();
 	}
 
 	/**
@@ -46,9 +55,19 @@ class Mail {
 			$phpmailer->Username = $this->options->get( 'user' )->value;
 			$phpmailer->Password = $this->options->get( 'pass' )->value;
 			$phpmailer->SMTPAuth = $this->options->get( 'auth' )->value;
-			// phpcs:enable
 
 			$phpmailer->IsSMTP();
+
+			if ( $this->options->get( 'log' )->value === '1' ) {
+				$this->log->create_log_table();
+
+				$this->log->new_log_entry(
+					"{$phpmailer->FromName} <{$phpmailer->From}>",
+					$phpmailer->Body,
+					current_time( 'mysql' )
+				);
+			}
+			// phpcs:enable
 		}
 
 		return $phpmailer;

@@ -109,6 +109,23 @@ class Settings {
 
 		$this->settings_field_generator( 'user', 'Username', 'text', 'foobar@example.com' );
 		$this->settings_field_generator( 'pass', 'Password', 'password', '' );
+
+		add_settings_field(
+			'wpssmtp_smtp_log',
+			'Logging',
+			function () {
+				$value = $this->options->get( 'log' );
+				$has_env = '';
+				if ( 'CONFIG' !== $value->source ) {
+					$has_env = 'disabled';
+				}
+				?>
+				<input type='checkbox' name='wpssmtp_smtp[log]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
+				<?php
+			},
+			'wpsimplesmtp_smtp',
+			'wpsimplesmtp_smtp_section'
+		);
 	}
 
 	/**
