@@ -60,7 +60,6 @@ class Mail {
 			$phpmailer->Username = $this->options->get( 'user' )->value;
 			$phpmailer->Password = $this->options->get( 'pass' )->value;
 			$phpmailer->SMTPAuth = $this->options->get( 'auth' )->value;
-			$phpmailer->addCustomHeader( 'X-Wpm-Guid', 'custom-value' );
 
 			$phpmailer->IsSMTP();
 
