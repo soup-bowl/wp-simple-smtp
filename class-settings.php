@@ -73,7 +73,7 @@ class Settings {
 			}
 			// phpcs:enable
 
-			echo wp_kses( '<h2>Email Log</h2>', [ 'h2' => [] ] );
+			echo wp_kses( '<h2>' . __( 'Email Log', 'wpsimplesmtp' ) . '</h2>', [ 'h2' => [] ] );
 			$this->log_table->display( $page );
 		}
 		?>
@@ -87,8 +87,8 @@ class Settings {
 	 */
 	public function add_admin_menu() {
 		add_options_page(
-			'Mail',
-			'Mail',
+			__( 'Mail', 'wpsimplesmtp' ),
+			__( 'Mail', 'wpsimplesmtp' ),
 			'manage_options',
 			'wpsimplesmtp',
 			[ &$this, 'options_page' ]
@@ -110,12 +110,12 @@ class Settings {
 			'wpsimplesmtp_smtp'
 		);
 
-		$this->settings_field_generator( 'host', 'Host', 'text', 'smtp.example.com' );
-		$this->settings_field_generator( 'port', 'Port', 'number', '587' );
+		$this->settings_field_generator( 'host', __( 'Host', 'wpsimplesmtp' ), 'text', 'smtp.example.com' );
+		$this->settings_field_generator( 'port', __( 'Port', 'wpsimplesmtp' ), 'number', '587' );
 
 		add_settings_field(
 			'wpssmtp_smtp_auth',
-			'Authenticate',
+			__( 'Authenticate', 'wpsimplesmtp' ),
 			function () {
 				$value   = $this->options->get( 'auth' );
 				$has_env = '';
@@ -130,15 +130,15 @@ class Settings {
 			'wpsimplesmtp_smtp_section'
 		);
 
-		$this->settings_field_generator( 'user', 'Username', 'text', 'foobar@example.com' );
-		$this->settings_field_generator( 'pass', 'Password', 'password', '' );
+		$this->settings_field_generator( 'user', __( 'Username', 'wpsimplesmtp' ), 'text', 'foobar@example.com' );
+		$this->settings_field_generator( 'pass', __( 'Password', 'wpsimplesmtp' ), 'password', '' );
 
-		$this->settings_field_generator( 'from', 'Force from', 'email', 'do-not-reply@example.com' );
-		$this->settings_field_generator( 'fromname', 'Force from name', 'text', 'WordPress System' );
+		$this->settings_field_generator( 'from', __( 'Force from', 'wpsimplesmtp' ), 'email', 'do-not-reply@example.com' );
+		$this->settings_field_generator( 'fromname', __( 'Force from name', 'wpsimplesmtp' ), 'text', 'WordPress System' );
 
 		add_settings_field(
 			'wpssmtp_smtp_log',
-			'Logging',
+			__( 'Logging', 'wpsimplesmtp' ),
 			function () {
 				$value   = $this->options->get( 'log' );
 				$has_env = '';
@@ -197,7 +197,7 @@ class Settings {
 
 		add_settings_field(
 			'wpssmtp_smtp_email_test',
-			'Email recipient',
+			__( 'Email recipient', 'wpsimplesmtp' ),
 			function () {
 				?>
 				<input type='email' name='wpssmtp_test_email_recipient' value='<?php echo esc_attr( wp_get_current_user()->user_email ); ?>'>
@@ -215,14 +215,15 @@ class Settings {
 		if ( isset( $_REQUEST['_wpnonce'], $_REQUEST['_wp_http_referer'], $_REQUEST['wpssmtp_test_email_recipient'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'simple-smtp-test-email' ) ) {
 			wp_mail(
 				sanitize_email( wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) ),
-				'Test email from ' . get_bloginfo( 'name' ),
-				'This email proves that your settings are correct.' . PHP_EOL . get_bloginfo( 'url' )
+				// translators: %s is the website name.
+				sprintf( __( 'Test email from %s', 'wpsimplesmtp' ), get_bloginfo( 'name' ) ),
+				__( 'This email proves that your settings are correct.', 'wpsimplesmtp' ) . PHP_EOL . get_bloginfo( 'url' )
 			);
 
 			wp_safe_redirect( urldecode( sanitize_text_field( wp_unslash( $_REQUEST['_wp_http_referer'] ) ) ) );
 			exit;
 		} else {
-			wp_die( 'You are not permitted to send a test email.' );
+			wp_die( esc_attr_e( 'You are not permitted to send a test email.', 'wpsimplesmtp' ) );
 		}
 	}
 }
