@@ -18,7 +18,8 @@ services:
   mail:
     image: mailhog/mailhog:latest
     ports:
-    - 8081:8025 # SMTP is 1025 internal
+    - 8083:1025 # For unit testing. Use 'mail' and 1025 for web.
+    - 8081:8025
   www:
     depends_on:
     - db
