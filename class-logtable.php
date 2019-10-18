@@ -39,16 +39,24 @@ class LogTable {
 		$entries = $this->log->get_log_entries( $page, $maximum_per_page );
 		$pages   = $this->log->get_log_entry_pages( $maximum_per_page );
 
+		$labels = [
+			__( 'Recipient(s)', 'wpsimplesmtp' ),
+			__( 'Subject', 'wpsimplesmtp' ),
+			__( 'Body', 'wpsimplesmtp' ),
+			__( 'Date', 'wpsimplesmtp' ),
+			__( 'Message', 'wpsimplesmtp' ),
+		];
+
 		echo wp_kses(
-			'<table class="wp-list-table widefat fixed striped">
+			"<table class=\"wp-list-table widefat fixed striped\">
 			<thead>
-			<th scope="col" class="manage-column column-primary">Recipient(s)</th>
-			<th scope="col" class="manage-column">Subject</th>
-			<th scope="col" class="manage-column">Body</th>
-			<th scope="col" class="manage-column">Date</th>
-			<th scope="col" class="manage-column">Message</th>
+			<th scope=\"col\" class=\"manage-column column-primary\">{$labels[0]}</th>
+			<th scope=\"col\" class=\"manage-column\">{$labels[1]}</th>
+			<th scope=\"col\" class=\"manage-column\">{$labels[2]}</th>
+			<th scope=\"col\" class=\"manage-column\">{$labels[3]}</th>
+			<th scope=\"col\" class=\"manage-column\">{$labels[4]}</th>
 			</thead>
-			<tbody>',
+			<tbody>",
 			$this->allowed_table_html()
 		);
 
@@ -68,30 +76,33 @@ class LogTable {
 			}
 		} else {
 			echo wp_kses(
-				"<tr>
-				<td colspan='3'>Nothing to display.</td>
-				</tr>",
+				sprintf(
+					'<tr><td colspan="3">%s</td></tr>',
+					__( 'Nothing to display.', 'wpsimplesmtp' )
+				),
 				$this->allowed_table_html()
 			);
 		}
 
 		echo wp_kses(
-			'</tbody>
+			"</tbody>
 			<tfoot>
-			<th scope="col" class="manage-column">Recipient(s)</th>
-			<th scope="col" class="manage-column">Subject</th>
-			<th scope="col" class="manage-column">Body</th>
-			<th scope="col" class="manage-column">Date</th>
-			<th scope="col" class="manage-column">Message</th>
+			<th scope=\"col\" class=\"manage-column\">{$labels[0]}</th>
+			<th scope=\"col\" class=\"manage-column\">{$labels[1]}</th>
+			<th scope=\"col\" class=\"manage-column\">{$labels[2]}</th>
+			<th scope=\"col\" class=\"manage-column\">{$labels[3]}</th>
+			<th scope=\"col\" class=\"manage-column\">{$labels[4]}</th>
 			</tfoot>
-			</table>',
+			</table>",
 			$this->allowed_table_html()
 		);
 
 		$page_cu = ( $page + 1 );
 		$page_co = ( $pages + 1 );
+		// translators: %1$s refers to the current page, %2$s is the amount of pages the table has.
+		$message = sprintf( __( 'Showing page %1$s of %2$s.', 'wpsimplesmtp' ), $page_cu, $page_co );
 		echo wp_kses(
-			"<p><i>Showing page {$page_cu} of {$page_co}.</i></p>",
+			"<p><i>{$message}</i></p>",
 			[
 				'p' => [],
 				'i' => [],
