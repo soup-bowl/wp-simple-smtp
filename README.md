@@ -1,4 +1,7 @@
 # WordPress Simple SMTP
+[![Build Status](https://travis-ci.org/soup-bowl/wp-simple-smtp.svg?branch=master)](https://travis-ci.org/soup-bowl/wp-simple-smtp)
+[![Maintainability](https://api.codeclimate.com/v1/badges/14017f6affcf72b1d890/maintainability)](https://codeclimate.com/github/soup-bowl/wp-simple-smtp/maintainability)
+
 Adds a simple SMTP configuration panel into the WordPress admin, accessible at
 Settings > Mail.
 
