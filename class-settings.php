@@ -133,6 +133,9 @@ class Settings {
 		$this->settings_field_generator( 'user', 'Username', 'text', 'foobar@example.com' );
 		$this->settings_field_generator( 'pass', 'Password', 'password', '' );
 
+		$this->settings_field_generator( 'from', 'Force from', 'email', 'do-not-reply@example.com' );
+		$this->settings_field_generator( 'fromname', 'Force from name', 'text', 'WordPress System' );
+
 		add_settings_field(
 			'wpssmtp_smtp_log',
 			'Logging',
