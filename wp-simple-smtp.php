@@ -22,12 +22,6 @@
  */
 require_once __DIR__ . '/vendor/autoload.php';
 
-$env_loc = __DIR__ . '/.env';
-if ( file_exists( $env_loc ) ) {
-	$dotenv = new \Symfony\Component\Dotenv\Dotenv();
-	$dotenv->load( $env_loc );
-}
-
 if ( is_admin() ) {
 	new wpsimplesmtp\Settings();
 }
