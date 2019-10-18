@@ -5,5 +5,3 @@ before_script:
  - composer install
  - docker-compose -f docker-compose.yml up -d --build
 script: vendor/bin/phpunit
-env:
-- SMTP_HOST=127.0.0.1 SMTP_AUTH=0 SMTP_PORT=8083
