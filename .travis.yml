@@ -1,10 +1,9 @@
+services:
+ - docker
 language: php
 before_script:
-- composer install
+ - composer install
+ - docker-compose -f docker-compose.yml up -d --build
 script: vendor/bin/phpunit
 env:
-- SMTP_HOST=smtp.mailtrap.io
-- SMTP_AUTH=1
-- SMTP_USER=b802756dea8611
-- SMTP_PORT=587
-- secure: FegkbGtt4b149+iLV/yP10Ir7rJGVSv1tz1tgJULRNVWX99M2JOf65XgJekJ3GLSUYMq1iEVJMpao6rboXaBrNQpfdJWp39Obb1T4596/ShsIbYBMv9X6fmDvJNwxaighx6aoMfpwyfUW8bViSqwPR90F/t9qCinS59dmp/MguGpCXajVQdmutn8u5Ugun/DHsx7XKQ3R51eh4uK/QJUH4D6EJpf75UAPJLRzTz2Fj8k6eVNO4ldMX/3kubfuwz8IfIYjVzti2Il2Z/f+jxkQsZkRe8bRcHrR7EXcP91W0KsVzN3tHKZmRKV4M/Bzq7As/qvGZERxRbu3YDoTY/ujhM4g4DcpDX26mxah5ODx1Zgbdv2CsrZs/yXzckZXDjRe7Mw2GGC+T6d0UyczZmKc6IzXYbz0E8c4PA66zyZ900wVc9LmlG/jcN0BiMPyNbueebJV2ca1POO4LTU+R+0XGzTT7W+971onPKykGjXQJM4KnIU5SBFS71QcThFIXdmiww4R2pBJoq3paVpdqKperdqvWfo1dqz1SxBB3+tij1F59mnWycdOb6NcXP/J99YKqo7si5A8BAouMHp4EUSfMTe46wE8bXzHjuqQmwzUFPNjqdWQm16DxVrXFtE0h1/yVu+giRCBFXHWi+UkbA1/fceK2opyDA+44LKGtPj+qw=
+- SMTP_HOST=127.0.0.1 SMTP_AUTH=0 SMTP_PORT=8083
