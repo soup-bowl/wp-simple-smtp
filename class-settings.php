@@ -112,74 +112,12 @@ class Settings {
 
 		$this->settings_field_generator( 'host', __( 'Host', 'wpsimplesmtp' ), 'text', 'smtp.example.com' );
 		$this->settings_field_generator( 'port', __( 'Port', 'wpsimplesmtp' ), 'number', '587' );
-
-		add_settings_field(
-			'wpssmtp_smtp_auth',
-			__( 'Authenticate', 'wpsimplesmtp' ),
-			function () {
-				$value   = $this->options->get( 'auth' );
-				$has_env = '';
-				if ( 'CONFIG' !== $value->source ) {
-					$has_env = 'disabled';
-				}
-				?>
-				<input type='checkbox' name='wpssmtp_smtp[auth]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
-				<?php
-			},
-			'wpsimplesmtp_smtp',
-			'wpsimplesmtp_smtp_section'
-		);
-
+		$this->settings_field_generator( 'auth', __( 'Authenticate', 'wpsimplesmtp' ), 'checkbox', '' );
 		$this->settings_field_generator( 'user', __( 'Username', 'wpsimplesmtp' ), 'text', 'foobar@example.com' );
 		$this->settings_field_generator( 'pass', __( 'Password', 'wpsimplesmtp' ), 'password', '' );
-
 		$this->settings_field_generator( 'from', __( 'Force from', 'wpsimplesmtp' ), 'email', 'do-not-reply@example.com' );
 		$this->settings_field_generator( 'fromname', __( 'Force from name', 'wpsimplesmtp' ), 'text', 'WordPress System' );
-
-		add_settings_field(
-			'wpssmtp_smtp_log',
-			__( 'Logging', 'wpsimplesmtp' ),
-			function () {
-				$value   = $this->options->get( 'log' );
-				$has_env = '';
-				if ( 'CONFIG' !== $value->source ) {
-					$has_env = 'disabled';
-				}
-				?>
-				<input type='checkbox' name='wpssmtp_smtp[log]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
-				<?php
-			},
-			'wpsimplesmtp_smtp',
-			'wpsimplesmtp_smtp_section'
-		);
-	}
-
-	/**
-	 * Generates an generic input box.
-	 *
-	 * @param string $name        Code name of input.
-	 * @param string $name_pretty Name shown to user.
-	 * @param string $type        Input element type. Normally 'text'.
-	 * @param string $example     Text shown as a placeholder.
-	 */
-	public function settings_field_generator( $name, $name_pretty, $type, $example ) {
-		$value = $this->options->get( $name );
-
-		add_settings_field(
-			'wpssmtp_smtp_' . $name,
-			$name_pretty,
-			function () use ( $name, $value, $type, $example ) {
-				$has_env = '';
-				if ( 'CONFIG' !== $value->source ) {
-					$has_env = 'disabled';
-				}
-				?>
-				<input type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
-				<?php
-			},
-			'wpsimplesmtp_smtp',
-			'wpsimplesmtp_smtp_section'
-		);
+		$this->settings_field_generator( 'log', __( 'Logging', 'wpsimplesmtp' ), 'checkbox', '' );
 	}
 
 	/**
@@ -225,5 +163,46 @@ class Settings {
 		} else {
 			wp_die( esc_attr_e( 'You are not permitted to send a test email.', 'wpsimplesmtp' ) );
 		}
+	}
+
+	/**
+	 * Generates an generic input box.
+	 *
+	 * @param string $name        Code name of input.
+	 * @param string $name_pretty Name shown to user.
+	 * @param string $type        Input element type. Normally 'text'.
+	 * @param string $example     Text shown as a placeholder.
+	 */
+	private function settings_field_generator( $name, $name_pretty, $type, $example ) {
+		$value = $this->options->get( $name );
+
+		add_settings_field(
+			'wpssmtp_smtp_' . $name,
+			$name_pretty,
+			function () use ( $name, $value, $type, $example ) {
+				switch ( $type ) { 
+					case 'checkbox':
+						$has_env = '';
+						if ( 'CONFIG' !== $value->source ) {
+							$has_env = 'disabled';
+						}
+						?>
+						<input type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
+						<?php
+						break;
+					default:
+						$has_env = '';
+						if ( 'CONFIG' !== $value->source ) {
+							$has_env = 'disabled';
+						}
+						?>
+						<input type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
+						<?php
+						break;
+				}
+			},
+			'wpsimplesmtp_smtp',
+			'wpsimplesmtp_smtp_section'
+		);
 	}
 }
