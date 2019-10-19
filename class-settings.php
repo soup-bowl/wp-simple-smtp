@@ -180,7 +180,7 @@ class Settings {
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
 			function () use ( $name, $value, $type, $example ) {
-				switch ( $type ) { 
+				switch ( $type ) {
 					case 'checkbox':
 						$has_env = '';
 						if ( 'CONFIG' !== $value->source ) {

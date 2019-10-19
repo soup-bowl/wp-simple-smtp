@@ -39,16 +39,22 @@ class Mail {
 
 		$from = $this->options->get( 'from', true );
 		if ( ! empty( $from->value ) ) {
-			add_filter( 'wp_mail_from', function( $email ) use ( $from ) {
-				return $from->value;
-			});
+			add_filter(
+				'wp_mail_from',
+				function( $email ) use ( $from ) {
+					return $from->value;
+				}
+			);
 		}
 
 		$from_name = $this->options->get( 'fromname', true );
 		if ( ! empty( $from_name->value ) ) {
-			add_filter( 'wp_mail_from_name', function( $email ) use ( $from_name ) {
-				return $from_name->value;
-			});
+			add_filter(
+				'wp_mail_from_name',
+				function( $email ) use ( $from_name ) {
+					return $from_name->value;
+				}
+			);
 		}
 
 		add_action( 'phpmailer_init', [ &$this, 'process_mail' ] );

@@ -133,7 +133,7 @@ class LogTable {
 		$next_allow = ( $current_page >= $max_pages ) ? 'disabled' : '';
 		$back_allow = ( $current_page <= 0 ) ? 'disabled' : '';
 
-		return (object)[
+		return (object) [
 			'next' => "<a href='{$next_url}' class='button' {$next_allow}>{$next_label}</a>",
 			'back' => "<a href='{$back_url}' class='button' {$back_allow}>{$back_label}</a>",
 		];
