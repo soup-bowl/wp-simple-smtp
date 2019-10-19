@@ -36,6 +36,7 @@ class LogTable {
 	 * @param integer $maximum_per_page Limits the table display.
 	 */
 	public function display( $page, $maximum_per_page = 5 ) {
+		$page    = ( $page < 0 ) ? 0 : $page;
 		$entries = $this->log->get_log_entries( $page, $maximum_per_page );
 		$pages   = $this->log->get_log_entry_pages( $maximum_per_page );
 
