@@ -100,14 +100,42 @@ class LogTable {
 		$page_cu = ( $page + 1 );
 		$page_co = ( $pages + 1 );
 		// translators: %1$s refers to the current page, %2$s is the amount of pages the table has.
-		$message = sprintf( __( 'Showing page %1$s of %2$s.', 'wpsimplesmtp' ), $page_cu, $page_co );
+		$message     = sprintf( __( 'Showing page %1$s of %2$s.', 'wpsimplesmtp' ), $page_cu, $page_co );
+		$nav_buttons = $this->generate_table_buttons( $page, $pages );
 		echo wp_kses(
-			"<p><i>{$message}</i></p>",
+			"<p><i>{$message}</i> {$nav_buttons->back} {$nav_buttons->next}</p>",
 			[
 				'p' => [],
 				'i' => [],
+				'a' => [
+					'href'     => [],
+					'class'    => [],
+					'disabled' => [],
+				],
 			]
 		);
+	}
+
+	/**
+	 * Postback navigations for the table.
+	 *
+	 * @param integer $current_page The current page (system, not pretty).
+	 * @param integer $max_pages    How many pages the table has to show.
+	 * @return stdClass 'next' and 'back', HTML buttons.
+	 */
+	private function generate_table_buttons( $current_page, $max_pages ) {
+		$next_label = __( 'Next', 'wpsimplesmtp' );
+		$back_label = __( 'Previous', 'wpsimplesmtp' );
+		$current    = admin_url( 'options-general.php?page=wpsimplesmtp' );
+		$next_url   = add_query_arg( 'wpss_page', ( $current_page + 1 ), $current );
+		$back_url   = add_query_arg( 'wpss_page', ( $current_page - 1 ), $current );
+		$next_allow = ( $current_page >= $max_pages ) ? 'disabled' : '';
+		$back_allow = ( $current_page <= 0 ) ? 'disabled' : '';
+
+		return (object)[
+			'next' => "<a href='{$next_url}' class='button' {$next_allow}>{$next_label}</a>",
+			'back' => "<a href='{$back_url}' class='button' {$back_allow}>{$back_label}</a>",
+		];
 	}
 
 	/**
