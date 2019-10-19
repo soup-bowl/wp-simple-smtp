@@ -63,7 +63,7 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
-				$recipients = implode( ', ', unserialize( $entry->recipient ) );
+				$recipients = implode( ', ', json_decode( $entry->recipient ) );
 				echo wp_kses(
 					"<tr>
 					<td>{$recipients}</td>

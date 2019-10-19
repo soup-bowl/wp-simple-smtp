@@ -93,7 +93,7 @@ class Mail {
 				$this->log->create_log_table();
 
 				$this->log->new_log_entry(
-					serialize( $recipient_array ),
+					wp_json_encode( $recipient_array ),
 					$phpmailer->Subject,
 					$phpmailer->Body,
 					current_time( 'mysql' )
@@ -112,7 +112,7 @@ class Mail {
 	 */
 	public function process_error( $error ) {
 		$this->log->new_log_entry(
-			serialize( $error->get_error_data( 'wp_mail_failed' )['to'] ),
+			wp_json_encode( $error->get_error_data( 'wp_mail_failed' )['to'] ),
 			$error->get_error_data( 'wp_mail_failed' )['subject'],
 			$error->get_error_data( 'wp_mail_failed' )['message'],
 			current_time( 'mysql' ),
