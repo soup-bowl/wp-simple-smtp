@@ -61,6 +61,7 @@ class Mail {
 
 		$log_status = $this->options->get( 'log' );
 		if ( ! empty( $log_status ) && '1' === $log_status->value ) {
+			add_action( 'wp_mail', [ &$this, 'preprocess_mail' ] );
 			add_action( 'wp_mail_failed', [ &$this, 'process_error' ] );
 		}
 	}
@@ -74,7 +75,7 @@ class Mail {
 		$config = get_option( 'wpssmtp_smtp' );
 
 		if ( ! empty( $config ) ) {
-			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			// phpcs:disable WordPress.NamingConventions.ValidVariableName
 			$phpmailer->Host     = $this->options->get( 'host' )->value;
 			$phpmailer->Port     = $this->options->get( 'port' )->value;
 			$phpmailer->Username = $this->options->get( 'user' )->value;
@@ -82,23 +83,6 @@ class Mail {
 			$phpmailer->SMTPAuth = $this->options->get( 'auth' )->value;
 
 			$phpmailer->IsSMTP();
-
-			if ( $this->options->get( 'log' )->value === '1' ) {
-				$recipients      = $phpmailer->getAllRecipientAddresses();
-				$recipient_array = [];
-				foreach ( $recipients as $recipient => $junk ) {
-					$recipient_array[] = $recipient;
-				}
-
-				$this->log->create_log_table();
-
-				$this->log->new_log_entry(
-					wp_json_encode( $recipient_array ),
-					$phpmailer->Subject,
-					$phpmailer->Body,
-					current_time( 'mysql' )
-				);
-			}
 			// phpcs:enable
 		}
 
@@ -111,12 +95,33 @@ class Mail {
 	 * @param WP_Error $error The error thrown by the mailer.
 	 */
 	public function process_error( $error ) {
-		$this->log->new_log_entry(
-			wp_json_encode( $error->get_error_data( 'wp_mail_failed' )['to'] ),
-			$error->get_error_data( 'wp_mail_failed' )['subject'],
-			$error->get_error_data( 'wp_mail_failed' )['message'],
-			current_time( 'mysql' ),
-			$error->get_error_message( 'wp_mail_failed' )
-		);
+		global $wpss_mail_id;
+
+		$this->log->log_entry_error( $wpss_mail_id, $error->get_error_message( 'wp_mail_failed' ) );
+	}
+
+	/**
+	 * Run housekeeping before an email is dispatched.
+	 *
+	 * @param array $parameters The parameters currently held.
+	 * @return array The same paramter array, with some additions from this function.
+	 */
+	public function preprocess_mail( $parameters ) {
+		global $wpss_mail_id;
+
+		if ( $this->options->get( 'log' )->value === '1' ) {
+			$recipient_array = ( is_array( $parameters['to'] ) ) ? $parameters['to'] : [ $parameters['to'] ];
+
+			$this->log->create_log_table();
+
+			$wpss_mail_id = $this->log->new_log_entry(
+				wp_json_encode( $recipient_array ),
+				$parameters['subject'],
+				$parameters['message'],
+				current_time( 'mysql' )
+			);
+		}
+
+		return $parameters;
 	}
 }

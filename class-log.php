@@ -43,8 +43,9 @@ class Log {
 	 * @param string $content    Whatever was inside the dispatched email.
 	 * @param string $timestamp  The time the email was sent.
 	 * @param string $error      Any errors encountered during the exchange.
+	 * @return integer ID of the newly-inserted entry.
 	 */
-	public function new_log_entry( $recipients, $subject, $content, $timestamp, $error = 'N/A' ) {
+	public function new_log_entry( $recipients, $subject, $content, $timestamp, $error = null ) {
 		global $wpdb;
 
 		$wpdb->insert(
@@ -57,6 +58,35 @@ class Log {
 				'error'     => $error,
 			]
 		);
+
+		return $wpdb->insert_id;
+	}
+
+	/**
+	 * Updates the provided ID with an error message.
+	 *
+	 * @param integer $id    ID of the email log entry.
+	 * @param string  $error Error message to be stored.
+	 * @return boolean Success state.
+	 */
+	public function log_entry_error( $id, $error ) {
+		global $wpdb;
+
+		$upd = $wpdb->update(
+			$wpdb->prefix . 'wpss_email_log',
+			[
+				'error' => $error,
+			],
+			[
+				'log_id' => $id,
+			]
+		);
+
+		if ( false === $upd ) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**

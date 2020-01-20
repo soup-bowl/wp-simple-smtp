@@ -45,7 +45,7 @@ class LogTable {
 			__( 'Subject', 'wpsimplesmtp' ),
 			__( 'Body', 'wpsimplesmtp' ),
 			__( 'Date', 'wpsimplesmtp' ),
-			__( 'Message', 'wpsimplesmtp' ),
+			__( 'Error', 'wpsimplesmtp' ),
 		];
 
 		echo wp_kses(
