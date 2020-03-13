@@ -128,8 +128,9 @@ class LogTable {
 		if ( current_user_can( 'administrator' ) && isset( $email ) ) {
 			echo wp_kses( "<h2>{$email->subject}</h2>", [ 'h2' => [] ] );
 
-			$date = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $email->timestamp ) );
-			echo wp_kses_post( "<p><strong>Recipients: </strong>{$email->recipient}</p>" );
+			$recipients = implode( ', ', json_decode( $email->recipient ) );
+			$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $email->timestamp ) );
+			echo wp_kses_post( "<p><strong>Recipients: </strong>{$recipients}</p>" );
 			echo wp_kses_post( "<p><strong>Sent date: </strong>{$date}</p>" );
 
 			echo wp_kses_post( $email->body );
