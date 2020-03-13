@@ -132,8 +132,8 @@ class LogTable {
 
 			$recipients = implode( ', ', json_decode( $email->recipient ) );
 			$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $email->timestamp ) );
-			echo wp_kses( "<p><strong>Recipients: </strong>{$recipients}</p>", $ksa );
-			echo wp_kses( "<p><strong>Sent date: </strong>{$date}</p>", $ksa );
+			echo wp_kses( '<p><strong>' . __( 'Recipient(s)', 'wpsimplesmtp' ) . ": </strong>{$recipients}</p>", $ksa );
+			echo wp_kses( '<p><strong>' . __( 'Sent date', 'wpsimplesmtp' ) . ": </strong>{$date}</p>", $ksa );
 
 			echo wp_kses_post( $email->body );
 		} else {
