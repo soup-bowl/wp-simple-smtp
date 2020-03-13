@@ -9,6 +9,8 @@
 
 namespace wpsimplesmtp;
 
+use stdClass;
+
 /**
  * Handles the processing and display of the email log.
  */
@@ -86,6 +88,26 @@ class Log {
 			return false;
 		} else {
 			return true;
+		}
+	}
+
+	/**
+	 * Gets a single log entry based upon the ID.
+	 *
+	 * @param integer $id Log ID to retrieve details of.
+	 * @return stdClass
+	 */
+	public function get_log_entry_by_id( $id ) {
+		global $wpdb;
+
+		$query = "SELECT log_id, recipient, subject, body, timestamp, error FROM {$wpdb->prefix}wpss_email_log WHERE log_id = {$id}";
+
+		$response = $wpdb->get_results( $query );
+
+		if ( ! empty( $response ) ) {
+			return $response[0];
+		} else {
+			return null;
 		}
 	}
 

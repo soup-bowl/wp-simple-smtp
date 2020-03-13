@@ -47,40 +47,48 @@ class Settings {
 	 * Intialises the options page.
 	 */
 	public function options_page() {
-		?>
-		<div class="wrap">
+		if ( isset( $_REQUEST['eid'] ) ) {
+			?>
+			<div class="wrap">
 			<h1>Mail Settings</h1>
-			<form action='options.php' method='post'>
 			<?php
-			settings_fields( 'wpsimplesmtp_smtp' );
-			do_settings_sections( 'wpsimplesmtp_smtp' );
-			submit_button();
+			$this->log_table->display_email( intval( $_REQUEST['eid'] ) );
+		} else {
 			?>
-			</form>
-			<form action='admin-post.php' method='post'>
-			<input type="hidden" name="action" value="ss_test_email">
-			<?php
-			wp_nonce_field( 'simple-smtp-test-email' );
-			do_settings_sections( 'wpsimplesmtp_smtp_test' );
-			submit_button( 'Send', 'secondary' );
+			<div class="wrap">
+				<h1>Mail Settings</h1>
+				<form action='options.php' method='post'>
+				<?php
+				settings_fields( 'wpsimplesmtp_smtp' );
+				do_settings_sections( 'wpsimplesmtp_smtp' );
+				submit_button();
+				?>
+				</form>
+				<form action='admin-post.php' method='post'>
+				<input type="hidden" name="action" value="ss_test_email">
+				<?php
+				wp_nonce_field( 'simple-smtp-test-email' );
+				do_settings_sections( 'wpsimplesmtp_smtp_test' );
+				submit_button( 'Send', 'secondary' );
 
-			$log_status = $this->options->get( 'log' );
-			if ( ! empty( $log_status ) && '1' === $log_status->value ) {
-				$page = 0;
-				// Felt this wasn't necessary for such a field. Feel free to raise an issue if you disagree.
-				// phpcs:disable WordPress.Security.NonceVerification.Recommended
-				if ( isset( $_REQUEST, $_REQUEST['wpss_page'] ) && is_numeric( $_REQUEST['wpss_page'] ) ) {
-					$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
+				$log_status = $this->options->get( 'log' );
+				if ( ! empty( $log_status ) && '1' === $log_status->value ) {
+					$page = 0;
+					// Felt this wasn't necessary for such a field. Feel free to raise an issue if you disagree.
+					// phpcs:disable WordPress.Security.NonceVerification.Recommended
+					if ( isset( $_REQUEST, $_REQUEST['wpss_page'] ) && is_numeric( $_REQUEST['wpss_page'] ) ) {
+						$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
+					}
+					// phpcs:enable
+
+					echo wp_kses( '<h2>' . __( 'Email Log', 'wpsimplesmtp' ) . '</h2>', [ 'h2' => [] ] );
+					$this->log_table->display( $page );
 				}
-				// phpcs:enable
-
-				echo wp_kses( '<h2>' . __( 'Email Log', 'wpsimplesmtp' ) . '</h2>', [ 'h2' => [] ] );
-				$this->log_table->display( $page );
-			}
-			?>
-			</form>
-		</div>
-		<?php
+				?>
+				</form>
+			</div>
+			<?php
+		}
 
 	}
 

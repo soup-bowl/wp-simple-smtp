@@ -43,7 +43,6 @@ class LogTable {
 		$labels = [
 			__( 'Recipient(s)', 'wpsimplesmtp' ),
 			__( 'Subject', 'wpsimplesmtp' ),
-			__( 'Body', 'wpsimplesmtp' ),
 			__( 'Date', 'wpsimplesmtp' ),
 			__( 'Error', 'wpsimplesmtp' ),
 		];
@@ -55,7 +54,6 @@ class LogTable {
 			<th scope=\"col\" class=\"manage-column\">{$labels[1]}</th>
 			<th scope=\"col\" class=\"manage-column\">{$labels[2]}</th>
 			<th scope=\"col\" class=\"manage-column\">{$labels[3]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[4]}</th>
 			</thead>
 			<tbody>",
 			$this->allowed_table_html()
@@ -63,12 +61,13 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
-				$recipients = implode( ', ', json_decode( $entry->recipient ) );
+				$recipients  = implode( ', ', json_decode( $entry->recipient ) );
+				$view_url    = esc_html( add_query_arg( 'eid', $entry->log_id, menu_page_url( 'wpsimplesmtp', false ) ) );
+				$row_actions = "<div class=\"row-actions\"><span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">View</a></div>";
 				echo wp_kses(
 					"<tr>
-					<td>{$recipients}</td>
+					<td class=\"has-row-actions\">{$recipients}{$row_actions}</td>
 					<td>{$entry->subject}</td>
-					<td>{$entry->body}</td>
 					<td>{$entry->timestamp}</td>
 					<td>{$entry->error}</td>
 					</tr>",
@@ -92,7 +91,6 @@ class LogTable {
 			<th scope=\"col\" class=\"manage-column\">{$labels[1]}</th>
 			<th scope=\"col\" class=\"manage-column\">{$labels[2]}</th>
 			<th scope=\"col\" class=\"manage-column\">{$labels[3]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[4]}</th>
 			</tfoot>
 			</table>",
 			$this->allowed_table_html()
@@ -115,6 +113,26 @@ class LogTable {
 				],
 			]
 		);
+	}
+
+	/**
+	 * Displays the email data for one email. Output is permission checked before return.
+	 *
+	 * @param integer $log_id The DB log ID of the email to display.
+	 */
+	public function display_email( $log_id ) {
+		$email = $this->log->get_log_entry_by_id( $log_id );
+
+		if ( current_user_can( 'administrator' ) && isset( $email ) ) {
+			echo wp_kses( "<h2>{$email->subject}</h2>", [ 'h2' => [] ] );
+
+			echo wp_kses_post( "<p><strong>Recipients: </strong>{$email->recipient}</p>" );
+			echo wp_kses_post( "<p><strong>Sent date: </strong>{$email->timestamp}</p>" );
+
+			echo wp_kses_post( $email->body );
+		} else {
+			echo 'No email found.';
+		}
 	}
 
 	/**
@@ -158,7 +176,17 @@ class LogTable {
 			],
 			'tr'    => [],
 			'td'    => [
+				'class'   => [],
 				'colspan' => [],
+			],
+			'div'   => [
+				'class' => [],
+			],
+			'span'  => [
+				'class' => [],
+			],
+			'a'     => [
+				'href' => [],
 			],
 		];
 	}
