@@ -64,11 +64,13 @@ class LogTable {
 				$recipients  = implode( ', ', json_decode( $entry->recipient ) );
 				$view_url    = esc_html( add_query_arg( 'eid', $entry->log_id, menu_page_url( 'wpsimplesmtp', false ) ) );
 				$row_actions = "<div class=\"row-actions\"><span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">View</a></div>";
+
+				$date = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->timestamp ) );
 				echo wp_kses(
 					"<tr>
 					<td class=\"has-row-actions\">{$recipients}{$row_actions}</td>
 					<td>{$entry->subject}</td>
-					<td>{$entry->timestamp}</td>
+					<td><abbr title=\"{$entry->timestamp}\">{$date}</abbr></td>
 					<td>{$entry->error}</td>
 					</tr>",
 					$this->allowed_table_html()
@@ -126,8 +128,9 @@ class LogTable {
 		if ( current_user_can( 'administrator' ) && isset( $email ) ) {
 			echo wp_kses( "<h2>{$email->subject}</h2>", [ 'h2' => [] ] );
 
+			$date = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $email->timestamp ) );
 			echo wp_kses_post( "<p><strong>Recipients: </strong>{$email->recipient}</p>" );
-			echo wp_kses_post( "<p><strong>Sent date: </strong>{$email->timestamp}</p>" );
+			echo wp_kses_post( "<p><strong>Sent date: </strong>{$date}</p>" );
 
 			echo wp_kses_post( $email->body );
 		} else {
@@ -187,6 +190,9 @@ class LogTable {
 			],
 			'a'     => [
 				'href' => [],
+			],
+			'abbr'  => [
+				'title' => [],
 			],
 		];
 	}
