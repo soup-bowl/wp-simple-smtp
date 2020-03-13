@@ -126,12 +126,14 @@ class LogTable {
 		$email = $this->log->get_log_entry_by_id( $log_id );
 
 		if ( current_user_can( 'administrator' ) && isset( $email ) ) {
-			echo wp_kses( "<h2>{$email->subject}</h2>", [ 'h2' => [] ] );
+			$ksa = $this->allowed_email_disp();
+
+			echo wp_kses( "<h2>{$email->subject}</h2>", $ksa );
 
 			$recipients = implode( ', ', json_decode( $email->recipient ) );
 			$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $email->timestamp ) );
-			echo wp_kses_post( "<p><strong>Recipients: </strong>{$recipients}</p>" );
-			echo wp_kses_post( "<p><strong>Sent date: </strong>{$date}</p>" );
+			echo wp_kses( "<p><strong>Recipients: </strong>{$recipients}</p>", $ksa );
+			echo wp_kses( "<p><strong>Sent date: </strong>{$date}</p>", $ksa );
 
 			echo wp_kses_post( $email->body );
 		} else {
@@ -195,6 +197,19 @@ class LogTable {
 			'abbr'  => [
 				'title' => [],
 			],
+		];
+	}
+
+	/**
+	 * Allowed HTML from displaying additional details.
+	 *
+	 * @return array
+	 */
+	private function allowed_email_disp() {
+		return [
+			'p'      => [],
+			'h2'     => [],
+			'strong' => [],
 		];
 	}
 }
