@@ -63,7 +63,8 @@ class LogTable {
 			foreach ( $entries as $entry ) {
 				$recipients  = implode( ', ', json_decode( $entry->recipient ) );
 				$view_url    = esc_html( add_query_arg( 'eid', $entry->log_id, menu_page_url( 'wpsimplesmtp', false ) ) );
-				$row_actions = "<div class=\"row-actions\"><span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">View</a></div>";
+				$resend_url  = $view_url . '&resend';
+				$row_actions = "<div class=\"row-actions\"><span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">View</a> | <span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">Resend</a></div>";
 
 				$date = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->timestamp ) );
 				echo wp_kses(

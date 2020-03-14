@@ -10,6 +10,7 @@
 namespace wpsimplesmtp;
 
 use wpsimplesmtp\Options;
+use wpsimplesmtp\Log;
 use wpsimplesmtp\LogTable;
 
 /**
@@ -22,6 +23,13 @@ class Settings {
 	 * @var Options
 	 */
 	protected $options;
+
+	/**
+	 * Stores and retrieves the emails stored in the log.
+	 *
+	 * @var Log
+	 */
+	protected $log;
 
 	/**
 	 * Controls the display of the log table.
@@ -40,6 +48,7 @@ class Settings {
 		add_action( 'admin_post_ss_test_email', [ &$this, 'test_email_handler' ] );
 
 		$this->options   = new Options();
+		$this->log       = new Log();
 		$this->log_table = new LogTable();
 	}
 
@@ -47,7 +56,16 @@ class Settings {
 	 * Intialises the options page.
 	 */
 	public function options_page() {
-		if ( isset( $_REQUEST['eid'] ) ) {
+		if ( isset( $_REQUEST['eid'], $_REQUEST['resend'] ) ) {
+			$this->resend_email( intval( $_REQUEST['eid'] ) );
+			?>
+			<div class="notice notice-success is-dismissible">
+				<p><?php esc_html_e( 'Email resend request recieved.', 'wpsimplesmtp' ); ?></p>
+			</div>
+			<?php
+		}
+
+		if ( isset( $_REQUEST['eid'] ) && ! isset( $_REQUEST['resend'] ) ) {
 			?>
 			<div class="wrap">
 			<h1>Mail Settings</h1>
@@ -172,6 +190,28 @@ class Settings {
 			exit;
 		} else {
 			wp_die( esc_attr_e( 'You are not permitted to send a test email.', 'wpsimplesmtp' ) );
+		}
+	}
+
+	/**
+	 * Resends an email.
+	 *
+	 * @param integer $email_id Email/log ID to resend.
+	 * @return boolean
+	 */
+	public function resend_email( $email_id ) {
+		$email = $this->log->get_log_entry_by_id( $email_id );
+
+		if ( isset( $email ) ) {
+			wp_mail(
+				json_decode( $email->recipient ),
+				$email->subject,
+				$email->body
+			);
+
+			return true;
+		} else {
+			return false;
 		}
 	}
 
