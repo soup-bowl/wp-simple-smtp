@@ -136,7 +136,12 @@ class LogTable {
 			echo wp_kses( '<p><strong>' . __( 'Recipient(s)', 'wpsimplesmtp' ) . ": </strong>{$recipients}</p>", $ksa );
 			echo wp_kses( '<p><strong>' . __( 'Sent date', 'wpsimplesmtp' ) . ": </strong>{$date}</p>", $ksa );
 
-			echo wp_kses_post( $email->body );
+
+			if ( isset( $email->headers ) && false !== strpos( $email->headers, 'Content-Type: text\/html' ) ) {
+				echo wp_kses_post( $email->body );
+			} else {
+				echo wp_kses_post( '<pre>' . $email->body . '</pre>' );
+			}
 		} else {
 			echo 'No email found.';
 		}
