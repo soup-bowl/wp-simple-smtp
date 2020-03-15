@@ -172,6 +172,18 @@ class Settings {
 			'wpsimplesmtp_smtp_test',
 			'wpsimplesmtp_test_email'
 		);
+
+		add_settings_field(
+			'wpssmtp_smtp_email_test_type',
+			__( 'HTML Mode', 'wpsimplesmtp' ),
+			function () {
+				?>
+				<input type='checkbox' name='wpssmtp_test_email_is_html' value='1'>
+				<?php
+			},
+			'wpsimplesmtp_smtp_test',
+			'wpsimplesmtp_test_email'
+		);
 	}
 
 	/**
@@ -179,12 +191,20 @@ class Settings {
 	 */
 	public function test_email_handler() {
 		if ( isset( $_REQUEST['_wpnonce'], $_REQUEST['_wp_http_referer'], $_REQUEST['wpssmtp_test_email_recipient'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'simple-smtp-test-email' ) ) {
+			$is_html      = ( isset( $_REQUEST['wpssmtp_test_email_is_html'] ) ) ? true : false;
+			$content_type = ( $is_html ) ? 'Content-Type: text/html' : 'Content-Type: text/plain';
+			$content      = __( 'This email proves that your settings are correct.', 'wpsimplesmtp' ) . PHP_EOL . get_bloginfo( 'url' );
+
+			if ( $is_html ) {
+				$content = wp_kses_post( file_get_contents( trailingslashit( __DIR__ ) . 'test-email.html' ) );
+			}
+
 			wp_mail(
 				sanitize_email( wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) ),
 				// translators: %s is the website name.
 				sprintf( __( 'Test email from %s', 'wpsimplesmtp' ), get_bloginfo( 'name' ) ),
-				__( 'This email proves that your settings are correct.', 'wpsimplesmtp' ) . PHP_EOL . get_bloginfo( 'url' ),
-				[ 'x-test: WP SMTP', 'Content-Type: text/plain; charset=UTF-8' ]
+				$content,
+				[ 'x-test: WP SMTP', $content_type ]
 			);
 
 			wp_safe_redirect( urldecode( sanitize_text_field( wp_unslash( $_REQUEST['_wp_http_referer'] ) ) ) );
