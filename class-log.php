@@ -39,6 +39,17 @@ class Log {
 	}
 
 	/**
+	 * Deletes the log table.
+	 */
+	public function delete_log_table() {
+		global $wpdb;
+
+		$sql = "DROP TABLE IF EXISTS {$wpdb->prefix}wpss_email_log;";
+	
+		$wpdb->query( $sql );
+	}
+
+	/**
 	 * Creates a new log entry.
 	 *
 	 * @param string $recipients The person(s) who recieved the email.
