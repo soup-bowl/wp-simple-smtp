@@ -118,6 +118,7 @@ class Mail {
 				wp_json_encode( $recipient_array ),
 				$parameters['subject'],
 				$parameters['message'],
+				wp_json_encode( $parameters['headers'] ),
 				current_time( 'mysql' )
 			);
 		}

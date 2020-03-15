@@ -28,6 +28,7 @@ class Log {
 		recipient text NOT NULL,
 		subject text NOT NULL,
 		body text NOT NULL,
+		headers text,
 		timestamp datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 		error text,
 		PRIMARY KEY  (log_id)
@@ -43,11 +44,12 @@ class Log {
 	 * @param string $recipients The person(s) who recieved the email.
 	 * @param string $subject    Subject headline from the email.
 	 * @param string $content    Whatever was inside the dispatched email.
+	 * @param array  $headers    Email headers served alongside the dispatch.
 	 * @param string $timestamp  The time the email was sent.
 	 * @param string $error      Any errors encountered during the exchange.
 	 * @return integer ID of the newly-inserted entry.
 	 */
-	public function new_log_entry( $recipients, $subject, $content, $timestamp, $error = null ) {
+	public function new_log_entry( $recipients, $subject, $content, $headers, $timestamp, $error = null ) {
 		global $wpdb;
 
 		$wpdb->insert(
@@ -56,6 +58,7 @@ class Log {
 				'recipient' => $recipients,
 				'subject'   => $subject,
 				'body'      => $content,
+				'headers'   => $headers,
 				'timestamp' => $timestamp,
 				'error'     => $error,
 			]
@@ -100,7 +103,7 @@ class Log {
 	public function get_log_entry_by_id( $id ) {
 		global $wpdb;
 
-		$query = "SELECT log_id, recipient, subject, body, timestamp, error FROM {$wpdb->prefix}wpss_email_log WHERE log_id = {$id}";
+		$query = "SELECT log_id, recipient, subject, body, headers, timestamp, error FROM {$wpdb->prefix}wpss_email_log WHERE log_id = {$id}";
 
 		$response = $wpdb->get_results( $query );
 
@@ -121,7 +124,7 @@ class Log {
 	public function get_log_entries( $offset = 0, $limit = 0 ) {
 		global $wpdb;
 
-		$query = "SELECT log_id, recipient, subject, body, timestamp, error FROM {$wpdb->prefix}wpss_email_log ORDER BY log_id DESC";
+		$query = "SELECT log_id, recipient, subject, body, headers, timestamp, error FROM {$wpdb->prefix}wpss_email_log ORDER BY log_id DESC";
 		if ( $limit > 0 ) {
 			$offset_calc = $offset * $limit;
 			$query      .= " LIMIT {$offset_calc}, {$limit}";

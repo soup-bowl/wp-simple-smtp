@@ -183,7 +183,8 @@ class Settings {
 				sanitize_email( wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) ),
 				// translators: %s is the website name.
 				sprintf( __( 'Test email from %s', 'wpsimplesmtp' ), get_bloginfo( 'name' ) ),
-				__( 'This email proves that your settings are correct.', 'wpsimplesmtp' ) . PHP_EOL . get_bloginfo( 'url' )
+				__( 'This email proves that your settings are correct.', 'wpsimplesmtp' ) . PHP_EOL . get_bloginfo( 'url' ),
+				[ 'x-test: WP SMTP', 'Content-Type: text/plain; charset=UTF-8' ]
 			);
 
 			wp_safe_redirect( urldecode( sanitize_text_field( wp_unslash( $_REQUEST['_wp_http_referer'] ) ) ) );
@@ -206,7 +207,8 @@ class Settings {
 			wp_mail(
 				json_decode( $email->recipient ),
 				$email->subject,
-				$email->body
+				$email->body,
+				json_decode( $email->headers )
 			);
 
 			return true;
