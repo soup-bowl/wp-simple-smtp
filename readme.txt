@@ -38,6 +38,9 @@ This plugin supports being overridden by DEFINE, so please check to see that you
 The SMTP password is saved into the database *plaintext*. The more recommended way of storing the password is to define SMTP_PASS in your wp-config.php file, which should already be locked and inaccessible from the front-end.
 
 == Changelog ==
+= 0.3 =
+* Changes to test emails.
+* Log view changed depending on header.
 = 0.2 =
 * SMTP error logging.
 * View and resend emails.
