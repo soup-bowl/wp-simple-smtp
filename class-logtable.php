@@ -80,7 +80,7 @@ class LogTable {
 		} else {
 			echo wp_kses(
 				sprintf(
-					'<tr><td colspan="3">%s</td></tr>',
+					'<tr><td colspan="4">%s</td></tr>',
 					__( 'Nothing to display.', 'wpsimplesmtp' )
 				),
 				$this->allowed_table_html()
