@@ -58,12 +58,20 @@ class Settings {
 	public function options_page() {
 		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['resend'] )
 		&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_resend' ) ) {
-			$this->resend_email( intval( $_REQUEST['eid'] ) );
-			?>
-			<div class="notice notice-success is-dismissible">
-				<p><?php esc_html_e( 'Email resend request recieved.', 'wpsimplesmtp' ); ?></p>
-			</div>
-			<?php
+			$r = $this->resend_email( intval( $_REQUEST['eid'] ) );
+			if ( $r ) {
+				?>
+				<div class="notice notice-success is-dismissible">
+					<p><?php esc_html_e( 'Email resend request recieved.', 'wpsimplesmtp' ); ?></p>
+				</div>
+				<?php
+			} else {
+				?>
+				<div class="notice notice-failure is-dismissible">
+					<p><?php esc_html_e( 'Something went wrong processing your request.', 'wpsimplesmtp' ); ?></p>
+				</div>
+				<?php
+			}
 		}
 
 		if ( isset( $_REQUEST['eid'] ) && ! isset( $_REQUEST['resend'] ) ) {
@@ -218,8 +226,12 @@ class Settings {
 	 */
 	public function resend_email( $email_id ) {
 		$email = $this->log->get_log_entry_by_id( $email_id );
+		$opts  = get_option( 'wpss_resent', [] );
 
-		if ( isset( $email ) ) {
+		if ( isset( $email ) && ! in_array( $email_id, $opts, true ) ) {
+			$opts[] = $email_id;
+			update_option( 'wpss_resent', $opts );
+
 			wp_mail(
 				json_decode( $email->recipient ),
 				$email->subject,
