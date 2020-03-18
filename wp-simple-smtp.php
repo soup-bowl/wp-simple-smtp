@@ -32,17 +32,29 @@ if ( is_admin() ) {
 
 new Mail();
 
+/**
+ * Actions to be executed on plugin activation.
+ */
 function wpsmtp_activation() {
 	( new Log() )->create_log_table();
 }
 
+/**
+ * Actions to be executed on deactivation.
+ */
 function wpsmtp_deactivation() {
 	( new Log() )->delete_log_table();
 }
 
-add_action( 'wp_delete_site', function( $old_site ) {
-	( new Log() )->delete_log_table( $old_site->blog_id );
-});
+/**
+ * Actions to be executed on multi-site deletion.
+ */
+add_action(
+	'wp_delete_site',
+	function( $old_site ) {
+		( new Log() )->delete_log_table( $old_site->blog_id );
+	}
+);
 
 register_activation_hook( __FILE__, 'wpsmtp_activation' );
 register_deactivation_hook( __FILE__, 'wpsmtp_deactivation' );

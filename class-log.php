@@ -40,13 +40,15 @@ class Log {
 
 	/**
 	 * Deletes the log table.
+	 *
+	 * @param integer $blog_id Blog ID in Multisite.
 	 */
 	public function delete_log_table( $blog_id = null ) {
 		global $wpdb;
 
 		$prefix = $wpdb->get_blog_prefix( $blog_id );
 		$sql    = "DROP TABLE IF EXISTS {$prefix}wpss_email_log;";
-	
+
 		$wpdb->query( $sql );
 	}
 

@@ -70,7 +70,7 @@ class Settings {
 		} else {
 			?>
 			<div class="wrap">
-				<h1>Mail Settings</h1>
+				<h1><?php esc_html_e( 'Mail Settings', 'wpsimplesmtp' ); ?></h1>
 				<form action='options.php' method='post'>
 				<?php
 				settings_fields( 'wpsimplesmtp_smtp' );
@@ -295,24 +295,24 @@ class Settings {
 			}
 			?>
 			<div class="wrap">
-				<h1>Mail Settings</h1>
+				<h1><?php esc_html_e( 'Mail Settings', 'wpsimplesmtp' ); ?></h1>
 				<div id="poststuff">
 					<div id="post-body" class="metabox-holder columns-2">
 						<div id="post-body-content">
 							<div class="postbox">
-								<h2 class="hndle"><?php echo $log->subject; ?></h2>			
+								<h2 class="hndle"><?php echo esc_html( $log->subject ); ?></h2>			
 								<div class="inside">
-									<?php echo $content; ?>
+									<?php echo wp_kses_post( $content ); ?>
 								</div>	
 							</div>
 						</div>
 						<div id="postbox-container-1" class="postbox-container">
 							<div class="postbox">
-								<h2 class="hndle">Information</h2>
+								<h2 class="hndle"><?php esc_html_e( 'Information', 'wpsimplesmtp' ); ?></h2>
 								<div class="inside">
 									<div id="misc-publishing-actions">
-										<div class="misc-pub-section">Recipient(s): <strong><?php echo $recipients; ?></strong></div>
-										<div class="misc-pub-section">Date sent: <strong><?php echo $date; ?></strong></div>
+										<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'wpsimplesmtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
+										<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'wpsimplesmtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
 									</div>
 								</div>
 							</div>
