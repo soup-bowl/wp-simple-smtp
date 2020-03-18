@@ -41,10 +41,11 @@ class Log {
 	/**
 	 * Deletes the log table.
 	 */
-	public function delete_log_table() {
+	public function delete_log_table( $blog_id = null ) {
 		global $wpdb;
 
-		$sql = "DROP TABLE IF EXISTS {$wpdb->prefix}wpss_email_log;";
+		$prefix = $wpdb->get_blog_prefix( $blog_id );
+		$sql    = "DROP TABLE IF EXISTS {$prefix}wpss_email_log;";
 	
 		$wpdb->query( $sql );
 	}

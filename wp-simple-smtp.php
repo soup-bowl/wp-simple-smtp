@@ -33,14 +33,16 @@ if ( is_admin() ) {
 new Mail();
 
 function wpsmtp_activation() {
-	$log = new Log();
-	$log->create_log_table();
+	( new Log() )->create_log_table();
 }
 
 function wpsmtp_deactivation() {
-	$log = new Log();
-	$log->delete_log_table();
+	( new Log() )->delete_log_table();
 }
+
+add_action( 'wp_delete_site', function( $old_site ) {
+	( new Log() )->delete_log_table( $old_site->blog_id );
+});
 
 register_activation_hook( __FILE__, 'wpsmtp_activation' );
 register_deactivation_hook( __FILE__, 'wpsmtp_deactivation' );
