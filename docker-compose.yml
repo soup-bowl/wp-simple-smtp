@@ -28,9 +28,12 @@ services:
     volumes:
     - ".:/var/www/html/wp-content/plugins/simple-smtp"
     ports:
-    - 8080:80
+    - 80:80
+    - 443:443
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: s9f6sd759r32r7f0dsf5673894956
       WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_ALLOW_MULTISITE', true );
