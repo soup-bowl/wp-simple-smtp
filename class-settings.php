@@ -56,7 +56,8 @@ class Settings {
 	 * Intialises the options page.
 	 */
 	public function options_page() {
-		if ( isset( $_REQUEST['eid'], $_REQUEST['resend'] ) ) {
+		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['resend'] )
+		&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_resend' ) ) {
 			$this->resend_email( intval( $_REQUEST['eid'] ) );
 			?>
 			<div class="notice notice-success is-dismissible">
@@ -88,12 +89,11 @@ class Settings {
 				$log_status = $this->options->get( 'log' );
 				if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
 					$page = 0;
-					// Felt this wasn't necessary for such a field. Feel free to raise an issue if you disagree.
-					// phpcs:disable WordPress.Security.NonceVerification.Recommended
-					if ( isset( $_REQUEST, $_REQUEST['wpss_page'] ) && is_numeric( $_REQUEST['wpss_page'] ) ) {
+					if ( isset( $_REQUEST, $_REQUEST['ssnonce'], $_REQUEST['wpss_page'] )
+					&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_logtable' )
+					&& is_numeric( $_REQUEST['wpss_page'] ) ) {
 						$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
 					}
-					// phpcs:enable
 
 					echo wp_kses( '<h2>' . __( 'Email Log', 'wpsimplesmtp' ) . '</h2>', [ 'h2' => [] ] );
 					$this->log_table->display( $page );

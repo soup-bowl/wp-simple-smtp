@@ -61,9 +61,14 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
+				$resend_param = [
+					'eid'     => $entry->log_id,
+					'ssnonce' => wp_create_nonce( 'wpss_resend' ),
+				];
+
 				$recipients  = implode( ', ', json_decode( $entry->recipient ) );
 				$view_url    = esc_html( add_query_arg( 'eid', $entry->log_id, menu_page_url( 'wpsimplesmtp', false ) ) );
-				$resend_url  = $view_url . '&resend';
+				$resend_url  = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
 				$row_actions = "<div class=\"row-actions\"><span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">View</a> | <span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">Resend</a></div>";
 
 				$date = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->timestamp ) );
@@ -126,11 +131,24 @@ class LogTable {
 	 * @return stdClass 'next' and 'back', HTML buttons.
 	 */
 	private function generate_table_buttons( $current_page, $max_pages ) {
+		$nonce      = [ 'ssnonce' => wp_create_nonce( 'wpss_logtable' ) ];
 		$next_label = __( 'Next', 'wpsimplesmtp' );
 		$back_label = __( 'Previous', 'wpsimplesmtp' );
 		$current    = admin_url( 'options-general.php?page=wpsimplesmtp' );
-		$next_url   = add_query_arg( 'wpss_page', ( $current_page + 1 ), $current );
-		$back_url   = add_query_arg( 'wpss_page', ( $current_page - 1 ), $current );
+		$next_url   = add_query_arg(
+			[
+				'wpss_page' => ( $current_page + 1 ),
+				$nonce,
+			],
+			$current
+		);
+		$back_url   = add_query_arg(
+			[
+				'wpss_page' => ( $current_page - 1 ),
+				$nonce,
+			],
+			$current
+		);
 		$next_allow = ( $current_page >= $max_pages ) ? 'disabled' : '';
 		$back_allow = ( $current_page <= 0 ) ? 'disabled' : '';
 
