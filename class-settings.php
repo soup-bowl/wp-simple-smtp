@@ -66,11 +66,7 @@ class Settings {
 		}
 
 		if ( isset( $_REQUEST['eid'] ) && ! isset( $_REQUEST['resend'] ) ) {
-			?>
-			<div class="wrap">
-			<h1>Mail Settings</h1>
-			<?php
-			$this->log_table->display_email( intval( $_REQUEST['eid'] ) );
+			$this->render_table( intval( $_REQUEST['eid'] ) );
 		} else {
 			?>
 			<div class="wrap">
@@ -276,5 +272,58 @@ class Settings {
 			'wpsimplesmtp_smtp',
 			'wpsimplesmtp_smtp_section'
 		);
+	}
+
+	/**
+	 * Render the table to display the email with useful information.
+	 *
+	 * @param integer $id Email log ID.
+	 * @return void Prints to page.
+	 */
+	private function render_table( $id ) {
+		$log = $this->log->get_log_entry_by_id( $id );
+
+		if ( current_user_can( 'administrator' ) && isset( $log ) ) {
+			$recipients = implode( ', ', json_decode( $log->recipient ) );
+			$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $log->timestamp ) );
+
+			$content = '';
+			if ( isset( $log->headers ) && false !== strpos( $log->headers, 'Content-Type: text\/html' ) ) {
+				$content = wp_kses_post( $log->body );
+			} else {
+				$content = wp_kses_post( '<pre>' . $log->body . '</pre>' );
+			}
+			?>
+			<div class="wrap">
+				<h1>Mail Settings</h1>
+				<div id="poststuff">
+					<div id="post-body" class="metabox-holder columns-2">
+						<div id="post-body-content">
+							<div class="postbox">
+								<h2 class="hndle"><?php echo $log->subject; ?></h2>			
+								<div class="inside">
+									<?php echo $content; ?>
+								</div>	
+							</div>
+						</div>
+						<div id="postbox-container-1" class="postbox-container">
+							<div class="postbox">
+								<h2 class="hndle">Information</h2>
+								<div class="inside">
+									<div id="misc-publishing-actions">
+										<div class="misc-pub-section">Recipient(s): <strong><?php echo $recipients; ?></strong></div>
+										<div class="misc-pub-section">Date sent: <strong><?php echo $date; ?></strong></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br class="clear">
+				</div>
+			</div>
+			<?php
+		} else {
+			wp_die( 'No email found.' );
+		}
 	}
 }

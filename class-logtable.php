@@ -119,35 +119,6 @@ class LogTable {
 	}
 
 	/**
-	 * Displays the email data for one email. Output is permission checked before return.
-	 *
-	 * @param integer $log_id The DB log ID of the email to display.
-	 */
-	public function display_email( $log_id ) {
-		$email = $this->log->get_log_entry_by_id( $log_id );
-
-		if ( current_user_can( 'administrator' ) && isset( $email ) ) {
-			$ksa = $this->allowed_email_disp();
-
-			echo wp_kses( "<h2>{$email->subject}</h2>", $ksa );
-
-			$recipients = implode( ', ', json_decode( $email->recipient ) );
-			$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $email->timestamp ) );
-			echo wp_kses( '<p><strong>' . __( 'Recipient(s)', 'wpsimplesmtp' ) . ": </strong>{$recipients}</p>", $ksa );
-			echo wp_kses( '<p><strong>' . __( 'Sent date', 'wpsimplesmtp' ) . ": </strong>{$date}</p>", $ksa );
-
-
-			if ( isset( $email->headers ) && false !== strpos( $email->headers, 'Content-Type: text\/html' ) ) {
-				echo wp_kses_post( $email->body );
-			} else {
-				echo wp_kses_post( '<pre>' . $email->body . '</pre>' );
-			}
-		} else {
-			echo 'No email found.';
-		}
-	}
-
-	/**
 	 * Postback navigations for the table.
 	 *
 	 * @param integer $current_page The current page (system, not pretty).
