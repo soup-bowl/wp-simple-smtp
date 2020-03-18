@@ -90,7 +90,7 @@ class Settings {
 				submit_button( 'Send', 'secondary' );
 
 				$log_status = $this->options->get( 'log' );
-				if ( ! empty( $log_status ) && '1' === $log_status->value ) {
+				if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
 					$page = 0;
 					// Felt this wasn't necessary for such a field. Feel free to raise an issue if you disagree.
 					// phpcs:disable WordPress.Security.NonceVerification.Recommended

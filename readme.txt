@@ -10,14 +10,12 @@ License: MIT
 Adds a simple mail configuration panel into your WordPress installation. Supports logging and config variables.
 
 == Description ==
-Adds a simple, no-fuss SMTP configuration element to your WordPress installation that lets you define custom settings, which is especially useful for hosts with no control over the php mail functionality.
+Adds a simple, no-fuss SMTP settings to your WordPress installation that lets you define custom settings, which is especially useful for hosts with no control over the php `mail` functionality.
 
-## Environment and constant over-riding
-This plugin will prefer Environmental and constant stored values over the
-plugin-saved editions, making it easier to use this plugin with deployment.
+## Environment and constant overriding (optional)
+This plugin will prefer environmental and constant-stored values over the plugin-saved equivalent settings, making it easier to use this plugin via deployment.
 
-These can be either stored in your systems env setup, or in wp-config.php as
-`define( \'SEE_BELOW\', \'your_value_here\' );`.
+These can be either stored in your systems env setup, or in wp-config.php as `define( 'SEE_BELOW', 'your_value_here' );`.
 
 ### Accepted Parameters
 * `SMTP_HOST` (string) Mail server hostname.
@@ -25,10 +23,9 @@ These can be either stored in your systems env setup, or in wp-config.php as
 * `SMTP_AUTH` (integer, 1 or 0) Pass below credentials to your mail server.
 * `SMTP_USER` (string) The mail username for this account.
 * `SMTP_PASS` (string) The password for the mailer account.
+* `SMTP_LOG` (boolean) Controls the logging capability and visibility.
 
-`SMTP_PASS` is stored in **plaintext**! Where you wish to store it depends on
-your configuration, but as a minimum it is recommended to store at least
-`SMTP_PASS` in your wp-config.php file.
+`SMTP_PASS` is stored as **plaintext**! Where you wish to store it depends on your configuration, but as a minimum it is recommended to store at least `SMTP_PASS` in your wp-config.php file (with the correct file permissions set).
 
 == Frequently Asked Questions ==
 = One or more of the settings are greyed out =
