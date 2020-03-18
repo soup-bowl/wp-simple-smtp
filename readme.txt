@@ -37,6 +37,7 @@ The SMTP password is saved into the database *plaintext*. The more recommended w
 == Changelog ==
 = 0.3.2 =
 * Changed display format of email log.
+* Limit resent emails to hourly.
 = 0.3.1 =
 * Table is created or deleted upon plugin state change.
 = 0.3 =
