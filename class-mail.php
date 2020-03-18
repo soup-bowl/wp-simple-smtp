@@ -60,7 +60,7 @@ class Mail {
 		add_action( 'phpmailer_init', [ &$this, 'process_mail' ] );
 
 		$log_status = $this->options->get( 'log' );
-		if ( ! empty( $log_status ) && '1' === $log_status->value ) {
+		if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
 			add_action( 'wp_mail', [ &$this, 'preprocess_mail' ] );
 			add_action( 'wp_mail_failed', [ &$this, 'process_error' ] );
 		}
@@ -109,7 +109,7 @@ class Mail {
 	public function preprocess_mail( $parameters ) {
 		global $wpss_mail_id;
 
-		if ( $this->options->get( 'log' )->value === '1' ) {
+		if ( true === filter_var( $this->options->get( 'log' )->value, FILTER_VALIDATE_BOOLEAN ) ) {
 			$recipient_array = ( is_array( $parameters['to'] ) ) ? $parameters['to'] : [ $parameters['to'] ];
 
 			$this->log->create_log_table();
