@@ -61,20 +61,12 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
-				$resend_param = [
-					'eid'     => $entry->log_id,
-					'ssnonce' => wp_create_nonce( 'wpss_resend' ),
-				];
-
-				$recipients  = implode( ', ', json_decode( $entry->recipient ) );
-				$view_url    = esc_html( add_query_arg( 'eid', $entry->log_id, menu_page_url( 'wpsimplesmtp', false ) ) );
-				$resend_url  = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
-				$row_actions = "<div class=\"row-actions\"><span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">View</a> | <span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">Resend</a></div>";
-
-				$date = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->timestamp ) );
+				$recipients = implode( ', ', json_decode( $entry->recipient ) );
+				$actions    = $this->render_log_entry_buttons( $entry );
+				$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->timestamp ) );
 				echo wp_kses(
 					"<tr>
-					<td class=\"has-row-actions\">{$recipients}{$row_actions}</td>
+					<td class=\"has-row-actions\">{$recipients}{$actions}</td>
 					<td>{$entry->subject}</td>
 					<td><abbr title=\"{$entry->timestamp}\">{$date}</abbr></td>
 					<td>{$entry->error}</td>
@@ -159,6 +151,25 @@ class LogTable {
 	}
 
 	/**
+	 * Renders actionable event buttons underneath the log entry.
+	 *
+	 * @param stdClass $entry Object from the Log DB.
+	 * @return string row-action html.
+	 */
+	private function render_log_entry_buttons( $entry ) {
+		$resend_param = [
+			'eid'     => $entry->log_id,
+			'ssnonce' => wp_create_nonce( 'wpss_resend' ),
+		];
+
+		$view_url    = esc_html( add_query_arg( 'eid', $entry->log_id, menu_page_url( 'wpsimplesmtp', false ) ) );
+		$resend_url  = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
+		$row_actions = "<div class=\"row-actions\"><span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">View</a> | <span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">Resend</a></div>";
+
+		return $row_actions;
+	}
+
+	/**
 	 * Array for kses that allows table-related HTML only.
 	 *
 	 * @return array
@@ -192,19 +203,6 @@ class LogTable {
 			'abbr'  => [
 				'title' => [],
 			],
-		];
-	}
-
-	/**
-	 * Allowed HTML from displaying additional details.
-	 *
-	 * @return array
-	 */
-	private function allowed_email_disp() {
-		return [
-			'p'      => [],
-			'h2'     => [],
-			'strong' => [],
 		];
 	}
 }
