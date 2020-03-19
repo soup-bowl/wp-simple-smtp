@@ -75,41 +75,9 @@ class Settings {
 		}
 
 		if ( isset( $_REQUEST['eid'] ) && ! isset( $_REQUEST['resend'] ) ) {
-			$this->render_table( intval( $_REQUEST['eid'] ) );
+			$this->render_email_view( intval( $_REQUEST['eid'] ) );
 		} else {
-			?>
-			<div class="wrap">
-				<h1><?php esc_html_e( 'Mail Settings', 'wpsimplesmtp' ); ?></h1>
-				<form action='options.php' method='post'>
-				<?php
-				settings_fields( 'wpsimplesmtp_smtp' );
-				do_settings_sections( 'wpsimplesmtp_smtp' );
-				submit_button();
-				?>
-				</form>
-				<form action='admin-post.php' method='post'>
-				<input type="hidden" name="action" value="ss_test_email">
-				<?php
-				wp_nonce_field( 'simple-smtp-test-email' );
-				do_settings_sections( 'wpsimplesmtp_smtp_test' );
-				submit_button( 'Send', 'secondary' );
-
-				$log_status = $this->options->get( 'log' );
-				if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
-					$page = 0;
-					if ( isset( $_REQUEST, $_REQUEST['ssnonce'], $_REQUEST['wpss_page'] )
-					&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_logtable' )
-					&& is_numeric( $_REQUEST['wpss_page'] ) ) {
-						$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
-					}
-
-					echo wp_kses( '<h2>' . __( 'Email Log', 'wpsimplesmtp' ) . '</h2>', [ 'h2' => [] ] );
-					$this->log_table->display( $page );
-				}
-				?>
-				</form>
-			</div>
-			<?php
+			$this->render_settings();
 		}
 
 	}
@@ -287,12 +255,51 @@ class Settings {
 	}
 
 	/**
-	 * Render the table to display the email with useful information.
+	 * Shows the configuration pane on the current page.
+	 */
+	private function render_settings() {
+		?>
+		<div class="wrap">
+			<h1><?php esc_html_e( 'Mail Settings', 'wpsimplesmtp' ); ?></h1>
+			<form action='options.php' method='post'>
+			<?php
+			settings_fields( 'wpsimplesmtp_smtp' );
+			do_settings_sections( 'wpsimplesmtp_smtp' );
+			submit_button();
+			?>
+			</form>
+			<form action='admin-post.php' method='post'>
+			<input type="hidden" name="action" value="ss_test_email">
+			<?php
+			wp_nonce_field( 'simple-smtp-test-email' );
+			do_settings_sections( 'wpsimplesmtp_smtp_test' );
+			submit_button( 'Send', 'secondary' );
+
+			$log_status = $this->options->get( 'log' );
+			if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
+				$page = 0;
+				if ( isset( $_REQUEST, $_REQUEST['ssnonce'], $_REQUEST['wpss_page'] )
+				&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_logtable' )
+				&& is_numeric( $_REQUEST['wpss_page'] ) ) {
+					$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
+				}
+
+				echo wp_kses( '<h2>' . __( 'Email Log', 'wpsimplesmtp' ) . '</h2>', [ 'h2' => [] ] );
+				$this->log_table->display( $page );
+			}
+			?>
+			</form>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render the email with useful information.
 	 *
 	 * @param integer $id Email log ID.
 	 * @return void Prints to page.
 	 */
-	private function render_table( $id ) {
+	private function render_email_view( $id ) {
 		$log        = $this->log->get_log_entry_by_id( $id );
 		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
 		$resend_url = add_query_arg(
@@ -315,7 +322,7 @@ class Settings {
 			}
 			?>
 			<div class="wrap">
-				<h1><?php esc_html_e( 'Mail Settings', 'wpsimplesmtp' ); ?></h1>
+				<h1><?php esc_html_e( 'View Email', 'wpsimplesmtp' ); ?></h1>
 				<div id="poststuff">
 					<div id="post-body" class="metabox-holder columns-2">
 						<div id="post-body-content">
