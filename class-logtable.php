@@ -157,14 +157,27 @@ class LogTable {
 	 * @return string row-action html.
 	 */
 	private function render_log_entry_buttons( $entry ) {
+		$recents      = get_option( 'wpss_resent', [] );
 		$resend_param = [
 			'eid'     => $entry->log_id,
 			'ssnonce' => wp_create_nonce( 'wpss_resend' ),
 		];
 
-		$view_url    = esc_html( add_query_arg( 'eid', $entry->log_id, menu_page_url( 'wpsimplesmtp', false ) ) );
-		$resend_url  = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
-		$row_actions = "<div class=\"row-actions\"><span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">View</a> | <span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">Resend</a></div>";
+		$view_label   = __( 'View', 'wpsimplesmtp' );
+		$resend_label = __( 'Resend', 'wpsimplesmtp' );
+
+		$view_url   = esc_html( add_query_arg( 'eid', $entry->log_id, menu_page_url( 'wpsimplesmtp', false ) ) );
+		$resend_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
+
+		$view   = "<span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">{$view_label}</a></span>";
+		$resend = '';
+		if ( ! in_array( (int) $entry->log_id, $recents, true ) ) {
+			$resend = "<span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">{$resend_label}</a></span>";
+		} else {
+			$resend = '<span class="view">Resent</span>';
+		}
+
+		$row_actions = "<div class=\"row-actions\">{$view} | {$resend}</div>";
 
 		return $row_actions;
 	}
