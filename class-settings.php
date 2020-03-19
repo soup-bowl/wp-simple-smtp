@@ -293,7 +293,15 @@ class Settings {
 	 * @return void Prints to page.
 	 */
 	private function render_table( $id ) {
-		$log = $this->log->get_log_entry_by_id( $id );
+		$log        = $this->log->get_log_entry_by_id( $id );
+		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
+		$resend_url = add_query_arg(
+			[
+				'eid'     => $id,
+				'ssnonce' => wp_create_nonce( 'wpss_resend' ),
+			],
+			menu_page_url( 'wpsimplesmtp', false )
+		) . '&resend';
 
 		if ( current_user_can( 'administrator' ) && isset( $log ) ) {
 			$recipients = implode( ', ', json_decode( $log->recipient ) );
@@ -319,12 +327,21 @@ class Settings {
 							</div>
 						</div>
 						<div id="postbox-container-1" class="postbox-container">
-							<div class="postbox">
+							<div class="stuffbox">
 								<h2 class="hndle"><?php esc_html_e( 'Information', 'wpsimplesmtp' ); ?></h2>
 								<div class="inside">
-									<div id="misc-publishing-actions">
-										<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'wpsimplesmtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
-										<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'wpsimplesmtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
+									<div id="minor-publishing">
+										<div id="misc-publishing-actions">
+											<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'wpsimplesmtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
+											<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'wpsimplesmtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div id="major-publishing-actions">
+										<div id="publishing-action">
+											<a href="<?php echo esc_html( $resend_url ); ?>" class="button button-primary button-large <?php echo esc_attr( $recset ); ?>"><?php echo esc_html( 'Resend', 'wpsimplesmtp' ); ?></a>
+										</div>
+										<div class="clear"></div>
 									</div>
 								</div>
 							</div>
