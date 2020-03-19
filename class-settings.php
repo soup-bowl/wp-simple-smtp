@@ -67,7 +67,7 @@ class Settings {
 				<?php
 			} else {
 				?>
-				<div class="notice notice-failure is-dismissible">
+				<div class="notice notice-error is-dismissible">
 					<p><?php esc_html_e( 'Something went wrong processing your request.', 'wpsimplesmtp' ); ?></p>
 				</div>
 				<?php
