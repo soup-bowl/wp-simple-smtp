@@ -112,8 +112,6 @@ class Mail {
 		if ( true === filter_var( $this->options->get( 'log' )->value, FILTER_VALIDATE_BOOLEAN ) ) {
 			$recipient_array = ( is_array( $parameters['to'] ) ) ? $parameters['to'] : [ $parameters['to'] ];
 
-			$this->log->create_log_table();
-
 			$wpss_mail_id = $this->log->new_log_entry(
 				wp_json_encode( $recipient_array ),
 				$parameters['subject'],

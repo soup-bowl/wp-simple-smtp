@@ -43,7 +43,6 @@ add_action(
  * Actions to be executed on plugin activation.
  */
 function wpsmtp_activation() {
-	( new Log() )->create_log_table();
 	if ( ! wp_next_scheduled( 'wpss_clear_resent' ) ) {
 		wp_schedule_event( time(), 'hourly', 'wpss_clear_resent' );
 	}
@@ -53,7 +52,6 @@ function wpsmtp_activation() {
  * Actions to be executed on deactivation.
  */
 function wpsmtp_deactivation() {
-	( new Log() )->delete_log_table();
 	wp_unschedule_event(
 		wp_next_scheduled( 'wpss_clear_resent' ),
 		'wpss_clear_resent'
@@ -67,6 +65,16 @@ add_action(
 	'wp_delete_site',
 	function( $old_site ) {
 		( new Log() )->delete_log_table( $old_site->blog_id );
+	}
+);
+
+/**
+ * Create CPT for storing logs.
+ */
+add_action(
+	'init',
+	function() {
+		( new Log() )->register_log_storage();
 	}
 );
 

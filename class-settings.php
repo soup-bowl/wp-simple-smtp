@@ -193,18 +193,20 @@ class Settings {
 	 * @return boolean
 	 */
 	public function resend_email( $email_id ) {
-		$email = $this->log->get_log_entry_by_id( $email_id );
-		$opts  = get_option( 'wpss_resent', [] );
+		$email      = $this->log->get_log_entry_by_id( $email_id );
+		$recipients = implode( ', ', json_decode( get_post_meta( $email->ID, 'recipients', true ) ) );
+		$headers    = json_decode( get_post_meta( $email->ID, 'headers', true ) );
+		$opts       = get_option( 'wpss_resent', [] );
 
 		if ( isset( $email ) && ! in_array( $email_id, $opts, true ) ) {
 			$opts[] = $email_id;
 			update_option( 'wpss_resent', $opts );
 
 			wp_mail(
-				json_decode( $email->recipient ),
-				$email->subject,
-				$email->body,
-				json_decode( $email->headers )
+				$recipients,
+				$email->post_title,
+				$email->post_content,
+				$headers
 			);
 
 			return true;
@@ -311,14 +313,14 @@ class Settings {
 		) . '&resend';
 
 		if ( current_user_can( 'administrator' ) && isset( $log ) ) {
-			$recipients = implode( ', ', json_decode( $log->recipient ) );
-			$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $log->timestamp ) );
+			$recipients = implode( ', ', json_decode( get_post_meta( $log->ID, 'recipients', true ) ) );
+			$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( get_post_meta( $log->ID, 'timestamp', true ) ) );
 
 			$content = '';
 			if ( isset( $log->headers ) && false !== strpos( $log->headers, 'Content-Type: text\/html' ) ) {
-				$content = wp_kses_post( $log->body );
+				$content = wp_kses_post( $log->post_content );
 			} else {
-				$content = wp_kses_post( '<pre>' . $log->body . '</pre>' );
+				$content = wp_kses_post( '<pre>' . $log->post_content . '</pre>' );
 			}
 			?>
 			<div class="wrap">
@@ -327,7 +329,7 @@ class Settings {
 					<div id="post-body" class="metabox-holder columns-2">
 						<div id="post-body-content">
 							<div class="postbox">
-								<h2 class="hndle"><?php echo esc_html( $log->subject ); ?></h2>			
+								<h2 class="hndle"><?php echo esc_html( $log->post_title ); ?></h2>			
 								<div class="inside">
 									<?php echo wp_kses_post( $content ); ?>
 								</div>	

@@ -61,15 +61,17 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
-				$recipients = implode( ', ', json_decode( $entry->recipient ) );
+				$timestamp  = get_post_meta( $entry->ID, 'timestamp', true );
+				$error      = get_post_meta( $entry->ID, 'error', true );
+				$recipients = implode( ', ', json_decode( get_post_meta( $entry->ID, 'recipients', true ) ) );
 				$actions    = $this->render_log_entry_buttons( $entry );
-				$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->timestamp ) );
+				$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $timestamp ) );
 				echo wp_kses(
 					"<tr>
 					<td class=\"has-row-actions\">{$recipients}{$actions}</td>
-					<td>{$entry->subject}</td>
-					<td><abbr title=\"{$entry->timestamp}\">{$date}</abbr></td>
-					<td>{$entry->error}</td>
+					<td>{$entry->post_title}</td>
+					<td><abbr title=\"{$timestamp}\">{$date}</abbr></td>
+					<td>{$error}</td>
 					</tr>",
 					$this->allowed_table_html()
 				);
@@ -159,19 +161,19 @@ class LogTable {
 	private function render_log_entry_buttons( $entry ) {
 		$recents      = get_option( 'wpss_resent', [] );
 		$resend_param = [
-			'eid'     => $entry->log_id,
+			'eid'     => $entry->ID,
 			'ssnonce' => wp_create_nonce( 'wpss_resend' ),
 		];
 
 		$view_label   = __( 'View', 'wpsimplesmtp' );
 		$resend_label = __( 'Resend', 'wpsimplesmtp' );
 
-		$view_url   = esc_html( add_query_arg( 'eid', $entry->log_id, menu_page_url( 'wpsimplesmtp', false ) ) );
+		$view_url   = esc_html( add_query_arg( 'eid', $entry->ID, menu_page_url( 'wpsimplesmtp', false ) ) );
 		$resend_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
 
 		$view   = "<span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">{$view_label}</a></span>";
 		$resend = '';
-		if ( ! in_array( (int) $entry->log_id, $recents, true ) ) {
+		if ( ! in_array( (int) $entry->ID, $recents, true ) ) {
 			$resend = "<span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">{$resend_label}</a></span>";
 		} else {
 			$resend = '<span class="view">Resent</span>';

@@ -10,49 +10,34 @@
 namespace wpsimplesmtp;
 
 use stdClass;
+use WP_Query;
 
 /**
  * Handles the processing and display of the email log.
  */
 class Log {
 	/**
-	 * Creates the initial table.
-	 */
-	public function create_log_table() {
-		global $wpdb;
-
-		$charset_collate = $wpdb->get_charset_collate();
-
-		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpss_email_log (
-		log_id mediumint(9) NOT NULL AUTO_INCREMENT,
-		recipient text NOT NULL,
-		subject text NOT NULL,
-		body text NOT NULL,
-		headers text,
-		timestamp datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-		error text,
-		PRIMARY KEY  (log_id)
-		) {$charset_collate};";
-
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( $sql );
-	}
-
-	/**
-	 * Deletes the log table.
+	 * Name of the custom post type used for storing logs.
 	 *
-	 * @param integer $blog_id Blog ID in Multisite.
+	 * @var string
 	 */
-	public function delete_log_table( $blog_id = null ) {
-		global $wpdb;
+	private $post_type;
 
-		$prefix = $wpdb->get_blog_prefix( $blog_id );
-		$sql    = "DROP TABLE IF EXISTS {$prefix}wpss_email_log;";
-
-		$wpdb->query( $sql );
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->post_type = 'sbss_email_log';
 	}
 
 	/**
+	 * Register the log storage CPT within WordPress.
+	 */
+    public function register_log_storage() {
+        register_post_type( $this->post_type );
+    }
+    
+    /**
 	 * Creates a new log entry.
 	 *
 	 * @param string $recipients The person(s) who recieved the email.
@@ -64,21 +49,20 @@ class Log {
 	 * @return integer ID of the newly-inserted entry.
 	 */
 	public function new_log_entry( $recipients, $subject, $content, $headers, $timestamp, $error = null ) {
-		global $wpdb;
-
-		$wpdb->insert(
-			$wpdb->prefix . 'wpss_email_log',
-			[
-				'recipient' => $recipients,
-				'subject'   => $subject,
-				'body'      => $content,
-				'headers'   => $headers,
-				'timestamp' => $timestamp,
-				'error'     => $error,
+		$post_id = wp_insert_post([
+			'post_title'   => $subject,
+			'post_content' => $content,
+			'post_status'  => 'publish',
+			'post_type'    => $this->post_type,
+			'meta_input'   => [
+				'recipients' => $recipients,
+				'headers'    => $headers,
+				'timestamp'  => $timestamp,
+				'error'      => $error,
 			]
-		);
+		]);
 
-		return $wpdb->insert_id;
+		return $post_id;
 	}
 
 	/**
@@ -89,23 +73,7 @@ class Log {
 	 * @return boolean Success state.
 	 */
 	public function log_entry_error( $id, $error ) {
-		global $wpdb;
-
-		$upd = $wpdb->update(
-			$wpdb->prefix . 'wpss_email_log',
-			[
-				'error' => $error,
-			],
-			[
-				'log_id' => $id,
-			]
-		);
-
-		if ( false === $upd ) {
-			return false;
-		} else {
-			return true;
-		}
+		update_post_meta( $id, 'error', $error );
 	}
 
 	/**
@@ -115,43 +83,25 @@ class Log {
 	 * @return stdClass
 	 */
 	public function get_log_entry_by_id( $id ) {
-		global $wpdb;
-
-		$query = "SELECT log_id, recipient, subject, body, headers, timestamp, error FROM {$wpdb->prefix}wpss_email_log WHERE log_id = {$id}";
-
-		$response = $wpdb->get_results( $query );
-
-		if ( ! empty( $response ) ) {
-			return $response[0];
-		} else {
-			return null;
-		}
+		return get_post($id);
 	}
 
 	/**
 	 * Gets the log entries stored. Pagination can be optionally specified.
 	 *
-	 * @param integer $offset What page to show. Automatically calculated with limit.
-	 * @param integer $limit  How many to retrieve in this call.
+	 * @param integer $page  What page to show. Automatically calculated with limit.
+	 * @param integer $limit How many to retrieve in this call.
 	 * @return array
 	 */
-	public function get_log_entries( $offset = 0, $limit = 0 ) {
-		global $wpdb;
+	public function get_log_entries( $page = 0, $limit = 0 ) {
+		$get_posts = new WP_Query();
+		$get_posts->query([
+			'post_type'      => $this->post_type,
+			'posts_per_page' => $limit,
+			'paged'          => $page,
+		]);
 
-		$query = "SELECT log_id, recipient, subject, body, headers, timestamp, error FROM {$wpdb->prefix}wpss_email_log ORDER BY log_id DESC";
-		if ( $limit > 0 ) {
-			$offset_calc = $offset * $limit;
-			$query      .= " LIMIT {$offset_calc}, {$limit}";
-		}
-
-		$response = $wpdb->get_results( $query );
-
-		if ( ! empty( $response ) ) {
-			return $response;
-		} else {
-			$this->create_log_table();
-			return null;
-		}
+		return $get_posts->get_posts();
 	}
 
 	/**
@@ -161,13 +111,12 @@ class Log {
 	 * @return integer
 	 */
 	public function get_log_entry_pages( $limit ) {
-		global $wpdb;
+		$count = (int) wp_count_posts( $this->post_type )->publish;
 
-		$count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpss_email_log" );
-		if ( 0 === $count || 0 === $limit ) {
-			return 1;
-		} else {
+		if ( $count !== false ) {
 			return floor( $count / $limit );
+		} else {
+			return 1;
 		}
 	}
 }
