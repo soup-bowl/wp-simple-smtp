@@ -37,7 +37,7 @@ class LogTable {
 	 */
 	public function display( $page, $maximum_per_page = 5 ) {
 		$page    = ( $page < 0 ) ? 0 : $page;
-		$entries = $this->log->get_log_entries( $page, $maximum_per_page );
+		$entries = $this->log->get_log_entries( ( $page + 1 ), $maximum_per_page );
 		$pages   = $this->log->get_log_entry_pages( $maximum_per_page );
 
 		$labels = [
