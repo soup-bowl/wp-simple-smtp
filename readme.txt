@@ -12,7 +12,7 @@ Adds a simple mail configuration panel into your WordPress installation. Support
 == Description ==
 Adds a simple, no-fuss SMTP settings to your WordPress installation that lets you define custom settings, which is especially useful for hosts with no control over the php `mail` functionality.
 
-The log & resend functionality currently does not support attachments.
+The log & resend functionality currently **does not support attachments**.
 
 ## Environment and constant overriding (optional)
 This plugin will prefer environmental and constant-stored values over the plugin-saved equivalent settings, making it easier to use this plugin via deployment.
@@ -37,24 +37,33 @@ This plugin supports being overridden by DEFINE, so please check to see that you
 = How is the SMTP password stored? = 
 The SMTP password is saved into the database *plaintext*. The more recommended way of storing the password is to define SMTP_PASS in your wp-config.php file, which should already be locked and inaccessible from the front-end.
 
+= Can I report an issue, or contribute to development? =
+Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
+
 == Changelog ==
 = 0.3.4 =
 * Added option to disable SSL verification.
 * Multiple emails can be used in the test functionality.
+
 = 0.3.3 =
 * Independent log tables deprecated for CPT.
+
 = 0.3.2 =
 * Changed display format of email log.
 * Limit resent emails to hourly.
+
 = 0.3.1 =
 * Table is created or deleted upon plugin state change.
+
 = 0.3 =
 * Changes to test emails.
 * Log view changed depending on header.
+
 = 0.2 =
 * SMTP error logging.
 * View and resend emails.
 * Test email settings.
+
 = 0.1 =
 * SMTP configuration handling (overrides `mail()`).
 * Optional SMTP logging (basic functionality).
