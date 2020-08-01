@@ -10,7 +10,7 @@
  * Plugin Name:       Simple SMTP
  * Description:       Adds mail configuration to WordPress in a simple, standardised plugin.
  * Plugin URI:        https://github.com/soup-bowl/simple-smtp
- * Version:           0.3.3-dev
+ * Version:           0.3.4-dev
  * Author:            soup-bowl
  * Author URI:        https://www.soupbowl.io
  * License:           MIT
@@ -57,16 +57,6 @@ function wpsmtp_deactivation() {
 		'wpss_clear_resent'
 	);
 }
-
-/**
- * Actions to be executed on multi-site deletion.
- */
-add_action(
-	'wp_delete_site',
-	function( $old_site ) {
-		( new Log() )->delete_log_table( $old_site->blog_id );
-	}
-);
 
 /**
  * Create CPT for storing logs.

@@ -138,7 +138,8 @@ class Settings {
 			__( 'Email recipient', 'wpsimplesmtp' ),
 			function () {
 				?>
-				<input type='email' name='wpssmtp_test_email_recipient' value='<?php echo esc_attr( wp_get_current_user()->user_email ); ?>'>
+				<input class='regular-text ltr' type='text' name='wpssmtp_test_email_recipient' value='<?php echo esc_attr( wp_get_current_user()->user_email ); ?>'>
+				<p class='description'><?php esc_html_e( 'Seperate multiple emails with a semi-colon (;).', 'wpsimplesmtp' ); ?></p>
 				<?php
 			},
 			'wpsimplesmtp_smtp_test',
@@ -171,8 +172,14 @@ class Settings {
 				$content = wp_kses_post( file_get_contents( trailingslashit( __DIR__ ) . 'test-email.html' ) );
 			}
 
+			$recipients = explode( ';', wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) );
+			$recp_count = count( $recipients );
+			for ( $i = 0; $i < $recp_count; $i++ ) { 
+				$recipients[ $i ] = sanitize_email( trim( $recipients[ $i ] ) );
+			}
+
 			wp_mail(
-				sanitize_email( wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) ),
+				$recipients,
 				// translators: %s is the website name.
 				sprintf( __( 'Test email from %s', 'wpsimplesmtp' ), get_bloginfo( 'name' ) ),
 				$content,
@@ -246,7 +253,7 @@ class Settings {
 							$has_env = 'disabled';
 						}
 						?>
-						<input type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
+						<input class='regular-text ltr' type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
 						<?php
 						break;
 				}
