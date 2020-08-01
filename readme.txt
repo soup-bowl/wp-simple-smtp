@@ -12,6 +12,8 @@ Adds a simple mail configuration panel into your WordPress installation. Support
 == Description ==
 Adds a simple, no-fuss SMTP settings to your WordPress installation that lets you define custom settings, which is especially useful for hosts with no control over the php `mail` functionality.
 
+The log & resend functionality currently does not support attachments.
+
 ## Environment and constant overriding (optional)
 This plugin will prefer environmental and constant-stored values over the plugin-saved equivalent settings, making it easier to use this plugin via deployment.
 
