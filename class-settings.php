@@ -117,6 +117,7 @@ class Settings {
 		$this->settings_field_generator( 'pass', __( 'Password', 'wpsimplesmtp' ), 'password', '' );
 		$this->settings_field_generator( 'from', __( 'Force from', 'wpsimplesmtp' ), 'email', 'do-not-reply@example.com' );
 		$this->settings_field_generator( 'fromname', __( 'Force from name', 'wpsimplesmtp' ), 'text', 'WordPress System' );
+		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'wpsimplesmtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'wpsimplesmtp' ) );
 		$this->settings_field_generator( 'log', __( 'Logging', 'wpsimplesmtp' ), 'checkbox', '' );
 	}
 
@@ -229,34 +230,34 @@ class Settings {
 	 * @param string $name_pretty Name shown to user.
 	 * @param string $type        Input element type. Normally 'text'.
 	 * @param string $example     Text shown as a placeholder.
+	 * @param string $subtext     Text displayed underneath input box.
 	 */
-	private function settings_field_generator( $name, $name_pretty, $type, $example ) {
+	private function settings_field_generator( $name, $name_pretty, $type, $example, $subtext = '' ) {
 		$value = $this->options->get( $name );
 
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $value, $type, $example ) {
+			function () use ( $name, $value, $type, $example, $subtext ) {
+				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
+				$has_env = '';
+				if ( 'CONFIG' !== $value->source ) {
+					$has_env = 'disabled';
+				}
+
 				switch ( $type ) {
 					case 'checkbox':
-						$has_env = '';
-						if ( 'CONFIG' !== $value->source ) {
-							$has_env = 'disabled';
-						}
 						?>
 						<input type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
 						<?php
 						break;
 					default:
-						$has_env = '';
-						if ( 'CONFIG' !== $value->source ) {
-							$has_env = 'disabled';
-						}
 						?>
 						<input class='regular-text ltr' type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
 						<?php
 						break;
 				}
+				echo $subtext;
 			},
 			'wpsimplesmtp_smtp',
 			'wpsimplesmtp_smtp_section'

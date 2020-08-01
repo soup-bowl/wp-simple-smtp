@@ -82,6 +82,17 @@ class Mail {
 			$phpmailer->Password = $this->options->get( 'pass' )->value;
 			$phpmailer->SMTPAuth = $this->options->get( 'auth' )->value;
 
+			$ssl_status = $this->options->get( 'noverifyssl' );
+			if ( ! empty( $ssl_status ) && true === filter_var( $ssl_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
+				$phpmailer->SMTPOptions = [
+					'ssl' => [
+						'verify_peer'       => false,
+						'verify_peer_name'  => false,
+						'allow_self_signed' => true
+					]
+				];
+			}
+
 			$phpmailer->IsSMTP();
 			// phpcs:enable
 		}

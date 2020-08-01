@@ -23,6 +23,7 @@ These can be either stored in your systems env setup, or in wp-config.php as `de
 * `SMTP_AUTH` (integer, 1 or 0) Pass below credentials to your mail server.
 * `SMTP_USER` (string) The mail username for this account.
 * `SMTP_PASS` (string) The password for the mailer account.
+* `SMTP_NOVERIFYSSL` (boolean) Disable validation of the SMTP server certificate (not recommended).
 * `SMTP_LOG` (boolean) Controls the logging capability and visibility.
 
 `SMTP_PASS` is stored as **plaintext**! Where you wish to store it depends on your configuration, but as a minimum it is recommended to store at least `SMTP_PASS` in your wp-config.php file (with the correct file permissions set).
@@ -36,6 +37,7 @@ The SMTP password is saved into the database *plaintext*. The more recommended w
 
 == Changelog ==
 = 0.3.4 =
+* Added option to disable SSL verification.
 * Multiple emails can be used in the test functionality.
 = 0.3.3 =
 * Independent log tables deprecated for CPT.
