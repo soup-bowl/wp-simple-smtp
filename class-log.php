@@ -33,11 +33,11 @@ class Log {
 	/**
 	 * Register the log storage CPT within WordPress.
 	 */
-    public function register_log_storage() {
-        register_post_type( $this->post_type );
-    }
-    
-    /**
+	public function register_log_storage() {
+		register_post_type( $this->post_type );
+	}
+
+	/**
 	 * Creates a new log entry.
 	 *
 	 * @param string $recipients The person(s) who recieved the email.
@@ -49,18 +49,20 @@ class Log {
 	 * @return integer ID of the newly-inserted entry.
 	 */
 	public function new_log_entry( $recipients, $subject, $content, $headers, $timestamp, $error = null ) {
-		$post_id = wp_insert_post([
-			'post_title'   => $subject,
-			'post_content' => $content,
-			'post_status'  => 'publish',
-			'post_type'    => $this->post_type,
-			'meta_input'   => [
-				'recipients' => $recipients,
-				'headers'    => $headers,
-				'timestamp'  => $timestamp,
-				'error'      => $error,
+		$post_id = wp_insert_post(
+			[
+				'post_title'   => $subject,
+				'post_content' => $content,
+				'post_status'  => 'publish',
+				'post_type'    => $this->post_type,
+				'meta_input'   => [
+					'recipients' => $recipients,
+					'headers'    => $headers,
+					'timestamp'  => $timestamp,
+					'error'      => $error,
+				],
 			]
-		]);
+		);
 
 		return $post_id;
 	}
@@ -70,7 +72,7 @@ class Log {
 	 *
 	 * @param integer $id    ID of the email log entry.
 	 * @param string  $error Error message to be stored.
-	 * @return boolean Success state.
+	 * @return void
 	 */
 	public function log_entry_error( $id, $error ) {
 		update_post_meta( $id, 'error', $error );
@@ -83,7 +85,7 @@ class Log {
 	 * @return stdClass
 	 */
 	public function get_log_entry_by_id( $id ) {
-		return get_post($id);
+		return get_post( $id );
 	}
 
 	/**
@@ -95,11 +97,13 @@ class Log {
 	 */
 	public function get_log_entries( $page = 0, $limit = 0 ) {
 		$get_posts = new WP_Query();
-		$get_posts->query([
-			'post_type'      => $this->post_type,
-			'posts_per_page' => $limit,
-			'paged'          => $page,
-		]);
+		$get_posts->query(
+			[
+				'post_type'      => $this->post_type,
+				'posts_per_page' => $limit,
+				'paged'          => $page,
+			]
+		);
 
 		return $get_posts->get_posts();
 	}
@@ -113,7 +117,7 @@ class Log {
 	public function get_log_entry_pages( $limit ) {
 		$count = (int) wp_count_posts( $this->post_type )->publish;
 
-		if ( $count !== false ) {
+		if ( false !== $count ) {
 			return floor( $count / $limit );
 		} else {
 			return 1;

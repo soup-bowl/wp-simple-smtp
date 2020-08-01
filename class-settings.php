@@ -173,9 +173,12 @@ class Settings {
 				$content = wp_kses_post( file_get_contents( trailingslashit( __DIR__ ) . 'test-email.html' ) );
 			}
 
+			// Sanitize rule disabled here as it doesn't detect the later sanitize call. Feel free to refactor.
+			// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$recipients = explode( ';', wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) );
 			$recp_count = count( $recipients );
-			for ( $i = 0; $i < $recp_count; $i++ ) { 
+			// phpcs:enable
+			for ( $i = 0; $i < $recp_count; $i++ ) {
 				$recipients[ $i ] = sanitize_email( trim( $recipients[ $i ] ) );
 			}
 
@@ -257,7 +260,7 @@ class Settings {
 						<?php
 						break;
 				}
-				echo $subtext;
+				echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
 			},
 			'wpsimplesmtp_smtp',
 			'wpsimplesmtp_smtp_section'
