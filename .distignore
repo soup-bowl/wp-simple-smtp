@@ -1,4 +1,6 @@
 /tests
+/.git
+/.github
 .env.example
 .gitignore
 .travis.yml
