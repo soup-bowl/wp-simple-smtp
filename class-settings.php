@@ -274,7 +274,7 @@ class Settings {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Mail Settings', 'wpsimplesmtp' ); ?></h1>
-			<form action='options.php' method='post'>
+			<form id='wpss-conf' action='options.php' method='post'>
 			<?php
 			settings_fields( 'wpsimplesmtp_smtp' );
 			do_settings_sections( 'wpsimplesmtp_smtp' );

@@ -39,6 +39,15 @@ add_action(
 	}
 );
 
+add_action(
+	'admin_enqueue_scripts',
+	function ( $page ) {
+		if ( 'settings_page_wpsimplesmtp' === $page ) {
+			wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'smtp-config.js', [ 'jquery' ], null, true );
+		}
+	}
+);
+
 /**
  * Actions to be executed on plugin activation.
  */
