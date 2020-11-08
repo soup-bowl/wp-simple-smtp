@@ -6,6 +6,8 @@
  * @license MIT
  */
 
+const { __, _x, _n, _nx } = wp.i18n;
+
 /**
  * Grabs the sources file. If it loads, we continue. If not, we do not display this feature.
  */
@@ -13,7 +15,6 @@ function wpss_loadin() {
 	jQuery.getJSON(
 		"https://www.soupbowl.io/wp-json/wprass/v1/sources",
 		function( data ) {
-			console.log( data );
 			wpss_load_quicksettings( data );
 			document.getElementById( 'wpss-quickset' ).onchange = function( stuff ) {
 				wpss_input_selection( data, stuff.target.value );
@@ -40,15 +41,22 @@ function wpss_load_quicksettings( data ) {
 	var options  = '';
 	selector.id  = 'wpss-quickset';
 
+	// Description cell.
+	selector_c1.outerHTML = "<th scope=\"row\">" + __( 'Quick Config', 'wpsimplesmtp' ) + "</th>";
+
+	// Content cell.
 	var datacount = data.configurations.length;
-	options      += '<option>Select</option>';
+	options      += '<option>' + __( 'Select', 'wpsimplesmtp' ) + '</option>';
 	for (i = 0; i < datacount; i++) {
 		options += '<option>' + data.configurations[i].name + '</option>';
 	}
 	selector.innerHTML = options;
-
-	selector_c1.outerHTML = "<th scope=\"row\">Quick Config</th>";
 	selector_c2.appendChild( selector );
+
+	sel_warning           = document.createElement( "p" );
+	sel_warning.className = 'description';
+	sel_warning.innerHTML = __( 'Automatically sets the default settings for most providers.', 'wpsimplesmtp' );
+	selector_c2.appendChild( sel_warning );
 }
 
 /**
