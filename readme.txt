@@ -37,6 +37,9 @@ This plugin supports being overridden by DEFINE, so please check to see that you
 = How is the SMTP password stored? = 
 The SMTP password is saved into the database *plaintext*. The more recommended way of storing the password is to define SMTP_PASS in your wp-config.php file, which should already be locked and inaccessible from the front-end.
 
+= Does this plugin work on WordPress Multisite? =
+Yes. Each site can have unique settings, unless overriding is on. The network will use the main site settings, so network admin emails will show up in the main site log. More multisite related functionality will be added.
+
 = Can I report an issue, or contribute to development? =
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
