@@ -6,6 +6,9 @@
  * @license MIT
  */
 
+/**
+ * Grabs the sources file. If it loads, we continue. If not, we do not display this feature.
+ */
 function wpss_loadin() {
 	jQuery.getJSON(
 		"https://www.soupbowl.io/wp-json/wprass/v1/sources",
@@ -19,6 +22,11 @@ function wpss_loadin() {
 	);
 }
 
+/**
+ * Displays the quick settings dropdown on the settings page.
+ *
+ * @param {object} data Data from the soupbowl.io API.
+ */
 function wpss_load_quicksettings( data ) {
 	var conf_table = document.getElementById( 'wpss-conf' )
 	.getElementsByTagName( 'table' )[0]
@@ -43,6 +51,12 @@ function wpss_load_quicksettings( data ) {
 	selector_c2.appendChild( selector );
 }
 
+/**
+ * Changes the input fields to match the desired data selection.
+ *
+ * @param {object} data Data from the soupbowl.io API.
+ * @param {string} name The data segment to use.
+ */
 function wpss_input_selection( data, name ) {
 	var s = null;
 	var c = data.configurations.length;
