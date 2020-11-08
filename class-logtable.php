@@ -66,8 +66,9 @@ class LogTable {
 				$recipients = implode( ', ', json_decode( get_post_meta( $entry->ID, 'recipients', true ) ) );
 				$actions    = $this->render_log_entry_buttons( $entry );
 				$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $timestamp ) );
+				$fail_atr   = ( ! empty( $error ) ) ? 'class="site-archived"' : '';
 				echo wp_kses(
-					"<tr>
+					"<tr {$fail_atr}>
 					<td class=\"has-row-actions\">{$recipients}{$actions}</td>
 					<td>{$entry->post_title}</td>
 					<td><abbr title=\"{$timestamp}\">{$date}</abbr></td>
@@ -201,7 +202,9 @@ class LogTable {
 				'scope' => [],
 				'class' => [],
 			],
-			'tr'    => [],
+			'tr'    => [
+				'class' => [],
+			],
 			'td'    => [
 				'class'   => [],
 				'colspan' => [],
