@@ -251,12 +251,12 @@ class Settings {
 				switch ( $type ) {
 					case 'checkbox':
 						?>
-						<input type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
+						<input id='wpss_<?php echo esc_attr( $name ); ?>' type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
 						<?php
 						break;
 					default:
 						?>
-						<input class='regular-text ltr' type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
+						<input id='wpss_<?php echo esc_attr( $name ); ?>' class='regular-text ltr' type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
 						<?php
 						break;
 				}
@@ -274,7 +274,7 @@ class Settings {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Mail Settings', 'wpsimplesmtp' ); ?></h1>
-			<form action='options.php' method='post'>
+			<form id='wpss-conf' action='options.php' method='post'>
 			<?php
 			settings_fields( 'wpsimplesmtp_smtp' );
 			do_settings_sections( 'wpsimplesmtp_smtp' );
