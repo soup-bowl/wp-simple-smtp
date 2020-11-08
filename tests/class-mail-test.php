@@ -9,6 +9,8 @@
 
 use wpsimplesmtp\Mail;
 
+use Dotenv\Dotenv;
+use PHPMailer\PHPMailer\PHPMailer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -31,7 +33,7 @@ function add_action( $a, $b = '' ) {
 function get_option( $a ) {
 	$env_loc = __DIR__ . '/../.env';
 	if ( file_exists( $env_loc ) ) {
-		$dotenv = new Symfony\Component\Dotenv\Dotenv();
+		$dotenv = Dotenv::createImmutable( __DIR__ . '/../' );
 		$dotenv->load( $env_loc );
 	}
 
@@ -72,6 +74,7 @@ class MailTest extends TestCase {
 		$phpmailer = $this->mail->process_mail( $phpmailer );
 
 		$phpmailer->addAddress( 'hello@example.com', 'Example User' );
+		$phpmailer->SetFrom('wordpress@example.com');
 
 		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$phpmailer->Subject = 'Simple SMTP Test Unit';
