@@ -74,7 +74,7 @@ class MailTest extends TestCase {
 		$phpmailer = $this->mail->process_mail( $phpmailer );
 
 		$phpmailer->addAddress( 'hello@example.com', 'Example User' );
-		$phpmailer->SetFrom('wordpress@example.com');
+		$phpmailer->SetFrom( 'wordpress@example.com' );
 
 		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$phpmailer->Subject = 'Simple SMTP Test Unit';

@@ -89,7 +89,7 @@ function wpss_input_selection( data, name ) {
 			document.getElementById( 'wpss_user' ).value = ( s.user != null ? s.user : '' );
 		}
 		if ( ! document.getElementById( 'wpss_pass' ).disabled ) {
-			document.getElementById( 'wpss_pass' ).value = ''; 
+			document.getElementById( 'wpss_pass' ).value = '';
 		}
 		if ( ! document.getElementById( 'wpss_noverifyssl' ).disabled ) {
 			document.getElementById( 'wpss_noverifyssl' ).checked = false;

@@ -325,7 +325,7 @@ class Settings {
 
 		if ( current_user_can( 'administrator' ) && isset( $log ) ) {
 			$recipients = implode( ', ', json_decode( get_post_meta( $log->ID, 'recipients', true ) ) );
-			$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( get_post_meta( $log->ID, 'timestamp', true ) ) );
+			$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( get_post_meta( $log->ID, 'timestamp', true ) ) );
 
 			$content = '';
 			if ( isset( $log->headers ) && false !== strpos( $log->headers, 'Content-Type: text\/html' ) ) {
@@ -359,7 +359,7 @@ class Settings {
 									</div>
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
-											<a href="<?php echo esc_html( $resend_url ); ?>" class="button button-primary button-large <?php echo esc_attr( $recset ); ?>"><?php echo esc_html( 'Resend', 'wpsimplesmtp' ); ?></a>
+											<a href="<?php echo esc_html( $resend_url ); ?>" class="button button-primary button-large <?php echo esc_attr( $recset ); ?>"><?php esc_html_e( 'Resend', 'wpsimplesmtp' ); ?></a>
 										</div>
 										<div class="clear"></div>
 									</div>

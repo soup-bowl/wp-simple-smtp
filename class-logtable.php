@@ -65,7 +65,7 @@ class LogTable {
 				$error      = get_post_meta( $entry->ID, 'error', true );
 				$recipients = implode( ', ', json_decode( get_post_meta( $entry->ID, 'recipients', true ) ) );
 				$actions    = $this->render_log_entry_buttons( $entry );
-				$date       = date( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $timestamp ) );
+				$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $timestamp ) );
 				$fail_atr   = ( ! empty( $error ) ) ? 'class="site-archived"' : '';
 				echo wp_kses(
 					"<tr {$fail_atr}>
