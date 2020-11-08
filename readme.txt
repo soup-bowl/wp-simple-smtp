@@ -41,6 +41,9 @@ The SMTP password is saved into the database *plaintext*. The more recommended w
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
+= 0.3.5 =
+* Added a quick configuration option, to guide SMTP setup (less Googling).
+
 = 0.3.4 =
 * Confirmed working with WordPress 5.5.1.
 * Added option to disable SSL verification.
