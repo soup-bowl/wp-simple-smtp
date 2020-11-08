@@ -76,12 +76,24 @@ function wpss_input_selection( data, name ) {
 	}
 
 	if ( s != null ) {
-		document.getElementById( 'wpss_host' ).value          = ( s.server != null ? s.server : '' );
-		document.getElementById( 'wpss_port' ).value          = ( s.port != null ? s.port : '' );
-		document.getElementById( 'wpss_auth' ).checked        = ( s.authentication != null ? s.authentication : false );
-		document.getElementById( 'wpss_user' ).value          = ( s.user != null ? s.user : '' );
-		document.getElementById( 'wpss_pass' ).value          = '';
-		document.getElementById( 'wpss_noverifyssl' ).checked = false;
+		if ( ! document.getElementById( 'wpss_host' ).disabled ) {
+			document.getElementById( 'wpss_host' ).value = ( s.server != null ? s.server : '' );
+		}
+		if ( ! document.getElementById( 'wpss_port' ).disabled ) {
+			document.getElementById( 'wpss_port' ).value = ( s.port != null ? s.port : '' );
+		}
+		if ( ! document.getElementById( 'wpss_auth' ).disabled ) {
+			document.getElementById( 'wpss_auth' ).checked = ( s.authentication != null ? s.authentication : false );
+		}
+		if ( ! document.getElementById( 'wpss_user' ).disabled ) {
+			document.getElementById( 'wpss_user' ).value = ( s.user != null ? s.user : '' );
+		}
+		if ( ! document.getElementById( 'wpss_pass' ).disabled ) {
+			document.getElementById( 'wpss_pass' ).value = ''; 
+		}
+		if ( ! document.getElementById( 'wpss_noverifyssl' ).disabled ) {
+			document.getElementById( 'wpss_noverifyssl' ).checked = false;
+		}
 	}
 }
 
