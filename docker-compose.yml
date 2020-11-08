@@ -16,9 +16,9 @@ services:
       PMA_USER: root
       PMA_PASSWORD: s9f6sd759r32r7f0dsf5673894956
   mail:
+    # Port 1025 for SMTP.
     image: mailhog/mailhog:latest
     ports:
-    - 8083:1025 # For unit testing. Use 'mail' and 1025 for web.
     - 8081:8025
   www:
     depends_on:
