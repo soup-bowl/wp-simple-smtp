@@ -3,5 +3,5 @@ services:
 language: php
 before_script:
  - composer install
- - docker-compose -f docker-compose.yml up -d --build
+ - docker run -p 8083:1025 -d mailhog/mailhog:latest
 script: vendor/bin/phpunit
