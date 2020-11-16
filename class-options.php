@@ -40,7 +40,7 @@ class Options {
 			$options = get_option( 'wpssmtp_smtp' );
 			if ( ! empty( $options ) && array_key_exists( $name, $options ) ) {
 				return (object) [
-					'value'  => $options[ $name ],
+					'value'  => $this->maybe_decrypt( $options, $name ),
 					'source' => 'CONFIG',
 				];
 			} else {
@@ -54,5 +54,39 @@ class Options {
 				}
 			}
 		}
+	}
+
+	public function encrypt( $name, $value ) {
+		$pl = [
+			'string' => $value,
+			'd'      => 0,
+		];
+		
+		if ( extension_loaded( 'openssl' ) ) {
+			$pl['string'] = openssl_encrypt( $value, 'AES-128-ECB', $this->encryption_key() );
+			$pl['d']      = 1;
+		}
+
+		return $pl;
+	}
+
+	private function maybe_decrypt( $options, $name ) {
+		if ( extension_loaded( 'openssl' ) ) {
+			$encrypt_id = ( ! empty( $options[ $name . '_d' ] ) ) ? (int) $options[ $name . '_d' ] : 0;
+
+			switch ( $encrypt_id ) {
+				case 1:
+					return openssl_decrypt( $options[ $name ], 'AES-128-ECB', $this->encryption_key() );
+				case 0:
+				default:
+					return $options[ $name ];
+			}
+		} else {
+			return $options[ $name ];
+		}
+	}
+
+	private function encryption_key () {
+		return 'test';
 	}
 }
