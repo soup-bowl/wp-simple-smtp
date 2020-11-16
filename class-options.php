@@ -56,6 +56,12 @@ class Options {
 		}
 	}
 
+	/**
+	 * Encrypts the given entities.
+	 *
+	 * @param string $name  Option name.
+	 * @param string $value Option value.
+	 */
 	public function encrypt( $name, $value ) {
 		$pl = [
 			'string' => $value,
@@ -70,6 +76,13 @@ class Options {
 		return $pl;
 	}
 
+	/**
+	 * Checks if the string is encrypted, and if so decrypts it.
+	 *
+	 * @param array  $options Collection where the setting (and decryptor) are located.
+	 * @param string $name    Setting name.
+	 * @return string Decrypted (if it was) contents.
+	 */
 	private function maybe_decrypt( $options, $name ) {
 		if ( extension_loaded( 'openssl' ) ) {
 			$encrypt_id = ( ! empty( $options[ $name . '_d' ] ) ) ? (int) $options[ $name . '_d' ] : 0;
@@ -86,7 +99,12 @@ class Options {
 		}
 	}
 
+	/**
+	 * Encryption key used by this plugin.
+	 *
+	 * @return string Encryption key.
+	 */
 	private function encryption_key () {
-		return 'test';
+		return SECURE_AUTH_KEY;
 	}
 }

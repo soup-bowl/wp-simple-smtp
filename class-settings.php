@@ -227,6 +227,12 @@ class Settings {
 		}
 	}
 
+	/**
+	 * Runs post-save setting processes.
+	 *
+	 * @param array $options Options array.
+	 * @return array Parameter #1 with possible changes.
+	 */
 	public function post_processing( $options ) {
 		if ( extension_loaded( 'openssl' ) ) {
 			$pass_opt = $this->options->encrypt( 'pass', $options['pass'] );
