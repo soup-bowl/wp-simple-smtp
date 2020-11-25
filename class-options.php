@@ -83,7 +83,7 @@ class Options {
 	 * @param string $name    Setting name.
 	 * @return string Decrypted (if it was) contents.
 	 */
-	private function maybe_decrypt( $options, $name ) {
+	public function maybe_decrypt( $options, $name ) {
 		if ( extension_loaded( 'openssl' ) ) {
 			$encrypt_id = ( ! empty( $options[ $name . '_d' ] ) ) ? (int) $options[ $name . '_d' ] : 0;
 
