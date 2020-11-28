@@ -40,7 +40,7 @@ class Options {
 			$options = get_option( 'wpssmtp_smtp' );
 			if ( ! empty( $options ) && array_key_exists( $name, $options ) ) {
 				return (object) [
-					'value'  => $options[ $name ],
+					'value'  => $this->maybe_decrypt( $options, $name ),
 					'source' => 'CONFIG',
 				];
 			} else {
@@ -54,5 +54,57 @@ class Options {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Encrypts the given entities.
+	 *
+	 * @param string $name  Option name.
+	 * @param string $value Option value.
+	 */
+	public function encrypt( $name, $value ) {
+		$pl = [
+			'string' => $value,
+			'd'      => 0,
+		];
+		
+		if ( extension_loaded( 'openssl' ) ) {
+			$pl['string'] = openssl_encrypt( $value, 'AES-128-ECB', $this->encryption_key() );
+			$pl['d']      = 1;
+		}
+
+		return $pl;
+	}
+
+	/**
+	 * Checks if the string is encrypted, and if so decrypts it.
+	 *
+	 * @param array  $options Collection where the setting (and decryptor) are located.
+	 * @param string $name    Setting name.
+	 * @return string Decrypted (if it was) contents.
+	 */
+	public function maybe_decrypt( $options, $name ) {
+		if ( extension_loaded( 'openssl' ) ) {
+			$encrypt_id = ( ! empty( $options[ $name . '_d' ] ) ) ? (int) $options[ $name . '_d' ] : 0;
+
+			switch ( $encrypt_id ) {
+				case 1:
+					return openssl_decrypt( $options[ $name ], 'AES-128-ECB', $this->encryption_key() );
+				case 0:
+				default:
+					return $options[ $name ];
+			}
+		} else {
+			return $options[ $name ];
+		}
+	}
+
+	/**
+	 * Encryption key used by this plugin.
+	 *
+	 * @return string Encryption key.
+	 */
+	private function encryption_key () {
+		return SECURE_AUTH_KEY;
 	}
 }

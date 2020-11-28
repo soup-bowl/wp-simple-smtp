@@ -46,6 +46,7 @@ class Settings {
 		add_action( 'admin_init', [ &$this, 'settings_init' ] );
 		add_action( 'admin_init', [ &$this, 'settings_test_init' ] );
 		add_action( 'admin_post_ss_test_email', [ &$this, 'test_email_handler' ] );
+		add_filter( 'pre_update_option_wpssmtp_smtp', [ &$this, 'post_processing' ] );
 
 		$this->options   = new Options();
 		$this->log       = new Log();
@@ -224,6 +225,23 @@ class Settings {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Runs post-save setting processes.
+	 *
+	 * @param array $options Options array.
+	 * @return array Parameter #1 with possible changes.
+	 */
+	public function post_processing( $options ) {
+		if ( extension_loaded( 'openssl' ) ) {
+			$pass_opt = $this->options->encrypt( 'pass', $options['pass'] );
+
+			$options['pass']   = $pass_opt['string'];
+			$options['pass_d'] = $pass_opt['d'];
+		}
+
+		return $options;
 	}
 
 	/**

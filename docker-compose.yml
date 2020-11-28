@@ -20,6 +20,7 @@ services:
     image: mailhog/mailhog:latest
     ports:
     - 8081:8025
+    - 8083:1025
   www:
     depends_on:
     - db

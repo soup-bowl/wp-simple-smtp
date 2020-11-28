@@ -28,14 +28,14 @@ These can be either stored in your systems env setup, or in wp-config.php as `de
 * `SMTP_NOVERIFYSSL` (boolean) Disable validation of the SMTP server certificate (not recommended).
 * `SMTP_LOG` (boolean) Controls the logging capability and visibility.
 
-`SMTP_PASS` is stored as **plaintext**! Where you wish to store it depends on your configuration, but as a minimum it is recommended to store at least `SMTP_PASS` in your wp-config.php file (with the correct file permissions set).
+It is recommended to store at least `SMTP_PASS` in your wp-config.php file (with the correct file permissions set). If the openssl extension is available, the plugin will attempt to encrypt the password in the database.
 
 == Frequently Asked Questions ==
 = One or more of the settings are greyed out =
 This plugin supports being overridden by DEFINE, so please check to see that you are not setting a define for a WP Simple SMTP option. These are most commonly stored in the wp-config.php file.
 
 = How is the SMTP password stored? = 
-The SMTP password is saved into the database *plaintext*. The more recommended way of storing the password is to define SMTP_PASS in your wp-config.php file, which should already be locked and inaccessible from the front-end.
+If openssl is available to PHP, then the password will be **encrypted** ([not hashed](https://stackoverflow.com/a/4948393)) when stored in the database. If unavailable, the SMTP password will be saved into the database as **plaintext**. The more recommended way of storing the password is to define SMTP_PASS in your wp-config.php file, which should already be locked and inaccessible from the front-end.
 
 = Does this plugin work on WordPress Multisite? =
 Yes. Each site can have unique settings, unless overriding is on. The network will use the main site settings, so network admin emails will show up in the main site log. More multisite related functionality will be added.
@@ -45,6 +45,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = 0.3.5 =
+* When openssl is available, the password stored in the database will be encrypted.
 * Added a quick configuration option, to guide SMTP setup (less Googling).
 
 = 0.3.4 =
