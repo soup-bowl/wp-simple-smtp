@@ -124,7 +124,7 @@ class Settings {
 		$this->settings_field_generator( 'pass', __( 'Password', 'wpsimplesmtp' ), 'password', '' );
 		$this->settings_field_generator( 'from', __( 'Force from', 'wpsimplesmtp' ), 'email', 'do-not-reply@example.com' );
 		$this->settings_field_generator( 'fromname', __( 'Force from name', 'wpsimplesmtp' ), 'text', 'WordPress System' );
-		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'wpsimplesmtp' ), $sec, 'dropdown', '', __( 'If default, the standard for the port number is chosen.', 'wpsimplesmtp' ) );
+		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'wpsimplesmtp' ), $sec, 'dropdown' );
 		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'wpsimplesmtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'wpsimplesmtp' ) );
 		$this->settings_field_generator( 'log', __( 'Logging', 'wpsimplesmtp' ), 'checkbox', '' );
 	}
@@ -319,7 +319,7 @@ class Settings {
 					case 'dropdown':
 					default:
 						?>
-						<select name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php echo esc_attr( $has_env ); ?>>
+						<select id='wpss_<?php echo esc_attr( $name ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php echo esc_attr( $has_env ); ?>>
 							<?php foreach ( $options as $key => $option ) : ?>
 							<option value='<?php echo esc_attr( $key ); ?>' <?php echo esc_attr( isset( $value ) && (string) $key === (string) $value->value ) ? 'selected' : ''; ?>><?php echo esc_attr( $option ); ?></option>
 							<?php endforeach; ?>
