@@ -67,7 +67,7 @@ class Options {
 			'string' => $value,
 			'd'      => 0,
 		];
-		
+
 		if ( extension_loaded( 'openssl' ) ) {
 			$pl['string'] = openssl_encrypt( $value, 'AES-128-ECB', $this->encryption_key() );
 			$pl['d']      = 1;
@@ -104,7 +104,7 @@ class Options {
 	 *
 	 * @return string Encryption key.
 	 */
-	private function encryption_key () {
+	private function encryption_key() {
 		return SECURE_AUTH_KEY;
 	}
 }

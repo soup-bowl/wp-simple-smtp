@@ -33,7 +33,7 @@ class OptionsTest extends TestCase {
 			'password_d' => $e_str['d'],
 		];
 
-		$d_str   = $this->options->maybe_decrypt( $e_col, 'password' );
+		$d_str = $this->options->maybe_decrypt( $e_col, 'password' );
 
 		$this->assertStringContainsString( $string, $d_str, 'Decrypted string matches initially encrypted string.' );
 	}
