@@ -82,6 +82,11 @@ class Mail {
 			$phpmailer->Password = $this->options->get( 'pass' )->value;
 			$phpmailer->SMTPAuth = $this->options->get( 'auth' )->value;
 
+			$sec = $this->options->get( 'sec' );
+			if ( ! empty( $sec ) && in_array( (string) $sec->value, [ 'ssl', 'tls' ], true ) ) {
+				$phpmailer->SMTPSecure = $sec->value;
+			}
+
 			$ssl_status = $this->options->get( 'noverifyssl' );
 			if ( ! empty( $ssl_status ) && true === filter_var( $ssl_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
 				$phpmailer->SMTPOptions = [

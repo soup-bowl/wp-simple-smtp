@@ -91,6 +91,9 @@ function wpss_input_selection( data, name ) {
 		if ( ! document.getElementById( 'wpss_pass' ).disabled ) {
 			document.getElementById( 'wpss_pass' ).value = '';
 		}
+		if ( ! document.getElementById( 'wpss_sec' ).disabled ) {
+			document.getElementById( 'wpss_sec' ).value = ( s.encryption != null ? s.encryption : 'def' );
+		}
 		if ( ! document.getElementById( 'wpss_noverifyssl' ).disabled ) {
 			document.getElementById( 'wpss_noverifyssl' ).checked = false;
 		}

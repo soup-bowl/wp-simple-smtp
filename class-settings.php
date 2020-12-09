@@ -111,6 +111,12 @@ class Settings {
 			'wpsimplesmtp_smtp'
 		);
 
+		$sec = [
+			'def' => 'Default',
+			'ssl' => 'SSL',
+			'tls' => 'TLS',
+		];
+
 		$this->settings_field_generator( 'host', __( 'Host', 'wpsimplesmtp' ), 'text', 'smtp.example.com' );
 		$this->settings_field_generator( 'port', __( 'Port', 'wpsimplesmtp' ), 'number', '587' );
 		$this->settings_field_generator( 'auth', __( 'Authenticate', 'wpsimplesmtp' ), 'checkbox', '' );
@@ -118,6 +124,7 @@ class Settings {
 		$this->settings_field_generator( 'pass', __( 'Password', 'wpsimplesmtp' ), 'password', '' );
 		$this->settings_field_generator( 'from', __( 'Force from', 'wpsimplesmtp' ), 'email', 'do-not-reply@example.com' );
 		$this->settings_field_generator( 'fromname', __( 'Force from name', 'wpsimplesmtp' ), 'text', 'WordPress System' );
+		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'wpsimplesmtp' ), $sec, 'dropdown' );
 		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'wpsimplesmtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'wpsimplesmtp' ) );
 		$this->settings_field_generator( 'log', __( 'Logging', 'wpsimplesmtp' ), 'checkbox', '' );
 	}
@@ -253,7 +260,7 @@ class Settings {
 	 * @param string $example     Text shown as a placeholder.
 	 * @param string $subtext     Text displayed underneath input box.
 	 */
-	private function settings_field_generator( $name, $name_pretty, $type, $example, $subtext = '' ) {
+	private function settings_field_generator( $name, $name_pretty, $type, $example = '', $subtext = '' ) {
 		$value = $this->options->get( $name );
 
 		add_settings_field(
@@ -275,6 +282,48 @@ class Settings {
 					default:
 						?>
 						<input id='wpss_<?php echo esc_attr( $name ); ?>' class='regular-text ltr' type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
+						<?php
+						break;
+				}
+				echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
+			},
+			'wpsimplesmtp_smtp',
+			'wpsimplesmtp_smtp_section'
+		);
+	}
+
+	/**
+	 * Generates an generic input multi-select.
+	 *
+	 * @param string $name        Code name of input.
+	 * @param string $name_pretty Name shown to user.
+	 * @param array  $options     Array of possible selections, with the index used as a key.
+	 * @param string $type        Input element type. Normally 'text'.
+	 * @param string $example     Text shown as a placeholder.
+	 * @param string $subtext     Text displayed underneath input box.
+	 */
+	private function settings_field_generator_multiple( $name, $name_pretty, $options, $type, $example = '', $subtext = '' ) {
+		$value = $this->options->get( $name );
+
+		add_settings_field(
+			'wpssmtp_smtp_' . $name,
+			$name_pretty,
+			function () use ( $name, $value, $options, $type, $example, $subtext ) {
+				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
+				$has_env = '';
+				if ( 'CONFIG' !== $value->source ) {
+					$has_env = 'disabled';
+				}
+
+				switch ( $type ) {
+					case 'dropdown':
+					default:
+						?>
+						<select id='wpss_<?php echo esc_attr( $name ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php echo esc_attr( $has_env ); ?>>
+							<?php foreach ( $options as $key => $option ) : ?>
+							<option value='<?php echo esc_attr( $key ); ?>' <?php echo esc_attr( isset( $value ) && (string) $key === (string) $value->value ) ? 'selected' : ''; ?>><?php echo esc_attr( $option ); ?></option>
+							<?php endforeach; ?>
+						</select>
 						<?php
 						break;
 				}
