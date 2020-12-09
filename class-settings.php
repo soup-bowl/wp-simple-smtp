@@ -112,9 +112,9 @@ class Settings {
 		);
 
 		$sec = [
-			0 => 'Default',
-			1 => 'SSL',
-			2 => 'TLS',
+			'def' => 'Default',
+			'ssl' => 'SSL',
+			'tls' => 'TLS',
 		];
 
 		$this->settings_field_generator( 'host', __( 'Host', 'wpsimplesmtp' ), 'text', 'smtp.example.com' );

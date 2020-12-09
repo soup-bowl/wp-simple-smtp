@@ -82,16 +82,9 @@ class Mail {
 			$phpmailer->Password = $this->options->get( 'pass' )->value;
 			$phpmailer->SMTPAuth = $this->options->get( 'auth' )->value;
 
-			$sec = $this->options->get( 'sec' )->value;
-			if ( ! empty( $sec ) ) {
-				switch ( (int) $sec ) {
-					case 1:
-						$phpmailer->SMTPSecure = 'ssl';
-						break;
-					case 2:
-						$phpmailer->SMTPSecure = 'tls';
-						break;
-				}
+			$sec = $this->options->get( 'sec' );
+			if ( ! empty( $sec ) && in_array( (string) $sec->value, [ 'ssl', 'tls' ], true ) ) {
+				$phpmailer->SMTPSecure = $sec->value;
 			}
 
 			$ssl_status = $this->options->get( 'noverifyssl' );

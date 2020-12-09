@@ -25,6 +25,9 @@ These can be either stored in your systems env setup, or in wp-config.php as `de
 * `SMTP_AUTH` (integer, 1 or 0) Pass below credentials to your mail server.
 * `SMTP_USER` (string) The mail username for this account.
 * `SMTP_PASS` (string) The password for the mailer account.
+* `SMTP_FROM` (string) Enforce all emails come from this email address.
+* `SMTP_FROMNAME` (string) Enforce all emails to have a certain email name.
+* `SMTP_SEC` (string) Use a particular email security method (accepts 'def' (default), 'ssl' and 'tls').
 * `SMTP_NOVERIFYSSL` (boolean) Disable validation of the SMTP server certificate (not recommended).
 * `SMTP_LOG` (boolean) Controls the logging capability and visibility.
 
@@ -44,6 +47,9 @@ Yes. Each site can have unique settings, unless overriding is on. The network wi
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
+= 0.3.6 =
+* SMTPSecure is now a configurable option ([#11](https://github.com/soup-bowl/wp-simple-smtp/issues/11)).
+
 = 0.3.5 =
 * When openssl is available, the password stored in the database will be encrypted.
 * Added a quick configuration option, to guide SMTP setup (less Googling).
