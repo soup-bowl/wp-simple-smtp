@@ -297,7 +297,7 @@ class Settings {
 	 *
 	 * @param string $name        Code name of input.
 	 * @param string $name_pretty Name shown to user.
-	 * @param string $options     Array of possible selections, with the index used as a key.
+	 * @param array  $options     Array of possible selections, with the index used as a key.
 	 * @param string $type        Input element type. Normally 'text'.
 	 * @param string $example     Text shown as a placeholder.
 	 * @param string $subtext     Text displayed underneath input box.
