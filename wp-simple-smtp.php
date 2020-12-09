@@ -43,7 +43,7 @@ add_action(
 	'admin_enqueue_scripts',
 	function ( $page ) {
 		if ( 'settings_page_wpsimplesmtp' === $page ) {
-			wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'smtp-config.js', [ 'jquery', 'wp-i18n' ], '1', true );
+			wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.1', true );
 		}
 	}
 );
