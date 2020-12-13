@@ -1,4 +1,5 @@
 /tests
+/.docker
 /.git
 /.github
 .env.example
