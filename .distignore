@@ -1,8 +1,8 @@
-/tests
 /.docker
 /.git
 /.github
 /.vscode
+/tests
 .env.example
 .gitignore
 .travis.yml
