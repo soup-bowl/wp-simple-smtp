@@ -8,11 +8,11 @@
 			"log": false,
 			"port": 9003,
 			"pathMappings": {
-                "/var/www/html/wp-content/plugins/simple-smtp": "${workspaceFolder}"
-            },
-            "ignore": [
-                "**/vendor/**/*.php"
-            ]
+				"/var/www/html/wp-content/plugins/simple-smtp": "${workspaceFolder}"
+			},
+			"ignore": [
+				"**/vendor/**/*.php"
+			]
 		}
 	]
 }
