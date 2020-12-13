@@ -123,4 +123,40 @@ class Log {
 			return 1;
 		}
 	}
+
+	/**
+	 * Deletes a log entry.
+	 *
+	 * @param integer $id WordPress post ID.
+	 * @return boolean
+	 */
+	public function delete_log_entry( $id ) {
+		$r = wp_delete_post( $id );
+
+		if ( ! empty( $r ) || false !== $r ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Deletes all log entries.
+	 *
+	 * @return boolean
+	 */
+	public function delete_all_logs() {
+		$all = get_posts(
+			array(
+				'post_type'   => $this->post_type,
+				'numberposts' => -1,
+			)
+		);
+
+		foreach ( $all as $log ) {
+			$this->delete_log_entry( $log->ID );
+		}
+
+		return true;
+	}
 }

@@ -163,16 +163,19 @@ class LogTable {
 		$recents      = get_option( 'wpss_resent', [] );
 		$resend_param = [
 			'eid'     => $entry->ID,
-			'ssnonce' => wp_create_nonce( 'wpss_resend' ),
+			'ssnonce' => wp_create_nonce( 'wpss_action' ),
 		];
 
 		$view_label   = __( 'View', 'wpsimplesmtp' );
 		$resend_label = __( 'Resend', 'wpsimplesmtp' );
+		$delete_label = __( 'Delete', 'wpsimplesmtp' );
 
 		$view_url   = esc_html( add_query_arg( 'eid', $entry->ID, menu_page_url( 'wpsimplesmtp', false ) ) );
 		$resend_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
+		$delete_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&delete';
 
 		$view   = "<span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">{$view_label}</a></span>";
+		$delete = "<span class=\"delete\"><a href=\"{$delete_url}\" aria-label=\"View\">{$delete_label}</a></span>";
 		$resend = '';
 		if ( ! in_array( (int) $entry->ID, $recents, true ) ) {
 			$resend = "<span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">{$resend_label}</a></span>";
@@ -180,7 +183,7 @@ class LogTable {
 			$resend = '<span class="view">Resent</span>';
 		}
 
-		$row_actions = "<div class=\"row-actions\">{$view} | {$resend}</div>";
+		$row_actions = "<div class=\"row-actions\">{$view} | {$resend} | {$delete}</div>";
 
 		return $row_actions;
 	}

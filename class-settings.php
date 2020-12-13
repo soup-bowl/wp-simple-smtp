@@ -57,10 +57,12 @@ class Settings {
 	 * Intialises the options page.
 	 */
 	public function options_page() {
+		$return = false;
 		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['resend'] )
-		&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_resend' ) ) {
-			$r = $this->resend_email( intval( $_REQUEST['eid'] ) );
-			if ( $r ) {
+		&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
+			$return = true;
+			$resp   = $this->resend_email( intval( $_REQUEST['eid'] ) );
+			if ( $resp ) {
 				?>
 				<div class="notice notice-success is-dismissible">
 					<p><?php esc_html_e( 'Email resend request recieved.', 'wpsimplesmtp' ); ?></p>
@@ -75,7 +77,26 @@ class Settings {
 			}
 		}
 
-		if ( isset( $_REQUEST['eid'] ) && ! isset( $_REQUEST['resend'] ) ) {
+		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['delete'] )
+		&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
+			$return = true;
+			$resp   = $this->log->delete_log_entry( intval( $_REQUEST['eid'] ) );
+			if ( $resp ) {
+				?>
+				<div class="notice notice-success is-dismissible">
+					<p><?php esc_html_e( 'Log entry deleted.', 'wpsimplesmtp' ); ?></p>
+				</div>
+				<?php
+			} else {
+				?>
+				<div class="notice notice-error is-dismissible">
+					<p><?php esc_html_e( 'Something went wrong processing your request.', 'wpsimplesmtp' ); ?></p>
+				</div>
+				<?php
+			}
+		}
+
+		if ( isset( $_REQUEST['eid'] ) && ! $return ) {
 			$this->render_email_view( intval( $_REQUEST['eid'] ) );
 		} else {
 			$this->render_settings();
@@ -385,7 +406,7 @@ class Settings {
 		$resend_url = add_query_arg(
 			[
 				'eid'     => $id,
-				'ssnonce' => wp_create_nonce( 'wpss_resend' ),
+				'ssnonce' => wp_create_nonce( 'wpss_action' ),
 			],
 			menu_page_url( 'wpsimplesmtp', false )
 		) . '&resend';
