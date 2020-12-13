@@ -131,13 +131,16 @@ class Log {
 	 * @return boolean
 	 */
 	public function delete_log_entry( $id ) {
-		$r = wp_delete_post( $id );
+		$post = get_post( $id );
 
-		if ( ! empty( $r ) || false !== $r ) {
-			return true;
-		} else {
-			return false;
+		if ( $this->post_type === $post->post_type ) {
+			$r = wp_delete_post( $id );
+			if ( ! empty( $r ) || false !== $r ) {
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	/**
@@ -154,7 +157,7 @@ class Log {
 		);
 
 		foreach ( $all as $log ) {
-			$this->delete_log_entry( $log->ID );
+			wp_delete_post( $log->ID );
 		}
 
 		return true;
