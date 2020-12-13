@@ -1,0 +1,18 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "XDebug in Docker",
+			"type": "php",
+			"request": "launch",
+			"log": false,
+			"port": 9003,
+			"pathMappings": {
+				"/var/www/html/wp-content/plugins/simple-smtp": "${workspaceFolder}"
+			},
+			"ignore": [
+				"**/vendor/**/*.php"
+			]
+		}
+	]
+}

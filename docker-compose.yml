@@ -25,7 +25,8 @@ services:
     depends_on:
     - db
     - mail
-    image: wordpress:latest
+    build:
+      context: ./.docker
     volumes:
     - ".:/var/www/html/wp-content/plugins/simple-smtp"
     ports:
