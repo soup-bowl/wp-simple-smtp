@@ -6,7 +6,7 @@
 			"type": "php",
 			"request": "launch",
 			"log": false,
-			"port": 9000,
+			"port": 9003,
 			"pathMappings": {
                 "/var/www/html/wp-content/plugins/simple-smtp": "${workspaceFolder}"
             },
