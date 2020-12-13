@@ -57,7 +57,7 @@ class Settings {
 	 * Intialises the options page.
 	 */
 	public function options_page() {
-		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['delete_all'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
+		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['delete_all'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_purgelog' ) ) {
 			$this->log->delete_all_logs();
 
 			wp_die( esc_attr_e( 'The log has been cleared.', 'wpsimplesmtp' ) );
