@@ -223,7 +223,7 @@ class Settings {
 				[ 'x-test: WP SMTP', $content_type ]
 			);
 
-			wp_safe_redirect( urldecode( sanitize_text_field( wp_unslash( $_REQUEST['_wp_http_referer'] ) ) ) );
+			wp_safe_redirect( admin_url( 'options-general.php?page=wpsimplesmtp' ) );
 			exit;
 		} else {
 			wp_die( esc_attr_e( 'You are not permitted to send a test email.', 'wpsimplesmtp' ) );
