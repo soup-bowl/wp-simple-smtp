@@ -57,9 +57,14 @@ class Settings {
 	 * Intialises the options page.
 	 */
 	public function options_page() {
+		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['delete_all'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
+			$this->log->delete_all_logs();
+
+			wp_die( esc_attr_e( 'The log has been cleared.', 'wpsimplesmtp' ) );
+		}
+
 		$return = false;
-		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['resend'] )
-		&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
+		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['resend'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
 			$return = true;
 			$resp   = $this->resend_email( intval( $_REQUEST['eid'] ) );
 			if ( $resp ) {
@@ -77,8 +82,7 @@ class Settings {
 			}
 		}
 
-		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['delete'] )
-		&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
+		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['delete'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
 			$return = true;
 			$resp   = $this->log->delete_log_entry( intval( $_REQUEST['eid'] ) );
 			if ( $resp ) {
