@@ -49,6 +49,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 == Changelog ==
 = 0.3.6 =
 * SMTPSecure is now a configurable option ([#11](https://github.com/soup-bowl/wp-simple-smtp/issues/11)).
+* Log entries can now be deleted ([#13](https://github.com/soup-bowl/wp-simple-smtp/issues/13)).
 
 = 0.3.5 =
 * When openssl is available, the password stored in the database will be encrypted.

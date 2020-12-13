@@ -105,7 +105,7 @@ class LogTable {
 		$message     = sprintf( __( 'Showing page %1$s of %2$s.', 'wpsimplesmtp' ), $page_cu, $page_co );
 		$nav_buttons = $this->generate_table_buttons( $page, $pages );
 		echo wp_kses(
-			"<p><i>{$message}</i> {$nav_buttons->back} {$nav_buttons->next}</p>",
+			"<p><i>{$message}</i> {$nav_buttons->back} {$nav_buttons->next} {$nav_buttons->delete}</p>",
 			[
 				'p' => [],
 				'i' => [],
@@ -119,11 +119,11 @@ class LogTable {
 	}
 
 	/**
-	 * Postback navigations for the table.
+	 * Postback navigations, and other functions for the table.
 	 *
 	 * @param integer $current_page The current page (system, not pretty).
 	 * @param integer $max_pages    How many pages the table has to show.
-	 * @return stdClass 'next' and 'back', HTML buttons.
+	 * @return stdClass 'next', 'back', and 'delete' HTML buttons.
 	 */
 	private function generate_table_buttons( $current_page, $max_pages ) {
 		$nonce      = [ 'ssnonce' => wp_create_nonce( 'wpss_logtable' ) ];
@@ -147,9 +147,18 @@ class LogTable {
 		$next_allow = ( $current_page >= $max_pages ) ? 'disabled' : '';
 		$back_allow = ( $current_page <= 0 ) ? 'disabled' : '';
 
+		$purge_all_label = __( 'Purge Log', 'wpsimplesmtp' );
+		$purge_all_url   = esc_html(
+			add_query_arg(
+				array( 'ssnonce' => wp_create_nonce( 'wpss_purgelog' ) ),
+				menu_page_url( 'wpsimplesmtp', false )
+			)
+		) . '&delete_all';
+
 		return (object) [
-			'next' => "<a href='{$next_url}' class='button' {$next_allow}>{$next_label}</a>",
-			'back' => "<a href='{$back_url}' class='button' {$back_allow}>{$back_label}</a>",
+			'next'   => "<a href='{$next_url}' class='button' {$next_allow}>{$next_label}</a>",
+			'back'   => "<a href='{$back_url}' class='button' {$back_allow}>{$back_label}</a>",
+			'delete' => "<a href='{$purge_all_url}' class='button'>{$purge_all_label}</a>",
 		];
 	}
 
@@ -163,16 +172,19 @@ class LogTable {
 		$recents      = get_option( 'wpss_resent', [] );
 		$resend_param = [
 			'eid'     => $entry->ID,
-			'ssnonce' => wp_create_nonce( 'wpss_resend' ),
+			'ssnonce' => wp_create_nonce( 'wpss_action' ),
 		];
 
 		$view_label   = __( 'View', 'wpsimplesmtp' );
 		$resend_label = __( 'Resend', 'wpsimplesmtp' );
+		$delete_label = __( 'Delete', 'wpsimplesmtp' );
 
 		$view_url   = esc_html( add_query_arg( 'eid', $entry->ID, menu_page_url( 'wpsimplesmtp', false ) ) );
 		$resend_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
+		$delete_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&delete';
 
 		$view   = "<span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">{$view_label}</a></span>";
+		$delete = "<span class=\"delete\"><a href=\"{$delete_url}\" aria-label=\"View\">{$delete_label}</a></span>";
 		$resend = '';
 		if ( ! in_array( (int) $entry->ID, $recents, true ) ) {
 			$resend = "<span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">{$resend_label}</a></span>";
@@ -180,7 +192,7 @@ class LogTable {
 			$resend = '<span class="view">Resent</span>';
 		}
 
-		$row_actions = "<div class=\"row-actions\">{$view} | {$resend}</div>";
+		$row_actions = "<div class=\"row-actions\">{$view} | {$resend} | {$delete}</div>";
 
 		return $row_actions;
 	}
