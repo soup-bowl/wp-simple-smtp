@@ -2,6 +2,7 @@
 /.docker
 /.git
 /.github
+/.vscode
 .env.example
 .gitignore
 .travis.yml
