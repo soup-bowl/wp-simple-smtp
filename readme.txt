@@ -34,6 +34,13 @@ These can be either stored in your systems env setup, or in wp-config.php as `de
 It is recommended to store at least `SMTP_PASS` in your wp-config.php file (with the correct file permissions set). If the openssl extension is available, the plugin will attempt to encrypt the password in the database.
 
 == Frequently Asked Questions ==
+= How do I fix SMTP errors? =
+This plugin works by instructing **PHPMailer** - the mail library WordPress have chosen - to use SMTP mode, and adds in the settings you choose. 9 times out of 10, the error messages you receive are configuration errors. PHPMailer provides a good guide to help you figure out these problems.
+
+[Troubleshooting - PHPMailer](https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting)
+
+You can always get assistance from your host and/or SMTP service provider.
+
 = One or more of the settings are greyed out =
 This plugin supports being overridden by DEFINE, so please check to see that you are not setting a define for a WP Simple SMTP option. These are most commonly stored in the wp-config.php file.
 
