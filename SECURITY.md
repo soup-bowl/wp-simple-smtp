@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-The project is currently in **beta**, so the only supported version is the **latest available release**.
+The **version 1** release chain is the current supported version. **Development** or custom builds are not supported.
 
 ## Reporting a Vulnerability
 

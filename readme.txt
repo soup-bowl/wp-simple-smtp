@@ -37,7 +37,9 @@ It is recommended to store at least `SMTP_PASS` in your wp-config.php file (with
 = How do I fix SMTP errors? =
 This plugin works by instructing **PHPMailer** - the mail library WordPress have chosen - to use SMTP mode, and adds in the settings you choose. 9 times out of 10, the error messages you receive are configuration errors. PHPMailer provides a good guide to help you figure out these problems.
 
-[Troubleshooting - PHPMailer](https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting)
+[Troubleshooting - PHPMailer](https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting).
+
+The one instance where an SMTP error can be caused by this plugin is if the SMTP password is stored in the database when the **secret keys** have been regenerated. You will need to re-save the password to refresh the encryption keys.
 
 You can always get assistance from your host and/or SMTP service provider.
 
@@ -54,8 +56,8 @@ Yes. Each site can have unique settings, unless overriding is on. The network wi
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
-= 0.3.7 =
-
+= 1.0.0 =
+* Bumped version to 1.0.0. Application will follow [Semantic Versioning](https://semver.org/) ongoing. ([#15](https://github.com/soup-bowl/wp-simple-smtp/issues/15)).
 
 = 0.3.6 =
 * SMTPSecure is now a configurable option ([#11](https://github.com/soup-bowl/wp-simple-smtp/issues/11)).
