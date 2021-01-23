@@ -60,7 +60,7 @@ class Settings {
 		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['delete_all'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_purgelog' ) ) {
 			$this->log->delete_all_logs();
 
-			wp_die( esc_attr_e( 'The log has been cleared.', 'wpsimplesmtp' ) );
+			wp_die( esc_attr_e( 'The log has been cleared.', 'wp-simple-smtp' ) );
 		}
 
 		$return = false;
@@ -70,13 +70,13 @@ class Settings {
 			if ( $resp ) {
 				?>
 				<div class="notice notice-success is-dismissible">
-					<p><?php esc_html_e( 'Email resend request recieved.', 'wpsimplesmtp' ); ?></p>
+					<p><?php esc_html_e( 'Email resend request recieved.', 'wp-simple-smtp' ); ?></p>
 				</div>
 				<?php
 			} else {
 				?>
 				<div class="notice notice-error is-dismissible">
-					<p><?php esc_html_e( 'Something went wrong processing your request.', 'wpsimplesmtp' ); ?></p>
+					<p><?php esc_html_e( 'Something went wrong processing your request.', 'wp-simple-smtp' ); ?></p>
 				</div>
 				<?php
 			}
@@ -88,13 +88,13 @@ class Settings {
 			if ( $resp ) {
 				?>
 				<div class="notice notice-success is-dismissible">
-					<p><?php esc_html_e( 'Log entry deleted.', 'wpsimplesmtp' ); ?></p>
+					<p><?php esc_html_e( 'Log entry deleted.', 'wp-simple-smtp' ); ?></p>
 				</div>
 				<?php
 			} else {
 				?>
 				<div class="notice notice-error is-dismissible">
-					<p><?php esc_html_e( 'Something went wrong processing your request.', 'wpsimplesmtp' ); ?></p>
+					<p><?php esc_html_e( 'Something went wrong processing your request.', 'wp-simple-smtp' ); ?></p>
 				</div>
 				<?php
 			}
@@ -113,10 +113,10 @@ class Settings {
 	 */
 	public function add_admin_menu() {
 		add_options_page(
-			__( 'Mail', 'wpsimplesmtp' ),
-			__( 'Mail', 'wpsimplesmtp' ),
+			__( 'Mail', 'wp-simple-smtp' ),
+			__( 'Mail', 'wp-simple-smtp' ),
 			'manage_options',
-			'wpsimplesmtp',
+			'wp-simple-smtp',
 			[ &$this, 'options_page' ]
 		);
 	}
@@ -129,9 +129,9 @@ class Settings {
 
 		add_settings_section(
 			'wpsimplesmtp_smtp_section',
-			__( 'SMTP Configuration', 'wpsimplesmtp' ),
+			__( 'SMTP Configuration', 'wp-simple-smtp' ),
 			function () {
-				esc_html_e( 'Fill out this section to allow WordPress to dispatch emails.', 'wpsimplesmtp' );
+				esc_html_e( 'Fill out this section to allow WordPress to dispatch emails.', 'wp-simple-smtp' );
 			},
 			'wpsimplesmtp_smtp'
 		);
@@ -142,16 +142,16 @@ class Settings {
 			'tls' => 'TLS',
 		];
 
-		$this->settings_field_generator( 'host', __( 'Host', 'wpsimplesmtp' ), 'text', 'smtp.example.com' );
-		$this->settings_field_generator( 'port', __( 'Port', 'wpsimplesmtp' ), 'number', '587' );
-		$this->settings_field_generator( 'auth', __( 'Authenticate', 'wpsimplesmtp' ), 'checkbox', '' );
-		$this->settings_field_generator( 'user', __( 'Username', 'wpsimplesmtp' ), 'text', 'foobar@example.com' );
-		$this->settings_field_generator( 'pass', __( 'Password', 'wpsimplesmtp' ), 'password', '' );
-		$this->settings_field_generator( 'from', __( 'Force from', 'wpsimplesmtp' ), 'email', 'do-not-reply@example.com' );
-		$this->settings_field_generator( 'fromname', __( 'Force from name', 'wpsimplesmtp' ), 'text', 'WordPress System' );
-		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'wpsimplesmtp' ), $sec, 'dropdown' );
-		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'wpsimplesmtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'wpsimplesmtp' ) );
-		$this->settings_field_generator( 'log', __( 'Logging', 'wpsimplesmtp' ), 'checkbox', '' );
+		$this->settings_field_generator( 'host', __( 'Host', 'wp-simple-smtp' ), 'text', 'smtp.example.com' );
+		$this->settings_field_generator( 'port', __( 'Port', 'wp-simple-smtp' ), 'number', '587' );
+		$this->settings_field_generator( 'auth', __( 'Authenticate', 'wp-simple-smtp' ), 'checkbox', '' );
+		$this->settings_field_generator( 'user', __( 'Username', 'wp-simple-smtp' ), 'text', 'foobar@example.com' );
+		$this->settings_field_generator( 'pass', __( 'Password', 'wp-simple-smtp' ), 'password', '' );
+		$this->settings_field_generator( 'from', __( 'Force from', 'wp-simple-smtp' ), 'email', 'do-not-reply@example.com' );
+		$this->settings_field_generator( 'fromname', __( 'Force from name', 'wp-simple-smtp' ), 'text', 'WordPress System' );
+		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'wp-simple-smtp' ), $sec, 'dropdown' );
+		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'wp-simple-smtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'wp-simple-smtp' ) );
+		$this->settings_field_generator( 'log', __( 'Logging', 'wp-simple-smtp' ), 'checkbox', '' );
 	}
 
 	/**
@@ -160,20 +160,20 @@ class Settings {
 	public function settings_test_init() {
 		add_settings_section(
 			'wpsimplesmtp_test_email',
-			__( 'Test Email', 'wpsimplesmtp' ),
+			__( 'Test Email', 'wp-simple-smtp' ),
 			function () {
-				esc_html_e( 'Sends a simple test email to check your settings.', 'wpsimplesmtp' );
+				esc_html_e( 'Sends a simple test email to check your settings.', 'wp-simple-smtp' );
 			},
 			'wpsimplesmtp_smtp_test'
 		);
 
 		add_settings_field(
 			'wpssmtp_smtp_email_test',
-			__( 'Email recipient', 'wpsimplesmtp' ),
+			__( 'Email recipient', 'wp-simple-smtp' ),
 			function () {
 				?>
 				<input class='regular-text ltr' type='text' name='wpssmtp_test_email_recipient' value='<?php echo esc_attr( wp_get_current_user()->user_email ); ?>'>
-				<p class='description'><?php esc_html_e( 'Seperate multiple emails with a semi-colon (;).', 'wpsimplesmtp' ); ?></p>
+				<p class='description'><?php esc_html_e( 'Seperate multiple emails with a semi-colon (;).', 'wp-simple-smtp' ); ?></p>
 				<?php
 			},
 			'wpsimplesmtp_smtp_test',
@@ -182,7 +182,7 @@ class Settings {
 
 		add_settings_field(
 			'wpssmtp_smtp_email_test_type',
-			__( 'HTML Mode', 'wpsimplesmtp' ),
+			__( 'HTML Mode', 'wp-simple-smtp' ),
 			function () {
 				?>
 				<input type='checkbox' name='wpssmtp_test_email_is_html' value='1'>
@@ -200,7 +200,7 @@ class Settings {
 		if ( isset( $_REQUEST['_wpnonce'], $_REQUEST['_wp_http_referer'], $_REQUEST['wpssmtp_test_email_recipient'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'simple-smtp-test-email' ) ) {
 			$is_html      = ( isset( $_REQUEST['wpssmtp_test_email_is_html'] ) ) ? true : false;
 			$content_type = ( $is_html ) ? 'Content-Type: text/html' : 'Content-Type: text/plain';
-			$content      = __( 'This email proves that your settings are correct.', 'wpsimplesmtp' ) . PHP_EOL . get_bloginfo( 'url' );
+			$content      = __( 'This email proves that your settings are correct.', 'wp-simple-smtp' ) . PHP_EOL . get_bloginfo( 'url' );
 
 			if ( $is_html ) {
 				$content = wp_kses_post( file_get_contents( trailingslashit( __DIR__ ) . 'test-email.html' ) );
@@ -218,7 +218,7 @@ class Settings {
 			wp_mail(
 				$recipients,
 				// translators: %s is the website name.
-				sprintf( __( 'Test email from %s', 'wpsimplesmtp' ), get_bloginfo( 'name' ) ),
+				sprintf( __( 'Test email from %s', 'wp-simple-smtp' ), get_bloginfo( 'name' ) ),
 				$content,
 				[ 'x-test: WP SMTP', $content_type ]
 			);
@@ -226,7 +226,7 @@ class Settings {
 			wp_safe_redirect( admin_url( 'options-general.php?page=wpsimplesmtp' ) );
 			exit;
 		} else {
-			wp_die( esc_attr_e( 'You are not permitted to send a test email.', 'wpsimplesmtp' ) );
+			wp_die( esc_attr_e( 'You are not permitted to send a test email.', 'wp-simple-smtp' ) );
 		}
 	}
 
@@ -365,7 +365,7 @@ class Settings {
 	private function render_settings() {
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Mail Settings', 'wpsimplesmtp' ); ?></h1>
+			<h1><?php esc_html_e( 'Mail Settings', 'wp-simple-smtp' ); ?></h1>
 			<form id='wpss-conf' action='options.php' method='post'>
 			<?php
 			settings_fields( 'wpsimplesmtp_smtp' );
@@ -389,7 +389,7 @@ class Settings {
 					$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
 				}
 
-				echo wp_kses( '<h2>' . __( 'Email Log', 'wpsimplesmtp' ) . '</h2>', [ 'h2' => [] ] );
+				echo wp_kses( '<h2>' . __( 'Email Log', 'wp-simple-smtp' ) . '</h2>', [ 'h2' => [] ] );
 				$this->log_table->display( $page );
 			}
 			?>
@@ -412,7 +412,7 @@ class Settings {
 				'eid'     => $id,
 				'ssnonce' => wp_create_nonce( 'wpss_action' ),
 			],
-			menu_page_url( 'wpsimplesmtp', false )
+			menu_page_url( 'wp-simple-smtp', false )
 		) . '&resend';
 
 		if ( current_user_can( 'administrator' ) && isset( $log ) ) {
@@ -427,7 +427,7 @@ class Settings {
 			}
 			?>
 			<div class="wrap">
-				<h1><?php esc_html_e( 'View Email', 'wpsimplesmtp' ); ?></h1>
+				<h1><?php esc_html_e( 'View Email', 'wp-simple-smtp' ); ?></h1>
 				<div id="poststuff">
 					<div id="post-body" class="metabox-holder columns-2">
 						<div id="post-body-content">
@@ -440,18 +440,18 @@ class Settings {
 						</div>
 						<div id="postbox-container-1" class="postbox-container">
 							<div class="stuffbox">
-								<h2 class="hndle"><?php esc_html_e( 'Information', 'wpsimplesmtp' ); ?></h2>
+								<h2 class="hndle"><?php esc_html_e( 'Information', 'wp-simple-smtp' ); ?></h2>
 								<div class="inside">
 									<div id="minor-publishing">
 										<div id="misc-publishing-actions">
-											<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'wpsimplesmtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
-											<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'wpsimplesmtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
+											<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'wp-simple-smtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
+											<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'wp-simple-smtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
 										</div>
 										<div class="clear"></div>
 									</div>
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
-											<a href="<?php echo esc_html( $resend_url ); ?>" class="button button-primary button-large <?php echo esc_attr( $recset ); ?>"><?php esc_html_e( 'Resend', 'wpsimplesmtp' ); ?></a>
+											<a href="<?php echo esc_html( $resend_url ); ?>" class="button button-primary button-large <?php echo esc_attr( $recset ); ?>"><?php esc_html_e( 'Resend', 'wp-simple-smtp' ); ?></a>
 										</div>
 										<div class="clear"></div>
 									</div>

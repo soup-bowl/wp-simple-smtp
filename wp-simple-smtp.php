@@ -14,7 +14,6 @@
  * Author:            soup-bowl
  * Author URI:        https://www.soupbowl.io
  * License:           MIT
- * Text Domain:       wpsimplesmtp
  */
 
 use wpsimplesmtp\Log;
