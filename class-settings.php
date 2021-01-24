@@ -137,9 +137,9 @@ class Settings {
 		);
 
 		$sec = [
-			'def' => 'Default',
-			'ssl' => 'SSL',
-			'tls' => 'TLS',
+			'def' => __( 'Default', 'simple-smtp' ),
+			'ssl' => __( 'SSL', 'simple-smtp' ),
+			'tls' => __( 'TLS', 'simple-smtp' ),
 		];
 
 		$this->settings_field_generator( 'host', __( 'Host', 'simple-smtp' ), 'text', 'smtp.example.com' );
