@@ -412,7 +412,7 @@ class Settings {
 				'eid'     => $id,
 				'ssnonce' => wp_create_nonce( 'wpss_action' ),
 			],
-			menu_page_url( 'wp-simple-smtp', false )
+			menu_page_url( 'wpsimplesmtp', false )
 		) . '&resend';
 
 		if ( current_user_can( 'administrator' ) && isset( $log ) ) {

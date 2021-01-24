@@ -151,7 +151,7 @@ class LogTable {
 		$purge_all_url   = esc_html(
 			add_query_arg(
 				array( 'ssnonce' => wp_create_nonce( 'wpss_purgelog' ) ),
-				menu_page_url( 'wp-simple-smtp', false )
+				menu_page_url( 'wpsimplesmtp', false )
 			)
 		) . '&delete_all';
 
@@ -179,9 +179,9 @@ class LogTable {
 		$resend_label = __( 'Resend', 'simple-smtp' );
 		$delete_label = __( 'Delete', 'simple-smtp' );
 
-		$view_url   = esc_html( add_query_arg( 'eid', $entry->ID, menu_page_url( 'wp-simple-smtp', false ) ) );
-		$resend_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wp-simple-smtp', false ) ) ) . '&resend';
-		$delete_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wp-simple-smtp', false ) ) ) . '&delete';
+		$view_url   = esc_html( add_query_arg( 'eid', $entry->ID, menu_page_url( 'wpsimplesmtp', false ) ) );
+		$resend_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
+		$delete_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&delete';
 
 		$view   = "<span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">{$view_label}</a></span>";
 		$delete = "<span class=\"delete\"><a href=\"{$delete_url}\" aria-label=\"View\">{$delete_label}</a></span>";
