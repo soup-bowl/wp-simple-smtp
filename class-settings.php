@@ -116,7 +116,7 @@ class Settings {
 			__( 'Mail', 'simple-smtp' ),
 			__( 'Mail', 'simple-smtp' ),
 			'manage_options',
-			'wp-simple-smtp',
+			'wpsimplesmtp',
 			[ &$this, 'options_page' ]
 		);
 	}
