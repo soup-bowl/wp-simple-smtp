@@ -378,7 +378,7 @@ class Settings {
 			<?php
 			wp_nonce_field( 'simple-smtp-test-email' );
 			do_settings_sections( 'wpsimplesmtp_smtp_test' );
-			submit_button( 'Send', 'secondary' );
+			submit_button( __('Send', 'simple-smtp' ), 'secondary' );
 
 			$log_status = $this->options->get( 'log' );
 			if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
