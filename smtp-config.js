@@ -42,11 +42,11 @@ function wpss_load_quicksettings( data ) {
 	selector.id  = 'wpss-quickset';
 
 	// Description cell.
-	selector_c1.outerHTML = "<th scope=\"row\">" + __( 'Quick Config', 'wpsimplesmtp' ) + "</th>";
+	selector_c1.outerHTML = "<th scope=\"row\">" + __( 'Quick Config', 'simple-smtp' ) + "</th>";
 
 	// Content cell.
 	var datacount = data.configurations.length;
-	options      += '<option>' + __( 'Select', 'wpsimplesmtp' ) + '</option>';
+	options      += '<option>' + __( 'Select', 'simple-smtp' ) + '</option>';
 	for (i = 0; i < datacount; i++) {
 		options += '<option>' + data.configurations[i].name + '</option>';
 	}
@@ -55,7 +55,7 @@ function wpss_load_quicksettings( data ) {
 
 	sel_warning           = document.createElement( "p" );
 	sel_warning.className = 'description';
-	sel_warning.innerHTML = __( 'Automatically sets the default settings for most providers.', 'wpsimplesmtp' );
+	sel_warning.innerHTML = __( 'Automatically sets the default settings for most providers.', 'simple-smtp' );
 	selector_c2.appendChild( sel_warning );
 }
 
