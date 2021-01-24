@@ -41,10 +41,10 @@ class LogTable {
 		$pages   = $this->log->get_log_entry_pages( $maximum_per_page );
 
 		$labels = [
-			__( 'Recipient(s)', 'wp-simple-smtp' ),
-			__( 'Subject', 'wp-simple-smtp' ),
-			__( 'Date', 'wp-simple-smtp' ),
-			__( 'Error', 'wp-simple-smtp' ),
+			__( 'Recipient(s)', 'simple-smtp' ),
+			__( 'Subject', 'simple-smtp' ),
+			__( 'Date', 'simple-smtp' ),
+			__( 'Error', 'simple-smtp' ),
 		];
 
 		echo wp_kses(
@@ -81,7 +81,7 @@ class LogTable {
 			echo wp_kses(
 				sprintf(
 					'<tr><td colspan="4">%s</td></tr>',
-					__( 'Nothing to display.', 'wp-simple-smtp' )
+					__( 'Nothing to display.', 'simple-smtp' )
 				),
 				$this->allowed_table_html()
 			);
@@ -102,7 +102,7 @@ class LogTable {
 		$page_cu = ( $page + 1 );
 		$page_co = ( $pages + 1 );
 		// translators: %1$s refers to the current page, %2$s is the amount of pages the table has.
-		$message     = sprintf( __( 'Showing page %1$s of %2$s.', 'wp-simple-smtp' ), $page_cu, $page_co );
+		$message     = sprintf( __( 'Showing page %1$s of %2$s.', 'simple-smtp' ), $page_cu, $page_co );
 		$nav_buttons = $this->generate_table_buttons( $page, $pages );
 		echo wp_kses(
 			"<p><i>{$message}</i> {$nav_buttons->back} {$nav_buttons->next} {$nav_buttons->delete}</p>",
@@ -127,8 +127,8 @@ class LogTable {
 	 */
 	private function generate_table_buttons( $current_page, $max_pages ) {
 		$nonce      = [ 'ssnonce' => wp_create_nonce( 'wpss_logtable' ) ];
-		$next_label = __( 'Next', 'wp-simple-smtp' );
-		$back_label = __( 'Previous', 'wp-simple-smtp' );
+		$next_label = __( 'Next', 'simple-smtp' );
+		$back_label = __( 'Previous', 'simple-smtp' );
 		$current    = admin_url( 'options-general.php?page=wpsimplesmtp' );
 		$next_url   = add_query_arg(
 			[
@@ -147,7 +147,7 @@ class LogTable {
 		$next_allow = ( $current_page >= $max_pages ) ? 'disabled' : '';
 		$back_allow = ( $current_page <= 0 ) ? 'disabled' : '';
 
-		$purge_all_label = __( 'Purge Log', 'wp-simple-smtp' );
+		$purge_all_label = __( 'Purge Log', 'simple-smtp' );
 		$purge_all_url   = esc_html(
 			add_query_arg(
 				array( 'ssnonce' => wp_create_nonce( 'wpss_purgelog' ) ),
@@ -175,9 +175,9 @@ class LogTable {
 			'ssnonce' => wp_create_nonce( 'wpss_action' ),
 		];
 
-		$view_label   = __( 'View', 'wp-simple-smtp' );
-		$resend_label = __( 'Resend', 'wp-simple-smtp' );
-		$delete_label = __( 'Delete', 'wp-simple-smtp' );
+		$view_label   = __( 'View', 'simple-smtp' );
+		$resend_label = __( 'Resend', 'simple-smtp' );
+		$delete_label = __( 'Delete', 'simple-smtp' );
 
 		$view_url   = esc_html( add_query_arg( 'eid', $entry->ID, menu_page_url( 'wp-simple-smtp', false ) ) );
 		$resend_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wp-simple-smtp', false ) ) ) . '&resend';
