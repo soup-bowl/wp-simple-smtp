@@ -104,6 +104,11 @@ class LogTable {
 		// translators: %1$s refers to the current page, %2$s is the amount of pages the table has.
 		$message     = sprintf( __( 'Showing page %1$s of %2$s.', 'simple-smtp' ), $page_cu, $page_co );
 		$nav_buttons = $this->generate_table_buttons( $page, $pages );
+
+		if ( floatval(0) === $page_co ) {
+			// Do not display navigation if 0 pages/entries.
+			return;
+		}
 		echo wp_kses(
 			"<p><i>{$message}</i> {$nav_buttons->back} {$nav_buttons->next} {$nav_buttons->delete}</p>",
 			[

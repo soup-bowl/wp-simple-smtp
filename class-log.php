@@ -118,6 +118,7 @@ class Log {
 		$count = (int) wp_count_posts( $this->post_type )->publish;
 
 		if ( false !== $count ) {
+			$count = $count - intval(1);
 			return floor( $count / $limit );
 		} else {
 			return 1;

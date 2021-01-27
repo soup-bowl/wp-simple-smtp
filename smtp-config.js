@@ -12,15 +12,17 @@ const { __, _x, _n, _nx } = wp.i18n;
  * Grabs the sources file. If it loads, we continue. If not, we do not display this feature.
  */
 function wpss_loadin() {
-	jQuery.getJSON(
-		"https://www.soupbowl.io/wp-json/wprass/v1/sources",
-		function( data ) {
-			wpss_load_quicksettings( data );
-			document.getElementById( 'wpss-quickset' ).onchange = function( stuff ) {
-				wpss_input_selection( data, stuff.target.value );
-			};
-		}
-	);
+	if ( null !== document.getElementById( 'wpss-conf' ) ) {
+		jQuery.getJSON(
+			"https://www.soupbowl.io/wp-json/wprass/v1/sources",
+			function( data ) {
+				wpss_load_quicksettings( data );
+				document.getElementById( 'wpss-quickset' ).onchange = function( stuff ) {
+					wpss_input_selection( data, stuff.target.value );
+				};
+			}
+		);
+	}
 }
 
 /**
