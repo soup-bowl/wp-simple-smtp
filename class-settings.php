@@ -203,7 +203,13 @@ class Settings {
 			$content      = __( 'This email proves that your settings are correct.', 'simple-smtp' ) . PHP_EOL . get_bloginfo( 'url' );
 
 			if ( $is_html ) {
-				$content = wp_kses_post( file_get_contents( trailingslashit( __DIR__ ) . 'test-email.html' ) );
+				$html_email  = '<body>';
+				$html_email .= '<div style="text-align: center;margin-top: 5%;font-size: 4em;">' . __( '&#9989;', 'simple-smtp' ) . '</div>';
+				$html_email .= '<h1 style="font-family: sans-serif;text-align: center;font-size: 4em;">' . __( 'This is a test email', 'simple-smtp' ) . '</h1>';
+				$html_email .= '<p style="font-family: sans-serif;text-align: center;font-size: 1em;">' . $content . '</p>';
+				$html_email .= '</body>';
+
+				$content = wp_kses_post( $html_email );
 			}
 
 			// Sanitize rule disabled here as it doesn't detect the later sanitize call. Feel free to refactor.
