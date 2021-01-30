@@ -102,7 +102,7 @@ class Options {
 	}
 
 	/**
-	 * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.
+	 * Checks the encryption passphrase has not changed.
 	 *
 	 * @param string $string The test string to match.
 	 * @return boolean Represents whether the test value decryption was a success or not.
