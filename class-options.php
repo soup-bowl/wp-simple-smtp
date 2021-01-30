@@ -13,6 +13,11 @@ namespace wpsimplesmtp;
  * Handles the retrieval of system variables.
  */
 class Options {
+	/**
+	 * Test value constant for checking encryption functionality.
+	 *
+	 * @var string
+	 */
 	protected $test_value = 'helloworld';
 
 	/**
@@ -104,7 +109,6 @@ class Options {
 	/**
 	 * Checks the encryption passphrase has not changed.
 	 *
-	 * @param string $string The test string to match.
 	 * @return boolean Represents whether the test value decryption was a success or not.
 	 */
 	public function check_encryption_key() {

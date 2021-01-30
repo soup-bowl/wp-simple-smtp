@@ -16,10 +16,18 @@ use PHPUnit\Framework\TestCase;
  * Tests the option functionality.
  */
 class OptionsTest extends TestCase {
+	/**
+	 * Options.
+	 *
+	 * @var Options
+	 */
 	protected $options;
 
+	/**
+	 * Constructor.
+	 */
 	public function setUp():void {
-		if ( ! defined( 'SECURE_AUTH_KEY') ) {
+		if ( ! defined( 'SECURE_AUTH_KEY' ) ) {
 			define( 'SECURE_AUTH_KEY', 's7r0237r897d89s69r83289' );
 		}
 
