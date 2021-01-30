@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+$GLOBALS['sbss_temp_store'] = [];
+
 /**
  * Mocks the WordPress add_action function.
  *
@@ -27,21 +29,47 @@ function add_action( $a, $b = '' ) {
 /**
  * Mocks the WordPress get_option function.
  *
- * @param mixed $a Not used.
- * @return string[]
+ * @param mixed $name Key name.
+ * @return mixed
  */
-function get_option( $a ) {
+function get_option( $name ) {
+	global $sbss_temp_store;
+
 	$env_loc = __DIR__ . '/../.env';
 	if ( file_exists( $env_loc ) ) {
 		$dotenv = Dotenv::createImmutable( __DIR__ . '/../' );
 		$dotenv->load( $env_loc );
 	}
 
-	return [
-		'host'     => $_ENV['SMTP_HOST'],
-		'port'     => $_ENV['SMTP_PORT'],
-		'username' => $_ENV['SMTP_USER'],
-		'password' => $_ENV['SMTP_PASS'],
-		'auth'     => $_ENV['SMTP_AUTH'],
-	];
+	switch ( $name ) {
+		case 'wpssmtp_smtp':
+			return [
+				'host'     => $_ENV['SMTP_HOST'],
+				'port'     => $_ENV['SMTP_PORT'],
+				'username' => $_ENV['SMTP_USER'],
+				'password' => $_ENV['SMTP_PASS'],
+				'auth'     => $_ENV['SMTP_AUTH'],
+			];
+		default:
+			if (! empty ( $sbss_temp_store[ $name ] ) ) {
+				return $sbss_temp_store[ $name ];
+			} else {
+				return '';
+			}
+	}
+}
+
+/**
+ * Mocks the WordPress update_option function.
+ *
+ * @param string $name Key name.
+ * @param mixed $value Variable to be stored.
+ * @return mixed
+ */
+function update_option( $name, $value ) {
+	global $sbss_temp_store;
+
+	$sbss_temp_store[ $name ] = $value;
+
+	return true;
 }

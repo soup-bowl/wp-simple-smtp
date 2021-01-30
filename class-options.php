@@ -13,6 +13,8 @@ namespace wpsimplesmtp;
  * Handles the retrieval of system variables.
  */
 class Options {
+	protected $test_value = 'helloworld';
+
 	/**
 	 * Gets the setting value. This checks the following in chronological order:
 	 * - Environmental variables (including .env).
@@ -97,6 +99,32 @@ class Options {
 		} else {
 			return $options[ $name ];
 		}
+	}
+
+	/**
+	 * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.
+	 *
+	 * @param string $string The test string to match.
+	 * @return boolean Represents whether the test value decryption was a success or not.
+	 */
+	public function check_encryption_key() {
+		$codeword = openssl_decrypt( get_option( 'wpssmtp_echk' ), 'AES-128-ECB', $this->encryption_key() );
+
+		if ( $this->test_value === $codeword ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Sets a test string for testing encryption purposes.
+	 */
+	public function set_encryption_test() {
+		update_option(
+			'wpssmtp_echk',
+			openssl_encrypt( $this->test_value, 'AES-128-ECB', $this->encryption_key() )
+		);
 	}
 
 	/**
