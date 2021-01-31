@@ -44,14 +44,12 @@ class Mailtest {
 	 */
 	public function resend_email( $email_id ) {
 		$email       = $this->log->get_log_entry_by_id( $email_id );
-		$attachments = $this->log->get_log_entry_attachments( $email_id );
-		$recipients  = implode( ', ', json_decode( get_post_meta( $email->ID, 'recipients', true ) ) );
-		$headers     = json_decode( get_post_meta( $email->ID, 'headers', true ) );
+		$recipients  = implode( ', ', $email->get_recipients() );
 		$opts        = get_option( 'wpss_resent', [] );
 
 		$attachpaths = [];
-		if ( ! empty( $attachments ) ) {
-			foreach ( $attachments as $attachment ) {
+		if ( ! empty( $email->get_attachments() ) ) {
+			foreach ( $email->get_attachments() as $attachment ) {
 				if ( $attachment->exists() ) {
 					$attachpaths[] = $attachment->file_path();
 				}
@@ -64,9 +62,9 @@ class Mailtest {
 
 			wp_mail(
 				$recipients,
-				$email->post_title,
-				$email->post_content,
-				$headers,
+				$email->get_subject(),
+				$email->get_body(),
+				$email->get_headers(),
 				$attachpaths
 			);
 

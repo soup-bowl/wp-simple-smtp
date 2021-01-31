@@ -37,7 +37,6 @@ class MailView {
 	 */
 	public function render_email_view( $id ) {
 		$log         = $this->log->get_log_entry_by_id( $id );
-		$attachments = $this->log->get_log_entry_attachments( $id );
 		$recset      = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
 		$resend_url  = add_query_arg(
 			[
@@ -48,14 +47,14 @@ class MailView {
 		) . '&resend';
 
 		if ( current_user_can( 'administrator' ) && isset( $log ) ) {
-			$recipients = implode( ', ', json_decode( get_post_meta( $log->ID, 'recipients', true ) ) );
-			$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( get_post_meta( $log->ID, 'timestamp', true ) ) );
+			$recipients = implode( ', ', $log->get_recipients() );
+			$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $log->get_timestamp() ) );
 
 			$content = '';
-			if ( isset( $log->headers ) && false !== strpos( $log->headers, 'Content-Type: text\/html' ) ) {
-				$content = wp_kses_post( $log->post_content );
+			if ( ! empty( $log->get_headers() ) && false !== strpos( $log->get_headers_unified(), 'Content-Type: text\/html' ) ) {
+				$content = wp_kses_post( $log->get_body() );
 			} else {
-				$content = wp_kses_post( '<pre>' . $log->post_content . '</pre>' );
+				$content = wp_kses_post( '<pre>' . $log->get_body() . '</pre>' );
 			}
 			?>
 			<div class="wrap">
@@ -64,9 +63,9 @@ class MailView {
 					<div id="post-body" class="metabox-holder columns-2">
 						<div id="post-body-content">
 							<div class="postbox">
-								<h2 class="hndle"><?php echo esc_html( $log->post_title ); ?></h2>			
+								<h2 class="hndle"><?php echo esc_html( $log->get_subject() ); ?></h2>			
 								<div class="inside">
-									<?php echo wp_kses_post( $content ); ?>
+									<?php echo wp_kses_post( $log->get_body() ); ?>
 								</div>	
 							</div>
 						</div>
@@ -78,11 +77,11 @@ class MailView {
 										<div id="misc-publishing-actions">
 											<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
 											<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
-											<?php if ( ! empty( $attachments ) ) : ?>
+											<?php if ( ! empty( $log->get_attachments() ) ) : ?>
 												<div class="misc-pub-section">
 													<?php esc_html_e( 'Attachment(s)', 'simple-smtp' ); ?>:
 													<ol>
-														<?php foreach ( $attachments as $attachment ) : ?>
+														<?php foreach ( $log->get_attachments() as $attachment ) : ?>
 															<li>
 																<?php echo esc_html( $attachment->basename() ); ?>
 																<?php if ( ! $attachment->exists() ) : ?>
