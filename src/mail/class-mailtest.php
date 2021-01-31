@@ -20,13 +20,13 @@ class Mailtest {
 	 *
 	 * @var LogService
 	 */
-	protected $log;
+	protected $log_service;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->log = new LogService();
+		$this->log_service = new LogService();
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Mailtest {
 	 * @return boolean
 	 */
 	public function resend_email( $email_id ) {
-		$email      = $this->log->get_log_entry_by_id( $email_id );
+		$email      = $this->log_service->get_log_entry_by_id( $email_id );
 		$recipients = implode( ', ', $email->get_recipients() );
 		$opts       = get_option( 'wpss_resent', [] );
 
@@ -107,7 +107,7 @@ class Mailtest {
 				// translators: %s is the website name.
 				sprintf( __( 'Test email from %s', 'simple-smtp' ), get_bloginfo( 'name' ) ),
 				$content,
-				[ 'x-test: WP SMTP', $content_type ],
+				[ 'x-test: WP SMTP', $content_type ]
 			);
 
 			wp_safe_redirect( admin_url( 'options-general.php?page=wpsimplesmtp' ) );

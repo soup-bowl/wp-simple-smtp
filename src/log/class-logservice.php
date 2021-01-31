@@ -12,7 +12,6 @@ namespace wpsimplesmtp;
 use wpsimplesmtp\Log;
 use wpsimplesmtp\LogAttachment;
 
-use stdClass;
 use WP_Query;
 
 /**
@@ -47,8 +46,6 @@ class LogService {
 	 * @return integer ID of the newly-inserted entry.
 	 */
 	public function new_log_entry( $log ) {
-		$attachments = ( ! empty( $log->get_attachments() ) ) ? $log->get_attachments()->to_string() : null;
-
 		$post_id = wp_insert_post(
 			[
 				'post_title'   => $log->get_subject(),
@@ -58,7 +55,7 @@ class LogService {
 				'meta_input'   => [
 					'recipients'  => wp_json_encode( $log->get_recipients() ),
 					'headers'     => wp_json_encode( $log->get_headers() ),
-					'attachments' => $attachments,
+					'attachments' => $log->get_attachments(),
 					'timestamp'   => $log->get_timestamp(),
 					'error'       => $log->get_error(),
 				],

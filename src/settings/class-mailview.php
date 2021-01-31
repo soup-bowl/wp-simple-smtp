@@ -20,13 +20,13 @@ class MailView {
 	 *
 	 * @var LogService
 	 */
-	protected $log;
+	protected $log_service;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->log = new LogService();
+		$this->log_service = new LogService();
 	}
 
 	/**
@@ -36,7 +36,7 @@ class MailView {
 	 * @return void Prints to page.
 	 */
 	public function render_email_view( $id ) {
-		$log        = $this->log->get_log_entry_by_id( $id );
+		$log        = $this->log_service->get_log_entry_by_id( $id );
 		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
 		$resend_url = add_query_arg(
 			[

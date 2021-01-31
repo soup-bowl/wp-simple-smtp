@@ -49,11 +49,11 @@ class Settings {
 		add_action( 'admin_init', [ &$this, 'settings_test_init' ] );
 		add_filter( 'pre_update_option_wpssmtp_smtp', [ &$this, 'post_processing' ] );
 
-		$this->options   = new Options();
-		$this->log       = new LogService();
-		$this->log_table = new LogTable();
-		$this->mail_test = new Mailtest();
-		$this->mail_view = new MailView();
+		$this->options     = new Options();
+		$this->log_service = new LogService();
+		$this->log_table   = new LogTable();
+		$this->mail_test   = new Mailtest();
+		$this->mail_view   = new MailView();
 	}
 
 	/**
@@ -61,7 +61,7 @@ class Settings {
 	 */
 	public function options_page() {
 		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['delete_all'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_purgelog' ) ) {
-			$this->log->delete_all_logs();
+			$this->log_service->delete_all_logs();
 
 			wp_die( esc_attr_e( 'The log has been cleared.', 'simple-smtp' ) );
 		}
@@ -87,7 +87,7 @@ class Settings {
 
 		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['delete'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
 			$return = true;
-			$resp   = $this->log->delete_log_entry( intval( $_REQUEST['eid'] ) );
+			$resp   = $this->log_service->delete_log_entry( intval( $_REQUEST['eid'] ) );
 			if ( $resp ) {
 				?>
 				<div class="notice notice-success is-dismissible">

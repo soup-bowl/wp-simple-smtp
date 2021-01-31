@@ -20,13 +20,13 @@ class LogTable {
 	 *
 	 * @var LogService
 	 */
-	protected $log;
+	protected $log_service;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->log = new LogService();
+		$this->log_service = new LogService();
 	}
 
 	/**
@@ -37,8 +37,8 @@ class LogTable {
 	 */
 	public function display( $page, $maximum_per_page = 5 ) {
 		$page    = ( $page < 0 ) ? 0 : $page;
-		$entries = $this->log->get_log_entries( ( $page + 1 ), $maximum_per_page );
-		$pages   = $this->log->get_log_entry_pages( $maximum_per_page );
+		$entries = $this->log_service->get_log_entries( ( $page + 1 ), $maximum_per_page );
+		$pages   = $this->log_service->get_log_entry_pages( $maximum_per_page );
 
 		$labels = [
 			__( 'Recipient(s)', 'simple-smtp' ),
