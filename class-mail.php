@@ -131,7 +131,7 @@ class Mail {
 
 			$attachments = [];
 			foreach ( $parameters['attachments'] as $attachment ) {
-				$attachments[] = ( new LogAttachment )->new( $attachment )->to_string();
+				$attachments[] = ( new LogAttachment() )->new( $attachment )->to_string();
 			}
 
 			$wpss_mail_id = $this->log->new_log_entry(

@@ -42,13 +42,13 @@ class Log {
 	/**
 	 * Creates a new log entry.
 	 *
-	 * @param string $recipients The person(s) who recieved the email.
-	 * @param string $subject    Subject headline from the email.
-	 * @param string $content    Whatever was inside the dispatched email.
-	 * @param array  $headers    Email headers served alongside the dispatch.
+	 * @param string   $recipients The person(s) who recieved the email.
+	 * @param string   $subject    Subject headline from the email.
+	 * @param string   $content    Whatever was inside the dispatched email.
+	 * @param array    $headers    Email headers served alongside the dispatch.
 	 * @param string[] $attachments Location of attachments in the system.
-	 * @param string $timestamp  The time the email was sent.
-	 * @param string $error      Any errors encountered during the exchange.
+	 * @param string   $timestamp  The time the email was sent.
+	 * @param string   $error      Any errors encountered during the exchange.
 	 * @return integer ID of the newly-inserted entry.
 	 */
 	public function new_log_entry( $recipients, $subject, $content, $headers, $attachments = [], $timestamp = null, $error = null ) {
@@ -61,11 +61,11 @@ class Log {
 				'post_status'  => 'publish',
 				'post_type'    => $this->post_type,
 				'meta_input'   => [
-					'recipients' => $recipients,
-					'headers'    => $headers,
+					'recipients'  => $recipients,
+					'headers'     => $headers,
 					'attachments' => $attachments,
-					'timestamp'  => $timestamp,
-					'error'      => $error,
+					'timestamp'   => $timestamp,
+					'error'       => $error,
 				],
 			]
 		);
@@ -124,7 +124,7 @@ class Log {
 		$count = (int) wp_count_posts( $this->post_type )->publish;
 
 		if ( false !== $count ) {
-			$count = $count - intval(1);
+			$count = $count - intval( 1 );
 			return floor( $count / $limit );
 		} else {
 			return 1;

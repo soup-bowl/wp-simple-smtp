@@ -48,13 +48,19 @@ class LogAttachment {
 	 */
 	protected $extension;
 
+	/**
+	 * Creates a new log attachment object.
+	 *
+	 * @param string $location The location of the tracked file.
+	 * @return self
+	 */
 	public function new( $location ) {
 		$this->location = $location;
 
 		if ( file_exists( $this->location ) ) {
 			$this->exists = true;
 
-			$file = pathinfo( $this->location );
+			$file            = pathinfo( $this->location );
 			$this->basename  = $file['basename'];
 			$this->filename  = $file['filename'];
 			$this->extension = ( isset( $file['extension'] ) ) ? $file['extension'] : '';
@@ -68,26 +74,57 @@ class LogAttachment {
 		return $this;
 	}
 
+	/**
+	 * The file path of the file.
+	 *
+	 * @return string
+	 */
 	public function file_path() {
 		return $this->location;
 	}
 
+	/**
+	 * Check for whether the file currently exists or not.
+	 *
+	 * @return boolean
+	 */
 	public function exists() {
 		return $this->exists;
 	}
 
+	/**
+	 * Gets the file name.
+	 *
+	 * @return string
+	 */
 	public function filename() {
 		return $this->filename;
 	}
 
+	/**
+	 * Returns the filename, plus extension.
+	 *
+	 * @return string
+	 */
 	public function basename() {
 		return $this->basename;
 	}
 
+	/**
+	 * Gets the file extension.
+	 *
+	 * @return string
+	 */
 	public function extension() {
 		return $this->extension;
 	}
 
+	/**
+	 * Takes the stored JSON and unpacks it back into the object.
+	 *
+	 * @param string $input The direct output of the to_string function.
+	 * @return self
+	 */
 	public function unpack( $input ) {
 		$input           = json_decode( $input );
 		$this->location  = $input->location;
@@ -104,12 +141,19 @@ class LogAttachment {
 		return $this;
 	}
 
+	/**
+	 * Returns the current object class as a JSON string.
+	 *
+	 * @return string
+	 */
 	public function to_string() {
-		return json_encode([
-			'location'  => $this->location,
-			'basename'  => $this->basename,
-			'filename'  => $this->filename,
-			'extension' => $this->extension,
-		]);
+		return wp_json_encode(
+			[
+				'location'  => $this->location,
+				'basename'  => $this->basename,
+				'filename'  => $this->filename,
+				'extension' => $this->extension,
+			]
+		);
 	}
 }
