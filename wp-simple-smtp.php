@@ -10,7 +10,7 @@
  * Plugin Name:       Simple SMTP
  * Description:       Adds mail configuration to WordPress in a simple, standardised plugin.
  * Plugin URI:        https://www.soupbowl.io/wp-plugins
- * Version:           1.0.2
+ * Version:           1.1
  * Author:            soup-bowl
  * Author URI:        https://www.soupbowl.io
  * License:           MIT
