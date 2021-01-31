@@ -26,6 +26,6 @@ class MailDisable extends \PHPMailer\PHPMailer\PHPMailer {
 	 * @throws \PHPMailer\PHPMailer\Exception Disabled email message.
 	 */
 	public function send() {
-		throw new \PHPMailer\PHPMailer\Exception( __( 'Emails are currently disabled.', 'simple-smtp' ) );
+		throw new \PHPMailer\PHPMailer\Exception( 'WPSS_MAIL_OFF' );
 	}
 }
