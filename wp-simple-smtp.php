@@ -82,9 +82,12 @@ add_action(
  */
 function wpsmtp_has_error() {
 	$kses_standard = [
-		'div' => [ 'class' => [] ],
+		'div' => [
+			'class' => [],
+		],
 		'p'   => [],
 	];
+
 	if ( ! empty( get_option( 'wpssmtp_keycheck_fail' ) ) ) {
 		$notice  = '<div class="error fade"><p>';
 		$notice .= __( 'Encryption keys have changed - Please update the SMTP password to avoid email disruption.', 'simple-smtp' );
