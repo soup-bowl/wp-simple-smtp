@@ -279,7 +279,7 @@ class Settings {
 			$options['pass_d'] = $pass_opt['d'];
 		}
 
-		delete_option( 'wpssmtp_keycheck_fail' );
+		$this->reset_encryption_keycheck();
 
 		return $options;
 	}
@@ -483,6 +483,16 @@ class Settings {
 	private function encryption_keycheck() {
 		if ( ! empty( get_option( 'wpssmtp_echk' ) ) && ! $this->options->check_encryption_key() ) {
 			add_option( 'wpssmtp_keycheck_fail', true );
+		}
+	}
+
+	/**
+	 * Resets the encryption warning, if it has been triggered.
+	 */
+	private function reset_encryption_keycheck() {
+		if ( ! empty( get_option( 'wpssmtp_keycheck_fail' ) ) ) {
+			$this->options->set_encryption_test();
+			delete_option( 'wpssmtp_keycheck_fail' );
 		}
 	}
 }
