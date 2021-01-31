@@ -19,6 +19,7 @@
 use wpsimplesmtp\Log;
 use wpsimplesmtp\Settings;
 use wpsimplesmtp\Mail;
+use wpsimplesmtp\Mailtest;
 
 /**
  * Autoloader.
@@ -48,6 +49,8 @@ add_action(
 		}
 	}
 );
+
+( new Mailtest() )->hooks();
 
 /**
  * Actions to be executed on plugin activation.
