@@ -11,6 +11,7 @@ namespace wpsimplesmtp;
 
 use wpsimplesmtp\Options;
 use wpsimplesmtp\Log;
+use wpsimplesmtp\LogAttachment;
 
 /**
  * Configures PHPMailer to use our settings rather than the default.
@@ -128,12 +129,17 @@ class Mail {
 		if ( true === filter_var( $this->options->get( 'log' )->value, FILTER_VALIDATE_BOOLEAN ) ) {
 			$recipient_array = ( is_array( $parameters['to'] ) ) ? $parameters['to'] : [ $parameters['to'] ];
 
+			$attachments = [];
+			foreach ( $parameters['attachments'] as $attachment ) {
+				$attachments[] = ( new LogAttachment )->new( $attachment )->to_string();
+			}
+
 			$wpss_mail_id = $this->log->new_log_entry(
 				wp_json_encode( $recipient_array ),
 				$parameters['subject'],
 				$parameters['message'],
 				wp_json_encode( $parameters['headers'] ),
-				$parameters['attachments']
+				$attachments
 			);
 		}
 

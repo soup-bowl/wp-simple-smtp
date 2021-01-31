@@ -226,7 +226,7 @@ class Settings {
 				// translators: %s is the website name.
 				sprintf( __( 'Test email from %s', 'simple-smtp' ), get_bloginfo( 'name' ) ),
 				$content,
-				[ 'x-test: WP SMTP', $content_type ]
+				[ 'x-test: WP SMTP', $content_type ],
 			);
 
 			wp_safe_redirect( admin_url( 'options-general.php?page=wpsimplesmtp' ) );
@@ -414,10 +414,10 @@ class Settings {
 	 * @return void Prints to page.
 	 */
 	private function render_email_view( $id ) {
-		$log        = $this->log->get_log_entry_by_id( $id );
+		$log         = $this->log->get_log_entry_by_id( $id );
 		$attachments = $this->log->get_log_entry_attachments( $id );
-		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
-		$resend_url = add_query_arg(
+		$recset      = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
+		$resend_url  = add_query_arg(
 			[
 				'eid'     => $id,
 				'ssnonce' => wp_create_nonce( 'wpss_action' ),
@@ -456,6 +456,16 @@ class Settings {
 										<div id="misc-publishing-actions">
 											<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
 											<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
+											<?php if ( ! empty( $attachments ) ) : ?>
+												<div class="misc-pub-section">
+													<?php esc_html_e( 'Attachment(s)', 'simple-smtp' ); ?>:
+													<ol>
+														<?php foreach ( $attachments as $attachment ) : ?>
+															<li><?php echo $attachment->basename(); ?></li>
+														<?php endforeach; ?>
+													</ol>
+												</div>
+											<?php endif; ?>
 										</div>
 										<div class="clear"></div>
 									</div>

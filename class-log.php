@@ -143,7 +143,7 @@ class Log {
 		if ( ! empty( $attachments ) ) {
 			$file_collection = [];
 			foreach ( $attachments as $attachment ) {
-				$file_collection[] = new LogAttachment( $attachment );
+				$file_collection[] = ( new LogAttachment() )->unpack( $attachment );
 			}
 
 			return $file_collection;
