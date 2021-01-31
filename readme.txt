@@ -28,6 +28,7 @@ These can be either stored in your systems env setup, or in wp-config.php as `de
 * `SMTP_SEC` (string) Use a particular email security method (accepts 'def' (default), 'ssl' and 'tls').
 * `SMTP_NOVERIFYSSL` (boolean) Disable validation of the SMTP server certificate (not recommended).
 * `SMTP_LOG` (boolean) Controls the logging capability and visibility.
+* `SMTP_DISABLE` (boolean) Disables the mailer. They will still be logged if enabled, but won't send out.
 
 It is recommended to store at least `SMTP_PASS` in your wp-config.php file (with the correct file permissions set). If the openssl extension is available, the plugin will attempt to encrypt the password in the database.
 
