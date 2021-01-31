@@ -272,12 +272,14 @@ class Settings {
 	 * @return array Parameter #1 with possible changes.
 	 */
 	public function post_processing( $options ) {
-		if ( extension_loaded( 'openssl' ) ) {
+		if ( extension_loaded( 'openssl' ) && '' !== $options['pass'] ) {
 			$pass_opt = $this->options->encrypt( 'pass', $options['pass'] );
 
 			$options['pass']   = $pass_opt['string'];
 			$options['pass_d'] = $pass_opt['d'];
 		}
+
+		delete_option( 'wpssmtp_keycheck_fail' );
 
 		return $options;
 	}
@@ -369,6 +371,7 @@ class Settings {
 	 * Shows the configuration pane on the current page.
 	 */
 	private function render_settings() {
+		$this->encryption_keycheck();
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Mail Settings', 'simple-smtp' ); ?></h1>
@@ -384,7 +387,7 @@ class Settings {
 			<?php
 			wp_nonce_field( 'simple-smtp-test-email' );
 			do_settings_sections( 'wpsimplesmtp_smtp_test' );
-			submit_button( __('Send', 'simple-smtp' ), 'secondary' );
+			submit_button( __( 'Send', 'simple-smtp' ), 'secondary' );
 
 			$log_status = $this->options->get( 'log' );
 			if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
@@ -471,6 +474,15 @@ class Settings {
 			<?php
 		} else {
 			wp_die( 'No email found.' );
+		}
+	}
+
+	/**
+	 * Checks the encrytion key is valid, if exists.
+	 */
+	private function encryption_keycheck() {
+		if ( ! empty( get_option( 'wpssmtp_echk' ) ) && ! $this->options->check_encryption_key() ) {
+			add_option( 'wpssmtp_keycheck_fail', true );
 		}
 	}
 }

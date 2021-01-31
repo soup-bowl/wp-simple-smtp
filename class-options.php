@@ -76,6 +76,8 @@ class Options {
 		];
 
 		if ( extension_loaded( 'openssl' ) ) {
+			$this->set_encryption_test();
+
 			$pl['string'] = openssl_encrypt( $value, 'AES-128-ECB', $this->encryption_key() );
 			$pl['d']      = 1;
 		}
