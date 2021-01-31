@@ -16,6 +16,11 @@
         <exclude-pattern>class-log.php</exclude-pattern>
     </rule>
 
+	<!-- Happy to hear alternatives. This was the best I could conceive -->
+	<rule ref="WordPress.WP.GlobalVariablesOverride.Prohibited">
+		<exclude-pattern>wp-simple-smtp.php</exclude-pattern>
+    </rule>
+
 	<rule ref="Generic.Arrays.DisallowShortArraySyntax">
 		<exclude-pattern>*/*</exclude-pattern>
 	</rule>
