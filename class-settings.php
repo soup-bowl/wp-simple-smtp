@@ -470,7 +470,12 @@ class Settings {
 													<?php esc_html_e( 'Attachment(s)', 'simple-smtp' ); ?>:
 													<ol>
 														<?php foreach ( $attachments as $attachment ) : ?>
-															<li><?php echo $attachment->basename(); ?></li>
+															<li>
+																<?php echo $attachment->basename(); ?>
+																<?php if ( ! $attachment->exists() ) : ?>
+																	<span class="wpsmtp-badge wpsmtp-badge-warning"><?php esc_html_e( 'File missing', 'simple-smtp' ); ?></span>
+																<?php endif; ?>
+															</li>
 														<?php endforeach; ?>
 													</ol>
 												</div>
