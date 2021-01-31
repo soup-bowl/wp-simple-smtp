@@ -77,5 +77,25 @@ add_action(
 	}
 );
 
+/**
+ * Displays plugin errors on admin screen if error criteria is met.
+ */
+function wpsmtp_has_error() {
+	$kses_standard = [
+		'div' => [
+			'class' => [],
+		],
+		'p'   => [],
+	];
+
+	if ( ! empty( get_option( 'wpssmtp_keycheck_fail' ) ) ) {
+		$notice  = '<div class="error fade"><p>';
+		$notice .= __( 'Encryption keys have changed - Please update the SMTP password to avoid email disruption.', 'simple-smtp' );
+		$notice .= '</p></div>';
+		echo wp_kses( $notice, $kses_standard );
+	}
+}
+add_action( 'admin_notices', 'wpsmtp_has_error' );
+
 register_activation_hook( __FILE__, 'wpsmtp_activation' );
 register_deactivation_hook( __FILE__, 'wpsmtp_deactivation' );

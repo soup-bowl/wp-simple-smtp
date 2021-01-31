@@ -57,6 +57,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = Next =
+* New: Key change detection when SMTP password encryption is used, to warn user the email dispatch may fail ([#28](https://github.com/soup-bowl/wp-simple-smtp/issues/28)).
 * Change: Custom HTML removed in favour of translatable HTML test email. Thanks to [Kebbet](https://github.com/kebbet) for implementation ([#26](https://github.com/soup-bowl/wp-simple-smtp/issues/26)).
 * Fix: JavaScript error when viewing emails ([#24](https://github.com/soup-bowl/wp-simple-smtp/issues/24)).
 
