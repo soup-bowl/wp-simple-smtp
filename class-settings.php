@@ -226,7 +226,7 @@ class Settings {
 				// translators: %s is the website name.
 				sprintf( __( 'Test email from %s', 'simple-smtp' ), get_bloginfo( 'name' ) ),
 				$content,
-				[ 'x-test: WP SMTP', $content_type ]
+				[ 'x-test: WP SMTP', $content_type ],
 			);
 
 			wp_safe_redirect( admin_url( 'options-general.php?page=wpsimplesmtp' ) );
@@ -243,10 +243,18 @@ class Settings {
 	 * @return boolean
 	 */
 	public function resend_email( $email_id ) {
-		$email      = $this->log->get_log_entry_by_id( $email_id );
-		$recipients = implode( ', ', json_decode( get_post_meta( $email->ID, 'recipients', true ) ) );
-		$headers    = json_decode( get_post_meta( $email->ID, 'headers', true ) );
-		$opts       = get_option( 'wpss_resent', [] );
+		$email       = $this->log->get_log_entry_by_id( $email_id );
+		$attachments = $this->log->get_log_entry_attachments( $email_id );
+		$recipients  = implode( ', ', json_decode( get_post_meta( $email->ID, 'recipients', true ) ) );
+		$headers     = json_decode( get_post_meta( $email->ID, 'headers', true ) );
+		$opts        = get_option( 'wpss_resent', [] );
+
+		$attachpaths = [];
+		foreach ( $attachments as $attachment ) {
+			if ( $attachment->exists() ) {
+				$attachpaths[] = $attachment->file_path();
+			}
+		}
 
 		if ( isset( $email ) && ! in_array( $email_id, $opts, true ) ) {
 			$opts[] = $email_id;
@@ -256,7 +264,8 @@ class Settings {
 				$recipients,
 				$email->post_title,
 				$email->post_content,
-				$headers
+				$headers,
+				$attachpaths
 			);
 
 			return true;
@@ -414,9 +423,10 @@ class Settings {
 	 * @return void Prints to page.
 	 */
 	private function render_email_view( $id ) {
-		$log        = $this->log->get_log_entry_by_id( $id );
-		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
-		$resend_url = add_query_arg(
+		$log         = $this->log->get_log_entry_by_id( $id );
+		$attachments = $this->log->get_log_entry_attachments( $id );
+		$recset      = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
+		$resend_url  = add_query_arg(
 			[
 				'eid'     => $id,
 				'ssnonce' => wp_create_nonce( 'wpss_action' ),
@@ -455,6 +465,21 @@ class Settings {
 										<div id="misc-publishing-actions">
 											<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
 											<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
+											<?php if ( ! empty( $attachments ) ) : ?>
+												<div class="misc-pub-section">
+													<?php esc_html_e( 'Attachment(s)', 'simple-smtp' ); ?>:
+													<ol>
+														<?php foreach ( $attachments as $attachment ) : ?>
+															<li>
+																<?php echo esc_html( $attachment->basename() ); ?>
+																<?php if ( ! $attachment->exists() ) : ?>
+																	<span class="wpsmtp-badge wpsmtp-badge-warning"><?php esc_html_e( 'File missing', 'simple-smtp' ); ?></span>
+																<?php endif; ?>
+															</li>
+														<?php endforeach; ?>
+													</ol>
+												</div>
+											<?php endif; ?>
 										</div>
 										<div class="clear"></div>
 									</div>

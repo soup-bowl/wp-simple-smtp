@@ -105,7 +105,7 @@ class LogTable {
 		$message     = sprintf( __( 'Showing page %1$s of %2$s.', 'simple-smtp' ), $page_cu, $page_co );
 		$nav_buttons = $this->generate_table_buttons( $page, $pages );
 
-		if ( floatval(0) === $page_co ) {
+		if ( floatval( 0 ) === $page_co ) {
 			// Do not display navigation if 0 pages/entries.
 			return;
 		}

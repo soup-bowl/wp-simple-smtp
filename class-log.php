@@ -9,6 +9,8 @@
 
 namespace wpsimplesmtp;
 
+use wpsimplesmtp\LogAttachment;
+
 use stdClass;
 use WP_Query;
 
@@ -40,15 +42,18 @@ class Log {
 	/**
 	 * Creates a new log entry.
 	 *
-	 * @param string $recipients The person(s) who recieved the email.
-	 * @param string $subject    Subject headline from the email.
-	 * @param string $content    Whatever was inside the dispatched email.
-	 * @param array  $headers    Email headers served alongside the dispatch.
-	 * @param string $timestamp  The time the email was sent.
-	 * @param string $error      Any errors encountered during the exchange.
+	 * @param string   $recipients The person(s) who recieved the email.
+	 * @param string   $subject    Subject headline from the email.
+	 * @param string   $content    Whatever was inside the dispatched email.
+	 * @param array    $headers    Email headers served alongside the dispatch.
+	 * @param string[] $attachments Location of attachments in the system.
+	 * @param string   $timestamp  The time the email was sent.
+	 * @param string   $error      Any errors encountered during the exchange.
 	 * @return integer ID of the newly-inserted entry.
 	 */
-	public function new_log_entry( $recipients, $subject, $content, $headers, $timestamp, $error = null ) {
+	public function new_log_entry( $recipients, $subject, $content, $headers, $attachments = [], $timestamp = null, $error = null ) {
+		$timestamp = ( empty( $timestamp ) ) ? current_time( 'mysql' ) : $timestamp;
+
 		$post_id = wp_insert_post(
 			[
 				'post_title'   => $subject,
@@ -56,10 +61,11 @@ class Log {
 				'post_status'  => 'publish',
 				'post_type'    => $this->post_type,
 				'meta_input'   => [
-					'recipients' => $recipients,
-					'headers'    => $headers,
-					'timestamp'  => $timestamp,
-					'error'      => $error,
+					'recipients'  => $recipients,
+					'headers'     => $headers,
+					'attachments' => $attachments,
+					'timestamp'   => $timestamp,
+					'error'       => $error,
 				],
 			]
 		);
@@ -118,10 +124,31 @@ class Log {
 		$count = (int) wp_count_posts( $this->post_type )->publish;
 
 		if ( false !== $count ) {
-			$count = $count - intval(1);
+			$count = $count - intval( 1 );
 			return floor( $count / $limit );
 		} else {
 			return 1;
+		}
+	}
+
+	/**
+	 * Gets an object collection of attachments, if the entry had them.
+	 *
+	 * @param integer $id ID of the email log entry.
+	 * @return LogAttachment[]|null
+	 */
+	public function get_log_entry_attachments( $id ) {
+		$attachments = get_post_meta( $id, 'attachments', true );
+
+		if ( ! empty( $attachments ) ) {
+			$file_collection = [];
+			foreach ( $attachments as $attachment ) {
+				$file_collection[] = ( new LogAttachment() )->unpack( $attachment );
+			}
+
+			return $file_collection;
+		} else {
+			return null;
 		}
 	}
 
