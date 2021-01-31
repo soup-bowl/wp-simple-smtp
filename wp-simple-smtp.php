@@ -16,9 +16,10 @@
  * License:           MIT
  */
 
-use wpsimplesmtp\Log;
+use wpsimplesmtp\LogService;
 use wpsimplesmtp\Settings;
 use wpsimplesmtp\Mail;
+use wpsimplesmtp\Mailtest;
 
 /**
  * Autoloader.
@@ -42,12 +43,14 @@ add_action(
 	'admin_enqueue_scripts',
 	function ( $page ) {
 		if ( 'settings_page_wpsimplesmtp' === $page ) {
-			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'smtp-config.css', [], '1.0' );
-			wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.2', true );
+			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.css', [], '1.1' );
+			wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.3', true );
 			wp_set_script_translations( 'wpss_config', 'simple-smtp' );
 		}
 	}
 );
+
+( new Mailtest() )->hooks();
 
 /**
  * Actions to be executed on plugin activation.
@@ -74,7 +77,7 @@ function wpsmtp_deactivation() {
 add_action(
 	'init',
 	function() {
-		( new Log() )->register_log_storage();
+		( new LogService() )->register_log_storage();
 	}
 );
 

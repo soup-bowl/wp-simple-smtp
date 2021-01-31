@@ -9,15 +9,15 @@
 
 namespace wpsimplesmtp;
 
+use wpsimplesmtp\Log;
 use wpsimplesmtp\LogAttachment;
 
-use stdClass;
 use WP_Query;
 
 /**
  * Handles the processing and display of the email log.
  */
-class Log {
+class LogService {
 	/**
 	 * Name of the custom post type used for storing logs.
 	 *
@@ -42,30 +42,22 @@ class Log {
 	/**
 	 * Creates a new log entry.
 	 *
-	 * @param string   $recipients The person(s) who recieved the email.
-	 * @param string   $subject    Subject headline from the email.
-	 * @param string   $content    Whatever was inside the dispatched email.
-	 * @param array    $headers    Email headers served alongside the dispatch.
-	 * @param string[] $attachments Location of attachments in the system.
-	 * @param string   $timestamp  The time the email was sent.
-	 * @param string   $error      Any errors encountered during the exchange.
+	 * @param Log $log The log object.
 	 * @return integer ID of the newly-inserted entry.
 	 */
-	public function new_log_entry( $recipients, $subject, $content, $headers, $attachments = [], $timestamp = null, $error = null ) {
-		$timestamp = ( empty( $timestamp ) ) ? current_time( 'mysql' ) : $timestamp;
-
+	public function new_log_entry( $log ) {
 		$post_id = wp_insert_post(
 			[
-				'post_title'   => $subject,
-				'post_content' => $content,
+				'post_title'   => $log->get_subject(),
+				'post_content' => $log->get_body(),
 				'post_status'  => 'publish',
 				'post_type'    => $this->post_type,
 				'meta_input'   => [
-					'recipients'  => $recipients,
-					'headers'     => $headers,
-					'attachments' => $attachments,
-					'timestamp'   => $timestamp,
-					'error'       => $error,
+					'recipients'  => wp_json_encode( $log->get_recipients() ),
+					'headers'     => wp_json_encode( $log->get_headers() ),
+					'attachments' => $log->get_attachments(),
+					'timestamp'   => $log->get_timestamp(),
+					'error'       => $log->get_error(),
 				],
 			]
 		);
@@ -88,10 +80,12 @@ class Log {
 	 * Gets a single log entry based upon the ID.
 	 *
 	 * @param integer $id Log ID to retrieve details of.
-	 * @return stdClass
+	 * @return Log
 	 */
 	public function get_log_entry_by_id( $id ) {
-		return get_post( $id );
+		$post = get_post( $id );
+
+		return $this->wp_to_obj( $post );
 	}
 
 	/**
@@ -99,7 +93,7 @@ class Log {
 	 *
 	 * @param integer $page  What page to show. Automatically calculated with limit.
 	 * @param integer $limit How many to retrieve in this call.
-	 * @return array
+	 * @return Log[]
 	 */
 	public function get_log_entries( $page = 0, $limit = 0 ) {
 		$get_posts = new WP_Query();
@@ -111,7 +105,13 @@ class Log {
 			]
 		);
 
-		return $get_posts->get_posts();
+		$coll  = [];
+		$posts = $get_posts->get_posts();
+		foreach ( $posts as $post ) {
+			$coll[] = $this->wp_to_obj( $post );
+		}
+
+		return $coll;
 	}
 
 	/**
@@ -190,4 +190,30 @@ class Log {
 
 		return true;
 	}
+
+	/**
+	 * Converts the WordPress post object to the WP SMTP Log object.
+	 *
+	 * @param WP_Post $post The object.
+	 * @return Log
+	 */
+	private function wp_to_obj( $post ) {
+		if ( empty( $post ) ) {
+			return null;
+		}
+
+		$log = new Log();
+		$log->set_id( $post->ID );
+		$log->set_subject( $post->post_title );
+		$log->set_body( $post->post_content );
+		$log->set_recipients( json_decode( get_post_meta( $post->ID, 'recipients', true ) ) );
+		$log->set_headers( json_decode( get_post_meta( $post->ID, 'headers', true ) ) );
+		$log->set_headers_unified( get_post_meta( $post->ID, 'headers', true ) );
+		$log->set_error( get_post_meta( $post->ID, 'error', true ) );
+		$log->set_attachments( $this->get_log_entry_attachments( $post->ID ) );
+		$log->set_timestamp( get_post_meta( $post->ID, 'timestamp', true ) );
+
+		return $log;
+	}
+
 }

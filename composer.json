@@ -3,12 +3,15 @@
 	"description": "Gives WordPress the missing SMTP configuration panel it needed.",
     "autoload": {
         "classmap": [
-			"class-settings.php",
-			"class-options.php",
-			"class-mail.php",
-			"class-log.php",
-			"class-logtable.php",
-			"class-logattachment.php"
+			"src/class-options.php",
+			"src/settings/class-settings.php",
+			"src/settings/class-mailview.php",
+			"src/mail/class-mail.php",
+			"src/mail/class-mailtest.php",
+			"src/log/class-log.php",
+			"src/log/class-logservice.php",
+			"src/log/class-logtable.php",
+			"src/log/class-logattachment.php"
 		]
     },
 	"require-dev": {

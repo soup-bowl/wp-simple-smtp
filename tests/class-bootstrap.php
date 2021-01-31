@@ -51,7 +51,7 @@ function get_option( $name ) {
 				'auth'     => $_ENV['SMTP_AUTH'],
 			];
 		default:
-			if (! empty ( $sbss_temp_store[ $name ] ) ) {
+			if ( ! empty( $sbss_temp_store[ $name ] ) ) {
 				return $sbss_temp_store[ $name ];
 			} else {
 				return '';
@@ -63,7 +63,7 @@ function get_option( $name ) {
  * Mocks the WordPress update_option function.
  *
  * @param string $name Key name.
- * @param mixed $value Variable to be stored.
+ * @param mixed  $value Variable to be stored.
  * @return mixed
  */
 function update_option( $name, $value ) {
