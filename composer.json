@@ -7,7 +7,8 @@
 			"class-options.php",
 			"class-mail.php",
 			"class-log.php",
-			"class-logtable.php"
+			"class-logtable.php",
+			"class-logattachment.php"
 		]
     },
 	"require-dev": {

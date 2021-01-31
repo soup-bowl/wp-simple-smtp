@@ -415,6 +415,7 @@ class Settings {
 	 */
 	private function render_email_view( $id ) {
 		$log        = $this->log->get_log_entry_by_id( $id );
+		$attachments = $this->log->get_log_entry_attachments( $id );
 		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
 		$resend_url = add_query_arg(
 			[
