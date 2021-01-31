@@ -12,8 +12,6 @@ Adds a simple mail configuration panel into your WordPress installation. Support
 == Description ==
 Adds a simple, no-fuss SMTP settings to your WordPress installation that lets you define custom settings, which is especially useful for hosts with no control over the php `mail` functionality.
 
-The log & resend functionality currently **does not support attachments**.
-
 ## Environment and constant overriding (optional)
 This plugin will prefer environmental and constant-stored values over the plugin-saved equivalent settings, making it easier to use this plugin via deployment.
 
@@ -57,6 +55,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = Next =
+* New: Attachments are now logged, and will be resent if they are still available on the system ([#14](https://github.com/soup-bowl/wp-simple-smtp/issues/14)).
 * New: Key change detection when SMTP password encryption is used, to warn user the email dispatch may fail ([#28](https://github.com/soup-bowl/wp-simple-smtp/issues/28)).
 * Change: Custom HTML removed in favour of translatable HTML test email. Thanks to [Kebbet](https://github.com/kebbet) for implementation ([#26](https://github.com/soup-bowl/wp-simple-smtp/issues/26)).
 * Fix: JavaScript error when viewing emails ([#24](https://github.com/soup-bowl/wp-simple-smtp/issues/24)).
