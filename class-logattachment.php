@@ -57,7 +57,7 @@ class LogAttachment {
 			$file = pathinfo( $this->location );
 			$this->basename  = $file['basename'];
 			$this->filename  = $file['filename'];
-			$this->extension = $file['extension'];
+			$this->extension = ( isset( $file['extension'] ) ) ? $file['extension'] : '';
 		} else {
 			$this->exists    = false;
 			$this->basename  = '';

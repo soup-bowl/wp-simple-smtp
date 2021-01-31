@@ -243,10 +243,18 @@ class Settings {
 	 * @return boolean
 	 */
 	public function resend_email( $email_id ) {
-		$email      = $this->log->get_log_entry_by_id( $email_id );
-		$recipients = implode( ', ', json_decode( get_post_meta( $email->ID, 'recipients', true ) ) );
-		$headers    = json_decode( get_post_meta( $email->ID, 'headers', true ) );
-		$opts       = get_option( 'wpss_resent', [] );
+		$email       = $this->log->get_log_entry_by_id( $email_id );
+		$attachments = $this->log->get_log_entry_attachments( $email_id );
+		$recipients  = implode( ', ', json_decode( get_post_meta( $email->ID, 'recipients', true ) ) );
+		$headers     = json_decode( get_post_meta( $email->ID, 'headers', true ) );
+		$opts        = get_option( 'wpss_resent', [] );
+
+		$attachpaths = [];
+		foreach ( $attachments as $attachment ) {
+			if ( $attachment->exists() ) {
+				$attachpaths[] = $attachment->file_path();
+			}
+		}
 
 		if ( isset( $email ) && ! in_array( $email_id, $opts, true ) ) {
 			$opts[] = $email_id;
@@ -256,7 +264,8 @@ class Settings {
 				$recipients,
 				$email->post_title,
 				$email->post_content,
-				$headers
+				$headers,
+				$attachpaths
 			);
 
 			return true;
