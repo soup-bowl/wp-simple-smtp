@@ -10,7 +10,7 @@
 namespace wpsimplesmtp;
 
 use wpsimplesmtp\Options;
-use wpsimplesmtp\Log;
+use wpsimplesmtp\LogService;
 use wpsimplesmtp\LogAttachment;
 
 /**
@@ -27,7 +27,7 @@ class Mail {
 	/**
 	 * SMTP logging.
 	 *
-	 * @var Log
+	 * @var LogService
 	 */
 	protected $log;
 
@@ -36,7 +36,7 @@ class Mail {
 	 */
 	public function __construct() {
 		$this->options = new Options();
-		$this->log     = new Log();
+		$this->log     = new LogService();
 
 		$from = $this->options->get( 'from', true );
 		if ( ! empty( $from->value ) ) {

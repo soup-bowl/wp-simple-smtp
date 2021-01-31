@@ -9,7 +9,7 @@
 
 namespace wpsimplesmtp;
 
-use wpsimplesmtp\Log;
+use wpsimplesmtp\LogService;
 
 /**
  * Settings aspects relating to the log view.
@@ -18,7 +18,7 @@ class MailView {
 	/**
 	 * Stores and retrieves the emails stored in the log.
 	 *
-	 * @var Log
+	 * @var LogService
 	 */
 	protected $log;
 
@@ -26,7 +26,7 @@ class MailView {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->log = new Log();
+		$this->log = new LogService();
 	}
 
 	/**

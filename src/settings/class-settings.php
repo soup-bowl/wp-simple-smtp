@@ -10,7 +10,7 @@
 namespace wpsimplesmtp;
 
 use wpsimplesmtp\Options;
-use wpsimplesmtp\Log;
+use wpsimplesmtp\LogService;
 use wpsimplesmtp\LogTable;
 use wpsimplesmtp\Mailtest;
 use wpsimplesmtp\MailView;
@@ -29,7 +29,7 @@ class Settings {
 	/**
 	 * Stores and retrieves the emails stored in the log.
 	 *
-	 * @var Log
+	 * @var LogService
 	 */
 	protected $log;
 
@@ -50,7 +50,7 @@ class Settings {
 		add_filter( 'pre_update_option_wpssmtp_smtp', [ &$this, 'post_processing' ] );
 
 		$this->options   = new Options();
-		$this->log       = new Log();
+		$this->log       = new LogService();
 		$this->log_table = new LogTable();
 		$this->mail_test = new Mailtest();
 		$this->mail_view = new MailView();

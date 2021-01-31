@@ -9,7 +9,7 @@
 
 namespace wpsimplesmtp;
 
-use wpsimplesmtp\Log;
+use wpsimplesmtp\LogService;
 
 /**
  * Handles the creation and display of the email log table.
@@ -18,7 +18,7 @@ class LogTable {
 	/**
 	 * SMTP logging.
 	 *
-	 * @var Log
+	 * @var LogService
 	 */
 	protected $log;
 
@@ -26,7 +26,7 @@ class LogTable {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->log = new Log();
+		$this->log = new LogService();
 	}
 
 	/**

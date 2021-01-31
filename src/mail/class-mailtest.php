@@ -9,10 +9,26 @@
 
 namespace wpsimplesmtp;
 
+use wpsimplesmtp\LogService;
+
 /**
  * Provides testing functions for checking the mail functionality.
  */
 class Mailtest {
+	/**
+	 * Stores and retrieves the emails stored in the log.
+	 *
+	 * @var LogService
+	 */
+	protected $log;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->log = new LogService();
+	}
+
 	/**
 	 * Hooks the class actions into the WordPress ecosystem.
 	 */
@@ -34,9 +50,11 @@ class Mailtest {
 		$opts        = get_option( 'wpss_resent', [] );
 
 		$attachpaths = [];
-		foreach ( $attachments as $attachment ) {
-			if ( $attachment->exists() ) {
-				$attachpaths[] = $attachment->file_path();
+		if ( ! empty( $attachments ) ) {
+			foreach ( $attachments as $attachment ) {
+				if ( $attachment->exists() ) {
+					$attachpaths[] = $attachment->file_path();
+				}
 			}
 		}
 

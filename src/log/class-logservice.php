@@ -17,7 +17,7 @@ use WP_Query;
 /**
  * Handles the processing and display of the email log.
  */
-class Log {
+class LogService {
 	/**
 	 * Name of the custom post type used for storing logs.
 	 *
