@@ -154,6 +154,7 @@ class Settings {
 		$this->settings_field_generator( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', 'WordPress System' );
 		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'simple-smtp' ), $sec, 'dropdown' );
 		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'simple-smtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ) );
+		$this->settings_field_generator( 'disable', __( 'Disable Emails', 'simple-smtp' ), 'checkbox', '', __( 'Prevents email dispatch on this WordPress site.', 'simple-smtp' ) );
 		$this->settings_field_generator( 'log', __( 'Logging', 'simple-smtp' ), 'checkbox', '' );
 	}
 

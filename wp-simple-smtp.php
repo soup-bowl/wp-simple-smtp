@@ -19,12 +19,26 @@
 use wpsimplesmtp\LogService;
 use wpsimplesmtp\Settings;
 use wpsimplesmtp\Mail;
+use wpsimplesmtp\MailDisable;
 use wpsimplesmtp\Mailtest;
+use wpsimplesmtp\Options;
 
 /**
  * Autoloader.
  */
 require_once __DIR__ . '/vendor/autoload.php';
+
+// Override and disable emails if the user has disabled them.
+$disabled = ( new Options() )->get( 'disable' );
+if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALIDATE_BOOLEAN ) ) {
+	add_action(
+		'plugins_loaded',
+		function() {
+			global $phpmailer;
+			$phpmailer = new MailDisable();
+		}
+	);
+}
 
 if ( is_admin() ) {
 	new Settings();
@@ -95,6 +109,14 @@ function wpsmtp_has_error() {
 	if ( ! empty( get_option( 'wpssmtp_keycheck_fail' ) ) ) {
 		$notice  = '<div class="error fade"><p>';
 		$notice .= __( 'Encryption keys have changed - Please update the SMTP password to avoid email disruption.', 'simple-smtp' );
+		$notice .= '</p></div>';
+		echo wp_kses( $notice, $kses_standard );
+	}
+
+	$disabled = ( new Options() )->get( 'disable' );
+	if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALIDATE_BOOLEAN ) ) {
+		$notice  = '<div class="error fade"><p>';
+		$notice .= __( 'Emails have been disabled. Please visit the Mail settings if you wish to re-enable them.', 'simple-smtp' );
 		$notice .= '</p></div>';
 		echo wp_kses( $notice, $kses_standard );
 	}
