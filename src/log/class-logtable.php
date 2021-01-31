@@ -69,8 +69,8 @@ class LogTable {
 				echo wp_kses(
 					"<tr {$fail_atr}>
 					<td class=\"has-row-actions\">{$recipients}{$actions}</td>
-					<td>" . $entry->get_subject() . "</td>
-					<td><abbr title=\"" . $entry->get_timestamp() . "\">{$date}</abbr></td>
+					<td>" . $entry->get_subject() . '</td>
+					<td><abbr title="' . $entry->get_timestamp() . "\">{$date}</abbr></td>
 					<td>{$error}</td>
 					</tr>",
 					$this->allowed_table_html()

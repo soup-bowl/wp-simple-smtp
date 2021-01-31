@@ -43,9 +43,9 @@ class Mailtest {
 	 * @return boolean
 	 */
 	public function resend_email( $email_id ) {
-		$email       = $this->log->get_log_entry_by_id( $email_id );
-		$recipients  = implode( ', ', $email->get_recipients() );
-		$opts        = get_option( 'wpss_resent', [] );
+		$email      = $this->log->get_log_entry_by_id( $email_id );
+		$recipients = implode( ', ', $email->get_recipients() );
+		$opts       = get_option( 'wpss_resent', [] );
 
 		$attachpaths = [];
 		if ( ! empty( $email->get_attachments() ) ) {

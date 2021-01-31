@@ -36,9 +36,9 @@ class MailView {
 	 * @return void Prints to page.
 	 */
 	public function render_email_view( $id ) {
-		$log         = $this->log->get_log_entry_by_id( $id );
-		$recset      = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
-		$resend_url  = add_query_arg(
+		$log        = $this->log->get_log_entry_by_id( $id );
+		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
+		$resend_url = add_query_arg(
 			[
 				'eid'     => $id,
 				'ssnonce' => wp_create_nonce( 'wpss_action' ),

@@ -195,7 +195,8 @@ class LogService {
 	}
 
 	/**
-	 * 
+	 * Converts the WordPress post object to the WP SMTP Log object.
+	 *
 	 * @param WP_Post $post The object.
 	 * @return Log
 	 */
@@ -203,7 +204,7 @@ class LogService {
 		if ( empty( $post ) ) {
 			return null;
 		}
-		
+
 		$log = new Log();
 		$log->set_id( $post->ID );
 		$log->set_subject( $post->post_title );
@@ -217,5 +218,5 @@ class LogService {
 
 		return $log;
 	}
-	
+
 }
