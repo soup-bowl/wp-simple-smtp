@@ -1,4 +1,4 @@
-name: CI
+name: Per-commit CI Test
 on:
   push:
     branches: [ master ]
