@@ -1,0 +1,35 @@
+name: Per-commit CI Test
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Grab the Composer dependencies.
+      - name: Composer Dependencies
+        uses: php-actions/composer@v2
+        with:
+          suggest: yes
+          dev: yes
+          args: --profile --ignore-platform-reqs
+
+      # Setup an env file... I tried passing them via 'env' but for whatever reason the VM doesn't see it.  
+      - name: Create .env Config
+        run: |
+          touch .env
+          echo SMTP_HOST="${{ secrets.CI_TEST_HOST }}" >> .env
+          echo SMTP_AUTH="1" >> .env
+          echo SMTP_USER="${{ secrets.CI_TEST_USER }}" >> .env
+          echo SMTP_PASS="${{ secrets.CI_TEST_PASSWORD }}" >> .env
+          echo SMTP_PORT="587" >> .env
+          echo SMTP_FROM="gh-unit@example.com" >> .env
+
+      # Run PHPUnit to brew a cup of tea, what do you think it bloody does.
+      - name: Run PHPUnit
+        uses: php-actions/phpunit@v2

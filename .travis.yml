@@ -1,7 +1,0 @@
-services:
- - docker
-language: php
-before_script:
- - composer install
- - docker run -p 8083:1025 -d mailhog/mailhog:latest
-script: vendor/bin/phpunit
