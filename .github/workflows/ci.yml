@@ -1,24 +1,12 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
-
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: [ master ]
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -31,13 +19,17 @@ jobs:
           dev: yes
           args: --profile --ignore-platform-reqs
 
+      # Setup an env file... I tried passing them via 'env' but for whatever reason the VM doesn't see it.  
+      - name: Create .env Config
+        run: |
+          touch .env
+          echo SMTP_HOST="${{ secrets.CI_TEST_HOST }}" >> .env
+          echo SMTP_AUTH="1" >> .env
+          echo SMTP_USER="${{ secrets.CI_TEST_USER }}" >> .env
+          echo SMTP_PASS="${{ secrets.CI_TEST_PASSWORD }}" >> .env
+          echo SMTP_PORT="587" >> .env
+          echo SMTP_FROM="gh-unit@example.com" >> .env
+
       # Run PHPUnit to brew a cup of tea, what do you think it bloody does.
       - name: Run PHPUnit
         uses: php-actions/phpunit@v2
-        env:
-          SMTP_HOST: ${{ secrets.CI_TEST_HOST }}
-          SMTP_AUTH: 1
-          SMTP_USER: ${{ secrets.CI_TEST_USER }}
-          SMTP_PASS: ${{ secrets.CI_TEST_PASSWORD }}
-          SMTP_PORT: 587
-          SMTP_FROM: gh-unit@example.com
