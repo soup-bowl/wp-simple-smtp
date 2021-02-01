@@ -33,7 +33,7 @@ jobs:
 
       # Run PHPUnit to brew a cup of tea, what do you think it bloody does.
       - name: Run PHPUnit
-        run: vendor/bin/phpunit 
+        uses: php-actions/phpunit@v2
         env:
           SMTP_HOST: ${{ secrets.CI_TEST_HOST }}
           SMTP_AUTH: 1
