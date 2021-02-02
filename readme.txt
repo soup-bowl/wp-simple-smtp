@@ -55,7 +55,7 @@ Yes. Each site can have unique settings, unless overriding is on. The network wi
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
-= Next =
+= 1.1.0 =
 * New: You can now disable emails ([#9](https://github.com/soup-bowl/wp-simple-smtp/issues/9)).
 * New: Attachments are now logged, and will be resent if they are still available on the system ([#14](https://github.com/soup-bowl/wp-simple-smtp/issues/14)).
 * New: Key change detection when SMTP password encryption is used, to warn user the email dispatch may fail ([#28](https://github.com/soup-bowl/wp-simple-smtp/issues/28)).
