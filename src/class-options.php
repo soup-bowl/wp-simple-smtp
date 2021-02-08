@@ -14,6 +14,13 @@ namespace wpsimplesmtp;
  */
 class Options {
 	/**
+	 * Test value constant for checking encryption functionality.
+	 *
+	 * @var string
+	 */
+	protected $test_value = 'helloworld';
+
+	/**
 	 * Gets the setting value. This checks the following in chronological order:
 	 * - Environmental variables (including .env).
 	 * - Constants (e.g. wp-config.php).
@@ -69,6 +76,8 @@ class Options {
 		];
 
 		if ( extension_loaded( 'openssl' ) ) {
+			$this->set_encryption_test();
+
 			$pl['string'] = openssl_encrypt( $value, 'AES-128-ECB', $this->encryption_key() );
 			$pl['d']      = 1;
 		}
@@ -97,6 +106,31 @@ class Options {
 		} else {
 			return $options[ $name ];
 		}
+	}
+
+	/**
+	 * Checks the encryption passphrase has not changed.
+	 *
+	 * @return boolean Represents whether the test value decryption was a success or not.
+	 */
+	public function check_encryption_key() {
+		$codeword = openssl_decrypt( get_option( 'wpssmtp_echk' ), 'AES-128-ECB', $this->encryption_key() );
+
+		if ( $this->test_value === $codeword ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Sets a test string for testing encryption purposes.
+	 */
+	public function set_encryption_test() {
+		update_option(
+			'wpssmtp_echk',
+			openssl_encrypt( $this->test_value, 'AES-128-ECB', $this->encryption_key() )
+		);
 	}
 
 	/**

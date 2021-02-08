@@ -10,8 +10,10 @@
 namespace wpsimplesmtp;
 
 use wpsimplesmtp\Options;
-use wpsimplesmtp\Log;
+use wpsimplesmtp\LogService;
 use wpsimplesmtp\LogTable;
+use wpsimplesmtp\Mailtest;
+use wpsimplesmtp\MailView;
 
 /**
  * Handles the visibility and setup with the WordPress Settings API.
@@ -27,7 +29,7 @@ class Settings {
 	/**
 	 * Stores and retrieves the emails stored in the log.
 	 *
-	 * @var Log
+	 * @var LogService
 	 */
 	protected $log;
 
@@ -45,12 +47,13 @@ class Settings {
 		add_action( 'admin_menu', [ &$this, 'add_admin_menu' ] );
 		add_action( 'admin_init', [ &$this, 'settings_init' ] );
 		add_action( 'admin_init', [ &$this, 'settings_test_init' ] );
-		add_action( 'admin_post_ss_test_email', [ &$this, 'test_email_handler' ] );
 		add_filter( 'pre_update_option_wpssmtp_smtp', [ &$this, 'post_processing' ] );
 
-		$this->options   = new Options();
-		$this->log       = new Log();
-		$this->log_table = new LogTable();
+		$this->options     = new Options();
+		$this->log_service = new LogService();
+		$this->log_table   = new LogTable();
+		$this->mail_test   = new Mailtest();
+		$this->mail_view   = new MailView();
 	}
 
 	/**
@@ -58,7 +61,7 @@ class Settings {
 	 */
 	public function options_page() {
 		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['delete_all'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_purgelog' ) ) {
-			$this->log->delete_all_logs();
+			$this->log_service->delete_all_logs();
 
 			wp_die( esc_attr_e( 'The log has been cleared.', 'simple-smtp' ) );
 		}
@@ -66,7 +69,7 @@ class Settings {
 		$return = false;
 		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['resend'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
 			$return = true;
-			$resp   = $this->resend_email( intval( $_REQUEST['eid'] ) );
+			$resp   = $this->mail_test->resend_email( intval( $_REQUEST['eid'] ) );
 			if ( $resp ) {
 				?>
 				<div class="notice notice-success is-dismissible">
@@ -84,7 +87,7 @@ class Settings {
 
 		if ( isset( $_REQUEST['ssnonce'], $_REQUEST['eid'], $_REQUEST['delete'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_action' ) ) {
 			$return = true;
-			$resp   = $this->log->delete_log_entry( intval( $_REQUEST['eid'] ) );
+			$resp   = $this->log_service->delete_log_entry( intval( $_REQUEST['eid'] ) );
 			if ( $resp ) {
 				?>
 				<div class="notice notice-success is-dismissible">
@@ -101,7 +104,7 @@ class Settings {
 		}
 
 		if ( isset( $_REQUEST['eid'] ) && ! $return ) {
-			$this->render_email_view( intval( $_REQUEST['eid'] ) );
+			$this->mail_view->render_email_view( intval( $_REQUEST['eid'] ) );
 		} else {
 			$this->render_settings();
 		}
@@ -151,6 +154,7 @@ class Settings {
 		$this->settings_field_generator( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', 'WordPress System' );
 		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'simple-smtp' ), $sec, 'dropdown' );
 		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'simple-smtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ) );
+		$this->settings_field_generator( 'disable', __( 'Disable Emails', 'simple-smtp' ), 'checkbox', '', __( 'Prevents email dispatch on this WordPress site.', 'simple-smtp' ) );
 		$this->settings_field_generator( 'log', __( 'Logging', 'simple-smtp' ), 'checkbox', '' );
 	}
 
@@ -194,84 +198,20 @@ class Settings {
 	}
 
 	/**
-	 * Custom admin endpoint to dispatch a test email.
-	 */
-	public function test_email_handler() {
-		if ( isset( $_REQUEST['_wpnonce'], $_REQUEST['_wp_http_referer'], $_REQUEST['wpssmtp_test_email_recipient'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'simple-smtp-test-email' ) ) {
-			$is_html      = ( isset( $_REQUEST['wpssmtp_test_email_is_html'] ) ) ? true : false;
-			$content_type = ( $is_html ) ? 'Content-Type: text/html' : 'Content-Type: text/plain';
-			$content      = __( 'This email proves that your settings are correct.', 'simple-smtp' ) . PHP_EOL . get_bloginfo( 'url' );
-
-			if ( $is_html ) {
-				$content = wp_kses_post( file_get_contents( trailingslashit( __DIR__ ) . 'test-email.html' ) );
-			}
-
-			// Sanitize rule disabled here as it doesn't detect the later sanitize call. Feel free to refactor.
-			// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$recipients = explode( ';', wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) );
-			$recp_count = count( $recipients );
-			// phpcs:enable
-			for ( $i = 0; $i < $recp_count; $i++ ) {
-				$recipients[ $i ] = sanitize_email( trim( $recipients[ $i ] ) );
-			}
-
-			wp_mail(
-				$recipients,
-				// translators: %s is the website name.
-				sprintf( __( 'Test email from %s', 'simple-smtp' ), get_bloginfo( 'name' ) ),
-				$content,
-				[ 'x-test: WP SMTP', $content_type ]
-			);
-
-			wp_safe_redirect( admin_url( 'options-general.php?page=wpsimplesmtp' ) );
-			exit;
-		} else {
-			wp_die( esc_attr_e( 'You are not permitted to send a test email.', 'simple-smtp' ) );
-		}
-	}
-
-	/**
-	 * Resends an email.
-	 *
-	 * @param integer $email_id Email/log ID to resend.
-	 * @return boolean
-	 */
-	public function resend_email( $email_id ) {
-		$email      = $this->log->get_log_entry_by_id( $email_id );
-		$recipients = implode( ', ', json_decode( get_post_meta( $email->ID, 'recipients', true ) ) );
-		$headers    = json_decode( get_post_meta( $email->ID, 'headers', true ) );
-		$opts       = get_option( 'wpss_resent', [] );
-
-		if ( isset( $email ) && ! in_array( $email_id, $opts, true ) ) {
-			$opts[] = $email_id;
-			update_option( 'wpss_resent', $opts );
-
-			wp_mail(
-				$recipients,
-				$email->post_title,
-				$email->post_content,
-				$headers
-			);
-
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
 	 * Runs post-save setting processes.
 	 *
 	 * @param array $options Options array.
 	 * @return array Parameter #1 with possible changes.
 	 */
 	public function post_processing( $options ) {
-		if ( extension_loaded( 'openssl' ) ) {
+		if ( extension_loaded( 'openssl' ) && '' !== $options['pass'] ) {
 			$pass_opt = $this->options->encrypt( 'pass', $options['pass'] );
 
 			$options['pass']   = $pass_opt['string'];
 			$options['pass_d'] = $pass_opt['d'];
 		}
+
+		$this->reset_encryption_keycheck();
 
 		return $options;
 	}
@@ -363,6 +303,7 @@ class Settings {
 	 * Shows the configuration pane on the current page.
 	 */
 	private function render_settings() {
+		$this->encryption_keycheck();
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Mail Settings', 'simple-smtp' ); ?></h1>
@@ -378,7 +319,7 @@ class Settings {
 			<?php
 			wp_nonce_field( 'simple-smtp-test-email' );
 			do_settings_sections( 'wpsimplesmtp_smtp_test' );
-			submit_button( __('Send', 'simple-smtp' ), 'secondary' );
+			submit_button( __( 'Send', 'simple-smtp' ), 'secondary' );
 
 			$log_status = $this->options->get( 'log' );
 			if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
@@ -399,72 +340,21 @@ class Settings {
 	}
 
 	/**
-	 * Render the email with useful information.
-	 *
-	 * @param integer $id Email log ID.
-	 * @return void Prints to page.
+	 * Checks the encrytion key is valid, if exists.
 	 */
-	private function render_email_view( $id ) {
-		$log        = $this->log->get_log_entry_by_id( $id );
-		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
-		$resend_url = add_query_arg(
-			[
-				'eid'     => $id,
-				'ssnonce' => wp_create_nonce( 'wpss_action' ),
-			],
-			menu_page_url( 'wpsimplesmtp', false )
-		) . '&resend';
+	private function encryption_keycheck() {
+		if ( ! empty( get_option( 'wpssmtp_echk' ) ) && ! $this->options->check_encryption_key() ) {
+			add_option( 'wpssmtp_keycheck_fail', true );
+		}
+	}
 
-		if ( current_user_can( 'administrator' ) && isset( $log ) ) {
-			$recipients = implode( ', ', json_decode( get_post_meta( $log->ID, 'recipients', true ) ) );
-			$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( get_post_meta( $log->ID, 'timestamp', true ) ) );
-
-			$content = '';
-			if ( isset( $log->headers ) && false !== strpos( $log->headers, 'Content-Type: text\/html' ) ) {
-				$content = wp_kses_post( $log->post_content );
-			} else {
-				$content = wp_kses_post( '<pre>' . $log->post_content . '</pre>' );
-			}
-			?>
-			<div class="wrap">
-				<h1><?php esc_html_e( 'View Email', 'simple-smtp' ); ?></h1>
-				<div id="poststuff">
-					<div id="post-body" class="metabox-holder columns-2">
-						<div id="post-body-content">
-							<div class="postbox">
-								<h2 class="hndle"><?php echo esc_html( $log->post_title ); ?></h2>			
-								<div class="inside">
-									<?php echo wp_kses_post( $content ); ?>
-								</div>	
-							</div>
-						</div>
-						<div id="postbox-container-1" class="postbox-container">
-							<div class="stuffbox">
-								<h2 class="hndle"><?php esc_html_e( 'Information', 'simple-smtp' ); ?></h2>
-								<div class="inside">
-									<div id="minor-publishing">
-										<div id="misc-publishing-actions">
-											<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
-											<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
-										</div>
-										<div class="clear"></div>
-									</div>
-									<div id="major-publishing-actions">
-										<div id="publishing-action">
-											<a href="<?php echo esc_html( $resend_url ); ?>" class="button button-primary button-large <?php echo esc_attr( $recset ); ?>"><?php esc_html_e( 'Resend', 'simple-smtp' ); ?></a>
-										</div>
-										<div class="clear"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<br class="clear">
-				</div>
-			</div>
-			<?php
-		} else {
-			wp_die( 'No email found.' );
+	/**
+	 * Resets the encryption warning, if it has been triggered.
+	 */
+	private function reset_encryption_keycheck() {
+		if ( ! empty( get_option( 'wpssmtp_keycheck_fail' ) ) ) {
+			$this->options->set_encryption_test();
+			delete_option( 'wpssmtp_keycheck_fail' );
 		}
 	}
 }

@@ -4,15 +4,13 @@ Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
 Tested up to: 5.6
 Requires PHP: 7.0
-Stable tag: 1.0.2
+Stable tag: 1.1
 License: MIT
 
 Adds a simple mail configuration panel into your WordPress installation. Supports logging and config variables.
 
 == Description ==
 Adds a simple, no-fuss SMTP settings to your WordPress installation that lets you define custom settings, which is especially useful for hosts with no control over the php `mail` functionality.
-
-The log & resend functionality currently **does not support attachments**.
 
 ## Environment and constant overriding (optional)
 This plugin will prefer environmental and constant-stored values over the plugin-saved equivalent settings, making it easier to use this plugin via deployment.
@@ -30,6 +28,7 @@ These can be either stored in your systems env setup, or in wp-config.php as `de
 * `SMTP_SEC` (string) Use a particular email security method (accepts 'def' (default), 'ssl' and 'tls').
 * `SMTP_NOVERIFYSSL` (boolean) Disable validation of the SMTP server certificate (not recommended).
 * `SMTP_LOG` (boolean) Controls the logging capability and visibility.
+* `SMTP_DISABLE` (boolean) Disables the mailer. They will still be logged if enabled, but won't send out.
 
 It is recommended to store at least `SMTP_PASS` in your wp-config.php file (with the correct file permissions set). If the openssl extension is available, the plugin will attempt to encrypt the password in the database.
 
@@ -56,7 +55,11 @@ Yes. Each site can have unique settings, unless overriding is on. The network wi
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
-= Next =
+= 1.1.0 =
+* New: You can now disable emails ([#9](https://github.com/soup-bowl/wp-simple-smtp/issues/9)).
+* New: Attachments are now logged, and will be resent if they are still available on the system ([#14](https://github.com/soup-bowl/wp-simple-smtp/issues/14)).
+* New: Key change detection when SMTP password encryption is used, to warn user the email dispatch may fail ([#28](https://github.com/soup-bowl/wp-simple-smtp/issues/28)).
+* Change: Custom HTML removed in favour of translatable HTML test email. Thanks to [Kebbet](https://github.com/kebbet) for implementation ([#26](https://github.com/soup-bowl/wp-simple-smtp/issues/26)).
 * Fix: JavaScript error when viewing emails ([#24](https://github.com/soup-bowl/wp-simple-smtp/issues/24)).
 
 = 1.0.2 =

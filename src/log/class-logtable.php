@@ -9,7 +9,7 @@
 
 namespace wpsimplesmtp;
 
-use wpsimplesmtp\Log;
+use wpsimplesmtp\LogService;
 
 /**
  * Handles the creation and display of the email log table.
@@ -18,15 +18,15 @@ class LogTable {
 	/**
 	 * SMTP logging.
 	 *
-	 * @var Log
+	 * @var LogService
 	 */
-	protected $log;
+	protected $log_service;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->log = new Log();
+		$this->log_service = new LogService();
 	}
 
 	/**
@@ -37,8 +37,8 @@ class LogTable {
 	 */
 	public function display( $page, $maximum_per_page = 5 ) {
 		$page    = ( $page < 0 ) ? 0 : $page;
-		$entries = $this->log->get_log_entries( ( $page + 1 ), $maximum_per_page );
-		$pages   = $this->log->get_log_entry_pages( $maximum_per_page );
+		$entries = $this->log_service->get_log_entries( ( $page + 1 ), $maximum_per_page );
+		$pages   = $this->log_service->get_log_entry_pages( $maximum_per_page );
 
 		$labels = [
 			__( 'Recipient(s)', 'simple-smtp' ),
@@ -61,17 +61,17 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
-				$timestamp  = get_post_meta( $entry->ID, 'timestamp', true );
-				$error      = get_post_meta( $entry->ID, 'error', true );
-				$recipients = implode( ', ', json_decode( get_post_meta( $entry->ID, 'recipients', true ) ) );
+				$error      = get_post_meta( $entry->get_id(), 'error', true );
+				$error      = ( 'WPSS_MAIL_OFF' === $error ) ? __( 'Email was disabled at this time.', 'simple-smtp' ) : $error;
+				$recipients = implode( ', ', $entry->get_recipients() );
 				$actions    = $this->render_log_entry_buttons( $entry );
-				$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $timestamp ) );
+				$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->get_timestamp() ) );
 				$fail_atr   = ( ! empty( $error ) ) ? 'class="site-archived"' : '';
 				echo wp_kses(
 					"<tr {$fail_atr}>
 					<td class=\"has-row-actions\">{$recipients}{$actions}</td>
-					<td>{$entry->post_title}</td>
-					<td><abbr title=\"{$timestamp}\">{$date}</abbr></td>
+					<td>" . $entry->get_subject() . '</td>
+					<td><abbr title="' . $entry->get_timestamp() . "\">{$date}</abbr></td>
 					<td>{$error}</td>
 					</tr>",
 					$this->allowed_table_html()
@@ -105,7 +105,7 @@ class LogTable {
 		$message     = sprintf( __( 'Showing page %1$s of %2$s.', 'simple-smtp' ), $page_cu, $page_co );
 		$nav_buttons = $this->generate_table_buttons( $page, $pages );
 
-		if ( floatval(0) === $page_co ) {
+		if ( floatval( 0 ) === $page_co ) {
 			// Do not display navigation if 0 pages/entries.
 			return;
 		}
@@ -170,13 +170,13 @@ class LogTable {
 	/**
 	 * Renders actionable event buttons underneath the log entry.
 	 *
-	 * @param stdClass $entry Object from the Log DB.
+	 * @param Log $entry Object from the Log DB.
 	 * @return string row-action html.
 	 */
 	private function render_log_entry_buttons( $entry ) {
 		$recents      = get_option( 'wpss_resent', [] );
 		$resend_param = [
-			'eid'     => $entry->ID,
+			'eid'     => $entry->get_id(),
 			'ssnonce' => wp_create_nonce( 'wpss_action' ),
 		];
 
@@ -184,14 +184,14 @@ class LogTable {
 		$resend_label = __( 'Resend', 'simple-smtp' );
 		$delete_label = __( 'Delete', 'simple-smtp' );
 
-		$view_url   = esc_html( add_query_arg( 'eid', $entry->ID, menu_page_url( 'wpsimplesmtp', false ) ) );
+		$view_url   = esc_html( add_query_arg( 'eid', $entry->get_id(), menu_page_url( 'wpsimplesmtp', false ) ) );
 		$resend_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
 		$delete_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&delete';
 
 		$view   = "<span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">{$view_label}</a></span>";
 		$delete = "<span class=\"delete\"><a href=\"{$delete_url}\" aria-label=\"View\">{$delete_label}</a></span>";
 		$resend = '';
-		if ( ! in_array( (int) $entry->ID, $recents, true ) ) {
+		if ( ! in_array( (int) $entry->get_id(), $recents, true ) ) {
 			$resend = "<span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">{$resend_label}</a></span>";
 		} else {
 			$resend = '<span class="view">Resent</span>';

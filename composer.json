@@ -3,16 +3,23 @@
 	"description": "Gives WordPress the missing SMTP configuration panel it needed.",
     "autoload": {
         "classmap": [
-			"class-settings.php",
-			"class-options.php",
-			"class-mail.php",
-			"class-log.php",
-			"class-logtable.php"
+			"src/class-options.php",
+			"src/settings/class-settings.php",
+			"src/settings/class-mailview.php",
+			"src/mail/class-mail.php",
+			"src/mail/class-mailtest.php",
+			"src/mail/class-maildisable.php",
+			"src/log/class-log.php",
+			"src/log/class-logservice.php",
+			"src/log/class-logtable.php",
+			"src/log/class-logattachment.php"
 		]
     },
 	"require-dev": {
 		"phpunit/phpunit": "8",
 		"phpmailer/phpmailer": "^6",
-		"vlucas/phpdotenv": "^5.2"
+		"vlucas/phpdotenv": "^5.2",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+		"wp-coding-standards/wpcs": "*"
 	}
 }

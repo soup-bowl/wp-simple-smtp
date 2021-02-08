@@ -11,6 +11,8 @@ namespace wpsimplesmtp;
 
 use wpsimplesmtp\Options;
 use wpsimplesmtp\Log;
+use wpsimplesmtp\LogService;
+use wpsimplesmtp\LogAttachment;
 
 /**
  * Configures PHPMailer to use our settings rather than the default.
@@ -26,16 +28,16 @@ class Mail {
 	/**
 	 * SMTP logging.
 	 *
-	 * @var Log
+	 * @var LogService
 	 */
-	protected $log;
+	protected $log_service;
 
 	/**
 	 * Registers the relevant WordPress hooks upon creation.
 	 */
 	public function __construct() {
-		$this->options = new Options();
-		$this->log     = new Log();
+		$this->options     = new Options();
+		$this->log_service = new LogService();
 
 		$from = $this->options->get( 'from', true );
 		if ( ! empty( $from->value ) ) {
@@ -113,7 +115,7 @@ class Mail {
 	public function process_error( $error ) {
 		global $wpss_mail_id;
 
-		$this->log->log_entry_error( $wpss_mail_id, $error->get_error_message( 'wp_mail_failed' ) );
+		$this->log_service->log_entry_error( $wpss_mail_id, $error->get_error_message( 'wp_mail_failed' ) );
 	}
 
 	/**
@@ -128,13 +130,19 @@ class Mail {
 		if ( true === filter_var( $this->options->get( 'log' )->value, FILTER_VALIDATE_BOOLEAN ) ) {
 			$recipient_array = ( is_array( $parameters['to'] ) ) ? $parameters['to'] : [ $parameters['to'] ];
 
-			$wpss_mail_id = $this->log->new_log_entry(
-				wp_json_encode( $recipient_array ),
-				$parameters['subject'],
-				$parameters['message'],
-				wp_json_encode( $parameters['headers'] ),
-				current_time( 'mysql' )
-			);
+			$attachments = [];
+			foreach ( $parameters['attachments'] as $attachment ) {
+				$attachments[] = ( new LogAttachment() )->new( $attachment )->to_string();
+			}
+
+			$log = new Log();
+			$log->set_recipients( $recipient_array );
+			$log->set_subject( $parameters['subject'] );
+			$log->set_body( $parameters['message'] );
+			$log->set_headers( $parameters['headers'] );
+			$log->set_attachments( $attachments );
+
+			$wpss_mail_id = $this->log_service->new_log_entry( $log );
 		}
 
 		return $parameters;
