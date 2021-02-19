@@ -68,8 +68,6 @@ function get_option( $option, $default = false ) {
 				'username' => $_ENV['SMTP_USER'],
 				'password' => $_ENV['SMTP_PASS'],
 				'auth'     => $_ENV['SMTP_AUTH'],
-				'from'     => $_ENV['SMTP_FROM'],
-				'fromname' => $_ENV['SMTP_FROMNAME'],
 			];
 		default:
 			if ( ! empty( $sbss_temp_store[ $option ] ) ) {
