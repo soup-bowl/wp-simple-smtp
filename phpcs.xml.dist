@@ -24,4 +24,16 @@
 	<rule ref="Generic.Arrays.DisallowShortArraySyntax">
 		<exclude-pattern>*/*</exclude-pattern>
 	</rule>
+
+	<!-- Test exclusions. -->
+	<!-- Triggered in the LogService test due to the mocked classes. -->
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>tests/log/class-logservice-test.php</exclude-pattern>
+	</rule>
+
+	<!-- Same as above. -->
+	<rule ref="Generic.Files.OneObjectStructurePerFile.MultipleFound">
+		<exclude-pattern>tests/log/class-logservice-test.php</exclude-pattern>
+	</rule>
+	<!-- ! Test exclusions. -->
 </ruleset>
