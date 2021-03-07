@@ -11,6 +11,7 @@ namespace wpsimplesmtp;
 
 if ( ! class_exists( 'PHPMailer', false ) ) {
 	require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+	require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
 }
 
 /**

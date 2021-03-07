@@ -57,6 +57,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 == Changelog ==
 = 1.1.1 =
 * Verified working with WordPress 5.7.
+* Fix: Crash when sending emails with the email system disabled ([#35](https://github.com/soup-bowl/wp-simple-smtp/issues/35)).
 
 = 1.1.0 =
 * New: You can now disable emails ([#9](https://github.com/soup-bowl/wp-simple-smtp/issues/9)).
