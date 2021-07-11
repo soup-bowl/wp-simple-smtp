@@ -2,9 +2,9 @@
 Contributors: soupbowl
 Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: MIT
 
 Adds a simple mail configuration panel into your WordPress installation. Supports logging and config variables.
@@ -55,6 +55,9 @@ Yes. Each site can have unique settings, unless overriding is on. The network wi
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
+= 1.1.2 =
+* Verified working with WordPress 5.8.
+
 = 1.1.1 =
 * Verified working with WordPress 5.7.
 * Fix: Crash when sending emails with the email system disabled ([#35](https://github.com/soup-bowl/wp-simple-smtp/issues/35)).
