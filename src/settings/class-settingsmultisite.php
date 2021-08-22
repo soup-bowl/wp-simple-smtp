@@ -67,10 +67,11 @@ class SettingsMultisite {
 				$sites = get_sites();
 				foreach ( $sites as $site ) {
 					$collection[] = [
-						'id'     => $site->blog_id,
-						'url'    => $site->domain . $site->path,
-						'no_set' => get_network_option( $site->blog_id, 'wpssmtp_disable_settings', 0 ),
-						'no_log' => get_network_option( $site->blog_id, 'wpssmtp_disable_logging', 0 ),
+						'id'       => $site->blog_id,
+						'url'      => $site->domain . $site->path,
+						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], $site->domain . $site->path . 'wp-admin/options-general.php?' ),
+						'no_set'   => get_network_option( $site->blog_id, 'wpssmtp_disable_settings', 0 ),
+						'no_log'   => get_network_option( $site->blog_id, 'wpssmtp_disable_logging', 0 ),
 					];
 				}
 
@@ -86,7 +87,7 @@ class SettingsMultisite {
 					<tbody>
 						<?php foreach ( $collection as $site ) : ?>
 							<tr>
-								<td><a href="<?php echo esc_url( $site['url'] ); ?>"><?php echo esc_url( $site['url'] ); ?></a></td>
+								<td><a href="<?php echo esc_url( $site['settings'] ); ?>"><?php echo esc_url( $site['url'] ); ?></a></td>
 								<td><input type='checkbox' name='wpssmtp_perm_set_s<?php echo (int) $site['id']; ?>' <?php checked( $site['no_set'], 1 ); ?> value='1'></td>
 								<td><input type='checkbox' name='wpssmtp_perm_log_s<?php echo (int) $site['id']; ?>' <?php checked( $site['no_log'], 1 ); ?> value='1'></td>
 							</tr>
