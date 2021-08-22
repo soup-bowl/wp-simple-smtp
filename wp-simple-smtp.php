@@ -18,6 +18,7 @@
 
 use wpsimplesmtp\LogService;
 use wpsimplesmtp\Settings;
+use wpsimplesmtp\SettingsMultisite;
 use wpsimplesmtp\Mail;
 use wpsimplesmtp\MailDisable;
 use wpsimplesmtp\Mailtest;
@@ -42,6 +43,9 @@ if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALID
 
 if ( is_admin() ) {
 	new Settings();
+	if ( is_multisite() ) {
+		new SettingsMultisite();
+	}
 }
 
 new Mail();
