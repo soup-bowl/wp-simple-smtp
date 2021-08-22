@@ -307,33 +307,37 @@ class Settings {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Mail Settings', 'simple-smtp' ); ?></h1>
-			<form id='wpss-conf' action='options.php' method='post'>
-			<?php
-			settings_fields( 'wpsimplesmtp_smtp' );
-			do_settings_sections( 'wpsimplesmtp_smtp' );
-			submit_button();
-			?>
-			</form>
+			<?php if ( $this->can_edit_settings( 'wpssmtp_disable_settings' ) ) : ?>
+				<form id='wpss-conf' action='options.php' method='post'>
+					<?php
+					settings_fields( 'wpsimplesmtp_smtp' );
+					do_settings_sections( 'wpsimplesmtp_smtp' );
+					submit_button();
+					?>
+				</form>
+			<?php endif; ?>
 			<form action='admin-post.php' method='post'>
-			<input type="hidden" name="action" value="ss_test_email">
-			<?php
-			wp_nonce_field( 'simple-smtp-test-email' );
-			do_settings_sections( 'wpsimplesmtp_smtp_test' );
-			submit_button( __( 'Send', 'simple-smtp' ), 'secondary' );
+				<input type="hidden" name="action" value="ss_test_email">
+				<?php
+				wp_nonce_field( 'simple-smtp-test-email' );
+				do_settings_sections( 'wpsimplesmtp_smtp_test' );
+				submit_button( __( 'Send', 'simple-smtp' ), 'secondary' );
 
-			$log_status = $this->options->get( 'log' );
-			if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
-				$page = 0;
-				if ( isset( $_REQUEST, $_REQUEST['ssnonce'], $_REQUEST['wpss_page'] )
-				&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_logtable' )
-				&& is_numeric( $_REQUEST['wpss_page'] ) ) {
-					$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
+				if ( $this->can_edit_settings( 'wpssmtp_disable_logging' ) ) {
+					$log_status = $this->options->get( 'log' );
+					if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
+						$page = 0;
+						if ( isset( $_REQUEST, $_REQUEST['ssnonce'], $_REQUEST['wpss_page'] )
+						&& wp_verify_nonce( sanitize_key( $_REQUEST['ssnonce'] ), 'wpss_logtable' )
+						&& is_numeric( $_REQUEST['wpss_page'] ) ) {
+							$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
+						}
+
+						echo wp_kses( '<h2>' . __( 'Email Log', 'simple-smtp' ) . '</h2>', [ 'h2' => [] ] );
+						$this->log_table->display( $page );
+					}
 				}
-
-				echo wp_kses( '<h2>' . __( 'Email Log', 'simple-smtp' ) . '</h2>', [ 'h2' => [] ] );
-				$this->log_table->display( $page );
-			}
-			?>
+				?>
 			</form>
 		</div>
 		<?php
@@ -355,6 +359,28 @@ class Settings {
 		if ( ! empty( get_option( 'wpssmtp_keycheck_fail' ) ) ) {
 			$this->options->set_encryption_test();
 			delete_option( 'wpssmtp_keycheck_fail' );
+		}
+	}
+
+	/**
+	 * Checks the specified setting against multisite configuration to see if access is granted (always true on non-multisite installs).
+	 *
+	 * @param string $setting The site/network setting name.
+	 * @return boolean Returns access grant status.
+	 */
+	private function can_edit_settings( $setting ) {
+		if ( ! is_multisite() ) {
+			return true;
+		} else {
+			if ( is_super_admin() ) {
+				return true;
+			}
+
+			if ( '0' === get_site_option( $setting, 0 ) ) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 }
