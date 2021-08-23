@@ -14,24 +14,50 @@ namespace wpsimplesmtp;
  */
 class Settings {
 	/**
+	 * For settings generator - Page assignation.
+	 *
+	 * @var string
+	 */
+	protected $page;
+
+	/**
+	 * For settings generator - Section assignation.
+	 *
+	 * @var string
+	 */
+	protected $section;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param string $page    For settings generator - Page assignation.
+	 * @param string $section For settings generator - Section assignation.
+	 */
+	public function __construct( $page = 'wpsimplesmtp_smtp', $section = 'wpsimplesmtp_smtp_section' ) {
+		$this->page    = $page;
+		$this->section = $section;
+	}
+
+	/**
 	 * Generates an generic input box.
 	 *
-	 * @param string $name        Code name of input.
-	 * @param string $name_pretty Name shown to user.
-	 * @param string $type        Input element type. Normally 'text'.
-	 * @param string $example     Text shown as a placeholder.
-	 * @param string $subtext     Text displayed underneath input box.
+	 * @param string  $name        Code name of input.
+	 * @param string  $name_pretty Name shown to user.
+	 * @param string  $type        Input element type. Normally 'text'.
+	 * @param string  $example     Text shown as a placeholder.
+	 * @param string  $subtext     Text displayed underneath input box.
+	 * @param boolean $ms_mode     Whether the settings are being generated for multisite/network purposes.
 	 */
-	public function settings_field_generator( $name, $name_pretty, $type, $example = '', $subtext = '' ) {
-		$value = $this->options->get( $name );
+	public function settings_field_generator( $name, $name_pretty, $type, $example = '', $subtext = '', $ms_mode = false ) {
+		$value = $this->options->get( $name, true, $ms_mode );
 
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $value, $type, $example, $subtext ) {
+			function () use ( $name, $value, $type, $example, $subtext, $ms_mode ) {
 				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
 				$has_env = '';
-				if ( 'CONFIG' !== $value->source ) {
+				if ( ! $ms_mode && 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
 
@@ -49,8 +75,8 @@ class Settings {
 				}
 				echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
 			},
-			'wpsimplesmtp_smtp',
-			'wpsimplesmtp_smtp_section'
+			$this->page,
+			$this->section
 		);
 	}
 
@@ -91,8 +117,8 @@ class Settings {
 				}
 				echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
 			},
-			'wpsimplesmtp_smtp',
-			'wpsimplesmtp_smtp_section'
+			$this->page,
+			$this->section
 		);
 	}
 

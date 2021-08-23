@@ -44,6 +44,8 @@ class Singular extends Settings {
 	 * Registers the relevant WordPress hooks upon creation.
 	 */
 	public function __construct() {
+		parent::__construct();
+
 		add_action( 'admin_menu', [ &$this, 'add_admin_menu' ] );
 		add_action( 'admin_init', [ &$this, 'settings_init' ] );
 		add_action( 'admin_init', [ &$this, 'settings_test_init' ] );
