@@ -113,12 +113,6 @@ class Multisite extends Settings {
 			'wpsimplesmtp_ms_adminaccess_section'
 		);
 
-		$sec = [
-			'def' => __( 'Default', 'simple-smtp' ),
-			'ssl' => __( 'SSL', 'simple-smtp' ),
-			'tls' => __( 'TLS', 'simple-smtp' ),
-		];
-
 		$this->settings_field_generator( 'host', __( 'Host', 'simple-smtp' ), 'text', 'smtp.example.com', '', true );
 		$this->settings_field_generator( 'port', __( 'Port', 'simple-smtp' ), 'number', '587', '', true );
 		$this->settings_field_generator( 'auth', __( 'Authenticate', 'simple-smtp' ), 'checkbox', '', '', true );
@@ -126,7 +120,7 @@ class Multisite extends Settings {
 		$this->settings_field_generator( 'pass', __( 'Password', 'simple-smtp' ), 'password', '', '', true );
 		$this->settings_field_generator( 'from', __( 'Force from', 'simple-smtp' ), 'email', 'do-not-reply@example.com', '', true );
 		$this->settings_field_generator( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', 'WordPress System', '', true );
-		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'simple-smtp' ), $sec, 'dropdown', '', '', true );
+		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types(), 'dropdown', '', '', true );
 		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'simple-smtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ), true );
 		$this->settings_field_generator( 'disable', __( 'Disable Emails', 'simple-smtp' ), 'checkbox', '', __( 'Prevents email dispatch on this WordPress site.', 'simple-smtp' ), true );
 		$this->settings_field_generator( 'log', __( 'Logging', 'simple-smtp' ), 'checkbox', '', '', true );

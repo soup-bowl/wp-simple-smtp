@@ -39,6 +39,19 @@ class Settings {
 	}
 
 	/**
+	 * Returns an array of acceptable security codes and their translated labels.
+	 *
+	 * @return string[]
+	 */
+	public function acceptable_security_types() {
+		return [
+			'def' => __( 'Default', 'simple-smtp' ),
+			'ssl' => __( 'SSL', 'simple-smtp' ),
+			'tls' => __( 'TLS', 'simple-smtp' ),
+		];
+	}
+
+	/**
 	 * Generates an generic input box.
 	 *
 	 * @param string  $name        Code name of input.

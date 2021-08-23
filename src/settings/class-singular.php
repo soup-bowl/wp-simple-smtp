@@ -141,12 +141,6 @@ class Singular extends Settings {
 			'wpsimplesmtp_smtp'
 		);
 
-		$sec = [
-			'def' => __( 'Default', 'simple-smtp' ),
-			'ssl' => __( 'SSL', 'simple-smtp' ),
-			'tls' => __( 'TLS', 'simple-smtp' ),
-		];
-
 		$this->settings_field_generator( 'host', __( 'Host', 'simple-smtp' ), 'text', 'smtp.example.com' );
 		$this->settings_field_generator( 'port', __( 'Port', 'simple-smtp' ), 'number', '587' );
 		$this->settings_field_generator( 'auth', __( 'Authenticate', 'simple-smtp' ), 'checkbox', '' );
@@ -154,7 +148,7 @@ class Singular extends Settings {
 		$this->settings_field_generator( 'pass', __( 'Password', 'simple-smtp' ), 'password', '' );
 		$this->settings_field_generator( 'from', __( 'Force from', 'simple-smtp' ), 'email', 'do-not-reply@example.com' );
 		$this->settings_field_generator( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', 'WordPress System' );
-		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'simple-smtp' ), $sec, 'dropdown' );
+		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types(), 'dropdown' );
 		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'simple-smtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ) );
 		$this->settings_field_generator( 'disable', __( 'Disable Emails', 'simple-smtp' ), 'checkbox', '', __( 'Prevents email dispatch on this WordPress site.', 'simple-smtp' ) );
 		$this->settings_field_generator( 'log', __( 'Logging', 'simple-smtp' ), 'checkbox', '' );
