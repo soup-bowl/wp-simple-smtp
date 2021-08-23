@@ -17,8 +17,8 @@
  */
 
 use wpsimplesmtp\LogService;
-use wpsimplesmtp\Settings;
-use wpsimplesmtp\SettingsMultisite;
+use wpsimplesmtp\Singular as Settings;
+use wpsimplesmtp\Multisite as SettingsMultisite;
 use wpsimplesmtp\Mail;
 use wpsimplesmtp\MailDisable;
 use wpsimplesmtp\Mailtest;

@@ -12,7 +12,7 @@ namespace wpsimplesmtp;
 /**
  * Display and control settings for WordPress Multisite instances.
  */
-class SettingsMultisite {
+class Multisite extends Settings {
 	/**
 	 * Registers the relevant WordPress hooks upon creation.
 	 */
@@ -69,7 +69,7 @@ class SettingsMultisite {
 					$collection[] = [
 						'id'       => $site->blog_id,
 						'url'      => $site->domain . $site->path,
-						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], $site->domain . $site->path . 'wp-admin/options-general.php?' ),
+						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], $site->domain . $site->path . 'wp-admin/options-general.php' ),
 						'no_set'   => get_network_option( $site->blog_id, 'wpssmtp_disable_settings', 0 ),
 						'no_log'   => get_network_option( $site->blog_id, 'wpssmtp_disable_logging', 0 ),
 					];
