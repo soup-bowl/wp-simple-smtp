@@ -185,6 +185,8 @@ class Multisite extends Settings {
 				$settings['from'] = sanitize_email( wp_unslash( $_REQUEST['wpssmtp_smtp']['from'] ) ); }
 			if ( ! empty( $_REQUEST['wpssmtp_smtp']['fromname'] ) ) {
 				$settings['fromname'] = sanitize_text_field( wp_unslash( $_REQUEST['wpssmtp_smtp']['fromname'] ) ); }
+			if ( ! empty( $_REQUEST['wpssmtp_smtp']['sec'] ) && 'def' !== $_REQUEST['wpssmtp_smtp']['sec'] ) {
+				$settings['sec'] = sanitize_text_field( wp_unslash( $_REQUEST['wpssmtp_smtp']['sec'] ) ); }
 			if ( ! empty( $_REQUEST['wpssmtp_smtp']['noverifyssl'] ) ) {
 				$settings['noverifyssl'] = (int) $_REQUEST['wpssmtp_smtp']['noverifyssl']; }
 			if ( ! empty( $_REQUEST['wpssmtp_smtp']['disable'] ) ) {

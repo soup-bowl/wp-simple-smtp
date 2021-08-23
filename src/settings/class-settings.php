@@ -96,23 +96,24 @@ class Settings {
 	/**
 	 * Generates an generic input multi-select.
 	 *
-	 * @param string $name        Code name of input.
-	 * @param string $name_pretty Name shown to user.
-	 * @param array  $options     Array of possible selections, with the index used as a key.
-	 * @param string $type        Input element type. Normally 'text'.
-	 * @param string $example     Text shown as a placeholder.
-	 * @param string $subtext     Text displayed underneath input box.
+	 * @param string  $name        Code name of input.
+	 * @param string  $name_pretty Name shown to user.
+	 * @param array   $options     Array of possible selections, with the index used as a key.
+	 * @param string  $type        Input element type. Normally 'text'.
+	 * @param string  $example     Text shown as a placeholder.
+	 * @param string  $subtext     Text displayed underneath input box.
+	 * @param boolean $ms_mode     Whether the settings are being generated for multisite/network purposes.
 	 */
-	public function settings_field_generator_multiple( $name, $name_pretty, $options, $type, $example = '', $subtext = '' ) {
-		$value = $this->options->get( $name );
+	public function settings_field_generator_multiple( $name, $name_pretty, $options, $type, $example = '', $subtext = '', $ms_mode = false ) {
+		$value = $this->options->get( $name, true, $ms_mode );
 
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $value, $options, $type, $example, $subtext ) {
+			function () use ( $name, $value, $options, $type, $example, $subtext, $ms_mode ) {
 				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
 				$has_env = '';
-				if ( 'CONFIG' !== $value->source ) {
+				if ( ! $ms_mode && 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
 
