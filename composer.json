@@ -5,6 +5,8 @@
         "classmap": [
 			"src/class-options.php",
 			"src/settings/class-settings.php",
+			"src/settings/class-multisite.php",
+			"src/settings/class-singular.php",
 			"src/settings/class-mailview.php",
 			"src/mail/class-mail.php",
 			"src/mail/class-mailtest.php",
