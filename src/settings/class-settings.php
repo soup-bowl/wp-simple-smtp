@@ -9,12 +9,6 @@
 
 namespace wpsimplesmtp;
 
-use wpsimplesmtp\Options;
-use wpsimplesmtp\LogService;
-use wpsimplesmtp\LogTable;
-use wpsimplesmtp\Mailtest;
-use wpsimplesmtp\MailView;
-
 /**
  * Handles the visibility and setup with the WordPress Settings API.
  */
