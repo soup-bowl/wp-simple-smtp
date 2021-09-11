@@ -34,12 +34,12 @@ class Options {
 	public function get( $name, $blank_obj_on_empty = true, $ms_only = false ) {
 		$sysname = 'SMTP_' . strtoupper( $name );
 
-		if ( ! empty( $_ENV[ $sysname ] ) ) {
+		if ( ! $ms_only && ! empty( $_ENV[ $sysname ] ) ) {
 			return (object) [
 				'value'  => $_ENV[ $sysname ],
 				'source' => 'ENV',
 			];
-		} elseif ( defined( $sysname ) ) {
+		} elseif ( ! $ms_only && defined( $sysname ) ) {
 			return (object) [
 				'value'  => constant( $sysname ),
 				'source' => 'CONST',
