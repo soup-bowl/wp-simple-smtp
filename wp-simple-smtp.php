@@ -19,6 +19,7 @@
 use wpsimplesmtp\LogService;
 use wpsimplesmtp\Singular as Settings;
 use wpsimplesmtp\Multisite as SettingsMultisite;
+use wpsimplesmtp\Privacy;
 use wpsimplesmtp\Mail;
 use wpsimplesmtp\MailDisable;
 use wpsimplesmtp\Mailtest;
@@ -43,6 +44,7 @@ if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALID
 
 if ( is_admin() ) {
 	new Settings();
+	( new Privacy() )->hooks();
 	if ( is_multisite() ) {
 		new SettingsMultisite();
 	}

@@ -75,6 +75,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 = 1.2 =
 * New: Multisite settings for admin visibility and override settings ([#6](https://github.com/soup-bowl/wp-simple-smtp/issues/6)).
 * New: Sites in debug mode will show what stage has set the configuration item in the relevant box. 
+* New: For sites using logging, 'Erase Personal Data' will remove requested email address entries from the log.
 
 = 1.1.2 =
 * Verified working with WordPress 5.8.
