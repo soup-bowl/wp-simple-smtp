@@ -86,7 +86,14 @@ class Settings {
 						<?php
 						break;
 				}
-				echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
+
+				if ( ! $ms_mode && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					echo wp_kses( $value->source, [] );
+				}
+
+				if ( ! empty( $subtext ) ) {
+					echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
+				}
 			},
 			$this->page,
 			$this->section
