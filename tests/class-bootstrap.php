@@ -16,6 +16,14 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $GLOBALS['sbss_temp_store'] = [];
 
 /**
+ * Mocks the WordPress is_multisite check.
+ * See https://developer.wordpress.org/reference/functions/is_multisite/ for more information.
+ */
+function is_multisite() {
+	return false;
+}
+
+/**
  * Mocks the WordPress add_action function.
  * See https://developer.wordpress.org/reference/functions/add_action/ for more information.
  *

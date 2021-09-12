@@ -4,7 +4,7 @@ Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 1.1.2
+Stable tag: 1.2
 License: MIT
 
 Adds a simple mail configuration panel into your WordPress installation. Supports logging and config variables.
@@ -45,16 +45,38 @@ You can always get assistance from your host and/or SMTP service provider.
 = One or more of the settings are greyed out =
 This plugin supports being overridden by DEFINE, so please check to see that you are not setting a define for a WP Simple SMTP option. These are most commonly stored in the wp-config.php file.
 
+The over-ride hierachy is as follows, with top being the most important.
+
+* Environmental variable.
+* Constant variable (wp-config define).
+* Multisite network settings.
+* Locally-configured settings.
+
 = How is the SMTP password stored? = 
 If openssl is available to PHP, then the password will be **encrypted** ([not hashed](https://stackoverflow.com/a/4948393)) when stored in the database. If unavailable, the SMTP password will be saved into the database as **plaintext**. The more recommended way of storing the password is to define SMTP_PASS in your wp-config.php file, which should already be locked and inaccessible from the front-end.
 
 = Does this plugin work on WordPress Multisite? =
-Yes. Each site can have unique settings, unless overriding is on. The network will use the main site settings, so network admin emails will show up in the main site log. More multisite related functionality will be added.
+Yes. Each site can have unique settings, unless overriding is on. The network will use the main site settings, so network admin emails will show up in the main site log.
+
+Since version 1.2, network-activating the plugin grants special configuration options for super administrators. This includes the ability to set overrides and configure site admin access.
+
+= Why do I see capital texts next to the input boxes? (Debugging disabled input boxes) = 
+To help diagnose disabled input boxes, when the WordPress site is in [debugging mode](https://wordpress.org/support/article/debugging-in-wordpress/), the input fields will show a small debug text to indicate where the setting came from.
+
+* **CONFIG** is the standard method of saving settings via the admin menu.
+* **CONST** are overrides typically set in either wp-config.php or your theme's functions.php.
+* **MULTISITE** are network-defined overrides set in the Network Mail panel.
+* **ENV** are pulled from the machine/server environmental settings. 
 
 = Can I report an issue, or contribute to development? =
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
+= 1.2 =
+* New: Multisite settings for admin visibility and override settings ([#6](https://github.com/soup-bowl/wp-simple-smtp/issues/6)).
+* New: Sites in debug mode will show what stage has set the configuration item in the relevant box. 
+* New: For sites using logging, 'Erase Personal Data' will remove requested email address entries from the log ([#37](https://github.com/soup-bowl/wp-simple-smtp/issues/37)).
+
 = 1.1.2 =
 * Verified working with WordPress 5.8.
 

@@ -10,14 +10,16 @@
  * Plugin Name:       Simple SMTP
  * Description:       Adds mail configuration to WordPress in a simple, standardised plugin.
  * Plugin URI:        https://www.soupbowl.io/wp-plugins
- * Version:           1.1.2
+ * Version:           1.2
  * Author:            soup-bowl
  * Author URI:        https://www.soupbowl.io
  * License:           MIT
  */
 
 use wpsimplesmtp\LogService;
-use wpsimplesmtp\Settings;
+use wpsimplesmtp\Singular as Settings;
+use wpsimplesmtp\Multisite as SettingsMultisite;
+use wpsimplesmtp\Privacy;
 use wpsimplesmtp\Mail;
 use wpsimplesmtp\MailDisable;
 use wpsimplesmtp\Mailtest;
@@ -42,6 +44,10 @@ if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALID
 
 if ( is_admin() ) {
 	new Settings();
+	( new Privacy() )->hooks();
+	if ( is_multisite() ) {
+		new SettingsMultisite();
+	}
 }
 
 new Mail();

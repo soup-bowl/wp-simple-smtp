@@ -26,35 +26,57 @@ class Options {
 	 * - Constants (e.g. wp-config.php).
 	 * - Values stored in via settings GUI.
 	 *
-	 * @param string  $name                Desired variable name ('value' will check for 'SMTP_VALUE').
+	 * @param string  $name               Desired variable name ('value' will check for 'SMTP_VALUE').
 	 * @param boolean $blank_obj_on_empty If true, system pretends the CONFIG value was empty if null.
+	 * @param boolean $ms_only            Check MS settings and return empty if no network settings were found.
 	 * @return stdClass 'value' and 'source'.
 	 */
-	public function get( $name, $blank_obj_on_empty = true ) {
+	public function get( $name, $blank_obj_on_empty = true, $ms_only = false ) {
 		$sysname = 'SMTP_' . strtoupper( $name );
 
-		if ( ! empty( $_ENV[ $sysname ] ) ) {
+		if ( ! $ms_only && ! empty( $_ENV[ $sysname ] ) ) {
 			return (object) [
 				'value'  => $_ENV[ $sysname ],
 				'source' => 'ENV',
 			];
-		} elseif ( defined( $sysname ) ) {
+		} elseif ( ! $ms_only && defined( $sysname ) ) {
 			return (object) [
 				'value'  => constant( $sysname ),
 				'source' => 'CONST',
 			];
 		} else {
-			$options = get_option( 'wpssmtp_smtp' );
-			if ( ! empty( $options ) && array_key_exists( $name, $options ) ) {
-				return (object) [
-					'value'  => $this->maybe_decrypt( $options, $name ),
-					'source' => 'CONFIG',
-				];
+			if ( is_multisite() ) {
+				$options = get_site_option( 'wpssmtp_smtp_ms', null );
+				if ( ! empty( $options ) && array_key_exists( $name, $options ) ) {
+					return (object) [
+						'value'  => $this->maybe_decrypt( $options, $name ),
+						'source' => 'MULTISITE',
+					];
+				}
+			}
+
+			if ( ! $ms_only ) {
+				$options = get_option( 'wpssmtp_smtp' );
+				if ( ! empty( $options ) && array_key_exists( $name, $options ) ) {
+					return (object) [
+						'value'  => $this->maybe_decrypt( $options, $name ),
+						'source' => 'CONFIG',
+					];
+				} else {
+					if ( $blank_obj_on_empty ) {
+						return (object) [
+							'value'  => '',
+							'source' => 'CONFIG',
+						];
+					} else {
+						return null;
+					}
+				}
 			} else {
 				if ( $blank_obj_on_empty ) {
 					return (object) [
 						'value'  => '',
-						'source' => 'CONFIG',
+						'source' => 'MULTISITE',
 					];
 				} else {
 					return null;
