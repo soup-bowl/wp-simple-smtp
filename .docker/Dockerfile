@@ -6,10 +6,10 @@ RUN curl https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 
 RUN pecl install xdebug-3.0.1
 
-ADD ./xdebug.ini              /usr/local/etc/php/conf.d/xdebug.ini
-ADD ./convert-to-multisite.sh /usr/bin/convert-to-multisite
-ADD ./multisite-htaccess      /opt/wpss/htaccess
+ADD ./xdebug.ini         /usr/local/etc/php/conf.d/xdebug.ini
+ADD ./quickstart.sh      /usr/bin/quickstart
+ADD ./multisite-htaccess /opt/wpss/htaccess
 
-RUN chmod +x /usr/bin/convert-to-multisite
+RUN chmod +x /usr/bin/quickstart
 
 EXPOSE 9003
