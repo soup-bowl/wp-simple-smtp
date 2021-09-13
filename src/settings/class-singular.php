@@ -147,7 +147,7 @@ class Singular extends Settings {
 		$this->settings_field_generator( 'user', __( 'Username', 'simple-smtp' ), 'text', 'foobar@example.com' );
 		$this->settings_field_generator( 'pass', __( 'Password', 'simple-smtp' ), 'password', '' );
 		$this->settings_field_generator( 'from', __( 'Force from', 'simple-smtp' ), 'email', 'do-not-reply@example.com' );
-		$this->settings_field_generator( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', 'WordPress System' );
+		$this->settings_field_generator( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', _x( 'WordPress System', 'Force from e-mail address', 'simple-smtp' ), '', true );
 		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types(), 'dropdown' );
 		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'simple-smtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ) );
 		$this->settings_field_generator( 'disable', __( 'Disable Emails', 'simple-smtp' ), 'checkbox', '', __( 'Prevents email dispatch on this WordPress site.', 'simple-smtp' ) );
@@ -173,7 +173,7 @@ class Singular extends Settings {
 			function () {
 				?>
 				<input class='regular-text ltr' type='text' name='wpssmtp_test_email_recipient' value='<?php echo esc_attr( wp_get_current_user()->user_email ); ?>'>
-				<p class='description'><?php esc_html_e( 'Seperate multiple emails with a semi-colon (;).', 'simple-smtp' ); ?></p>
+				<p class='description'><?php esc_html_e( 'Separate multiple emails with a semi-colon (;).', 'simple-smtp' ); ?></p>
 				<?php
 			},
 			'wpsimplesmtp_smtp_test',
