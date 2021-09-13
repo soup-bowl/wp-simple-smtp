@@ -95,6 +95,7 @@ class Multisite extends Settings {
 					$url          = $site_details->siteurl;
 					$name         = $site_details->blogname;
 					$string       = \sprintf(
+						// translators: Tooltip to clarify to the user clicking the link will take them to the child SMTP settings.
 						_x( 'Go to settings for %s', 'Sub site name', 'simple-smtp' ),
 						$name
 					);
@@ -121,7 +122,7 @@ class Multisite extends Settings {
 					<tbody>
 						<?php foreach ( $collection as $site ) : ?>
 							<tr>
-								<td><a href="<?php echo esc_url( $site['settings'] ); ?>" title="<?php echo esc_attr( $site['string'] ); ?>"><?php echo $site['name']; ?></a><br /><?php echo esc_url( $site['url'] ); ?></td>
+								<td><a href="<?php echo esc_url( $site['settings'] ); ?>" title="<?php echo esc_attr( $site['string'] ); ?>"><?php echo esc_attr( $site['name'] ); ?></a><br /><?php echo esc_url( $site['url'] ); ?></td>
 								<td><input type='checkbox' name='wpssmtp_perm_set_s<?php echo (int) $site['id']; ?>' <?php checked( $site['no_set'], 1 ); ?> value='1'></td>
 								<td><input type='checkbox' name='wpssmtp_perm_log_s<?php echo (int) $site['id']; ?>' <?php checked( $site['no_log'], 1 ); ?> value='1'></td>
 							</tr>

@@ -4,7 +4,7 @@ Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: MIT
 
 Adds a simple mail configuration panel into your WordPress installation. Supports logging and config variables.
@@ -72,6 +72,11 @@ To help diagnose disabled input boxes, when the WordPress site is in [debugging 
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
+= 1.2.1 =
+* Change: Multisite listing table improvements. Thanks to [Kebbet](https://github.com/kebbet) ([#50](https://github.com/soup-bowl/wp-simple-smtp/issues/50)).
+* Fix: Line break issue when viewing emails in the site log. Thanks to [Kebbet](https://github.com/kebbet) [#47](https://github.com/soup-bowl/wp-simple-smtp/issues/47).
+* Fix: Missed localisations in the multisite table. Thanks to [Kebbet](https://github.com/kebbet) [#45](https://github.com/soup-bowl/wp-simple-smtp/issues/45).
+
 = 1.2 =
 * New: Multisite settings for admin visibility and override settings ([#6](https://github.com/soup-bowl/wp-simple-smtp/issues/6)).
 * New: Sites in debug mode will show what stage has set the configuration item in the relevant box. 

@@ -65,7 +65,7 @@ class MailView {
 							<div class="postbox">
 								<h2 class="hndle"><?php echo esc_html( $log->get_subject() ); ?></h2>			
 								<div class="inside">
-									<?php echo wpautop( wp_kses_post( $log->get_body() ) ); ?>
+									<?php echo wp_kses_post( wpautop( $log->get_body() ) ); ?>
 								</div>	
 							</div>
 						</div>
