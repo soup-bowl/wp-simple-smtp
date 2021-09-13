@@ -88,20 +88,29 @@ class Multisite extends Settings {
 			__( 'Site Administration Control', 'simple-smtp' ),
 			function () {
 				$collection = [];
+				$sites      = get_sites();
 
-				$sites = get_sites();
 				foreach ( $sites as $site ) {
+					$site_details = get_blog_details( array( 'blog_id' => $site->blog_id ) );
+					$url          = $site_details->siteurl;
+					$name         = $site_details->blogname;
+					$string       = \sprintf(
+						_x( 'Go to settings for %s', 'Sub site name', 'simple-smtp' ),
+						$name
+					);
 					$collection[] = [
 						'id'       => $site->blog_id,
-						'url'      => $site->domain . $site->path,
-						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], $site->domain . $site->path . 'wp-admin/options-general.php' ),
+						'url'      => $url,
+						'string'   => $string,
+						'name'     => $name,
+						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], get_admin_url( $site->blog_id ) . 'options-general.php' ),
 						'no_set'   => get_network_option( $site->blog_id, 'wpssmtp_disable_settings', 0 ),
 						'no_log'   => get_network_option( $site->blog_id, 'wpssmtp_disable_logging', 0 ),
 					];
 				}
 
 				?>
-				<table class="wp-list-table widefat striped">
+				<table class="wp-list-table widefat striped wpsmtp-multisite-table">
 					<thead>
 						<tr>
 							<th><?php esc_html_e( 'Site', 'simple-smtp' ); ?></th>
@@ -112,7 +121,7 @@ class Multisite extends Settings {
 					<tbody>
 						<?php foreach ( $collection as $site ) : ?>
 							<tr>
-								<td><a href="<?php echo esc_url( $site['settings'] ); ?>"><?php echo esc_url( $site['url'] ); ?></a></td>
+								<td><a href="<?php echo esc_url( $site['settings'] ); ?>" title="<?php echo esc_attr( $site['string'] ); ?>"><?php echo $site['name']; ?></a><br /><?php echo esc_url( $site['url'] ); ?></td>
 								<td><input type='checkbox' name='wpssmtp_perm_set_s<?php echo (int) $site['id']; ?>' <?php checked( $site['no_set'], 1 ); ?> value='1'></td>
 								<td><input type='checkbox' name='wpssmtp_perm_log_s<?php echo (int) $site['id']; ?>' <?php checked( $site['no_log'], 1 ); ?> value='1'></td>
 							</tr>
