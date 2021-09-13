@@ -103,7 +103,7 @@ class Multisite extends Settings {
 						'url'      => $url,
 						'string'   => $string,
 						'name'     => $name,
-						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], $url . '/wp-admin/options-general.php' ),
+						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], get_admin_url( $site->blog_id ) . 'options-general.php' ),
 						'no_set'   => get_network_option( $site->blog_id, 'wpssmtp_disable_settings', 0 ),
 						'no_log'   => get_network_option( $site->blog_id, 'wpssmtp_disable_logging', 0 ),
 					];
