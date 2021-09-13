@@ -34,3 +34,11 @@
 	color: #fff;
 	background-color: #dc3545;
 }
+
+.wpsmtp-multisite-table td {
+	line-height: 1.4em;
+}
+.wpsmtp-multisite-table td,
+.wpsmtp-multisite-table th {
+	padding: 8px 10px;
+}
