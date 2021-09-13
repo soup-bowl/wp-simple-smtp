@@ -77,7 +77,7 @@ class Multisite extends Settings {
 		$this->settings_field_generator( 'user', __( 'Username', 'simple-smtp' ), 'text', 'foobar@example.com', '', true );
 		$this->settings_field_generator( 'pass', __( 'Password', 'simple-smtp' ), 'password', '', '', true );
 		$this->settings_field_generator( 'from', __( 'Force from', 'simple-smtp' ), 'email', 'do-not-reply@example.com', '', true );
-		$this->settings_field_generator( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', 'WordPress System', '', true );
+		$this->settings_field_generator( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', _x( 'WordPress System', 'Force from e-mail address', 'simple-smtp' ), '', true );
 		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types(), 'dropdown', '', '', true );
 		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'simple-smtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ), true );
 		$this->settings_field_generator( 'disable', __( 'Disable Emails', 'simple-smtp' ), 'checkbox', '', __( 'Prevents email dispatch on this WordPress site.', 'simple-smtp' ), true );
@@ -104,9 +104,9 @@ class Multisite extends Settings {
 				<table class="wp-list-table widefat striped">
 					<thead>
 						<tr>
-							<th>Site</th>
-							<th>Disable Settings</th>
-							<th>Disable Logging</th>
+							<th><?php esc_html_e( 'Site', 'simple-smtp' ); ?></th>
+							<th><?php esc_html_e( 'Disable Settings', 'simple-smtp' ); ?></th>
+							<th><?php esc_html_e( 'Disable Logging', 'simple-smtp' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
