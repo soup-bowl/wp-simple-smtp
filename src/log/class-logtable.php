@@ -194,7 +194,7 @@ class LogTable {
 		if ( ! in_array( (int) $entry->get_id(), $recents, true ) ) {
 			$resend = "<span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">{$resend_label}</a></span>";
 		} else {
-			$resend = '<span class="view">Resent</span>';
+			$resend = '<span class="view">' . _x( 'Resent', 'Greyed out action link when an e-mail has been resent', 'simple-smtp' ) . '</span>';
 		}
 
 		$row_actions = "<div class=\"row-actions\">{$view} | {$resend} | {$delete}</div>";
