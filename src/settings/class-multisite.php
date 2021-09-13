@@ -89,25 +89,21 @@ class Multisite extends Settings {
 			function () {
 				$collection = [];
 				$sites      = get_sites();
-				$protocol   = 'http';
-				if ( is_ssl() ) {
-					$protocol .= 's';
-				}
-				$protocol .= '://';
 
 				foreach ( $sites as $site ) {
-					$current_site_details = get_blog_details( array( 'blog_id' => $site->blog_id ) );
-					$url                  = $protocol . $site->domain . $site->path;
-					$string               = \sprintf(
+					$site_details = get_blog_details( array( 'blog_id' => $site->blog_id ) );
+					$url          = $site_details->siteurl;
+					$name         = $site_details->blogname;
+					$string       = \sprintf(
 						_x( 'Go to settings for %s', 'Sub site name', 'simple-smtp' ),
-						$current_site_details->blogname
+						$name
 					);
-					$collection[]         = [
+					$collection[] = [
 						'id'       => $site->blog_id,
 						'url'      => $url,
 						'string'   => $string,
-						'name'     => $current_site_details->blogname,
-						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], $url . 'wp-admin/options-general.php' ),
+						'name'     => $name,
+						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], $url . '/wp-admin/options-general.php' ),
 						'no_set'   => get_network_option( $site->blog_id, 'wpssmtp_disable_settings', 0 ),
 						'no_log'   => get_network_option( $site->blog_id, 'wpssmtp_disable_logging', 0 ),
 					];
