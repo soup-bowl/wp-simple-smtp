@@ -16,23 +16,50 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $GLOBALS['sbss_temp_store'] = [];
 
 /**
- * Mocks the WordPress add_action function.
- *
- * @param mixed $a Not used.
- * @param mixed $b Not used.
- * @return null
+ * Mocks the WordPress is_multisite check.
+ * See https://developer.wordpress.org/reference/functions/is_multisite/ for more information.
  */
-function add_action( $a, $b = '' ) {
-	return null;
+function is_multisite() {
+	return false;
+}
+
+/**
+ * Mocks the WordPress add_action function.
+ * See https://developer.wordpress.org/reference/functions/add_action/ for more information.
+ *
+ * @param string  $tag             Unused.
+ * @param mixed   $function_to_add Unused.
+ * @param integer $priority        Unused.
+ * @param integer $accepted_args   Unused.
+ * @return true
+ */
+function add_action( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
+	return true;
+}
+
+/**
+ * Mocks the WordPress add_filter function.
+ * See https://developer.wordpress.org/reference/functions/add_filter/ for more information.
+ *
+ * @param string  $tag             Unused.
+ * @param mixed   $function_to_add Unused.
+ * @param integer $priority        Unused.
+ * @param integer $accepted_args   Unused.
+ * @return true
+ */
+function add_filter( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
+	return true;
 }
 
 /**
  * Mocks the WordPress get_option function.
+ * See https://developer.wordpress.org/reference/functions/get_option/ for more information.
  *
- * @param mixed $name Key name.
+ * @param string $option  Key name.
+ * @param mixed  $default Default return.
  * @return mixed
  */
-function get_option( $name ) {
+function get_option( $option, $default = false ) {
 	global $sbss_temp_store;
 
 	$env_loc = __DIR__ . '/../.env';
@@ -41,7 +68,7 @@ function get_option( $name ) {
 		$dotenv->load( $env_loc );
 	}
 
-	switch ( $name ) {
+	switch ( $option ) {
 		case 'wpssmtp_smtp':
 			return [
 				'host'     => $_ENV['SMTP_HOST'],
@@ -51,8 +78,8 @@ function get_option( $name ) {
 				'auth'     => $_ENV['SMTP_AUTH'],
 			];
 		default:
-			if ( ! empty( $sbss_temp_store[ $name ] ) ) {
-				return $sbss_temp_store[ $name ];
+			if ( ! empty( $sbss_temp_store[ $option ] ) ) {
+				return $sbss_temp_store[ $option ];
 			} else {
 				return '';
 			}
@@ -61,6 +88,7 @@ function get_option( $name ) {
 
 /**
  * Mocks the WordPress update_option function.
+ * See https://developer.wordpress.org/reference/functions/update_option/ for more information.
  *
  * @param string $name Key name.
  * @param mixed  $value Variable to be stored.

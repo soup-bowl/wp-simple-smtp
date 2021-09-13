@@ -5,23 +5,35 @@
 
 	<!-- Argh, this... Please let me know if I'm doing something wrong. -->
 	<rule ref="Squiz.Commenting.FileComment.Missing">
-        <exclude-pattern>smtp-config.js</exclude-pattern>
-    </rule>
+		<exclude-pattern>smtp-config.js</exclude-pattern>
+	</rule>
 
 	<!-- Suggestions welcome. -->
 	<rule ref="WordPress.DB.DirectDatabaseQuery">
-        <exclude-pattern>class-log.php</exclude-pattern>
-    </rule>
+		<exclude-pattern>class-log.php</exclude-pattern>
+	</rule>
 	<rule ref="WordPress.DB.PreparedSQL.NotPrepared">
-        <exclude-pattern>class-log.php</exclude-pattern>
-    </rule>
+		<exclude-pattern>class-log.php</exclude-pattern>
+	</rule>
 
 	<!-- Happy to hear alternatives. This was the best I could conceive -->
 	<rule ref="WordPress.WP.GlobalVariablesOverride.Prohibited">
 		<exclude-pattern>wp-simple-smtp.php</exclude-pattern>
-    </rule>
+	</rule>
 
 	<rule ref="Generic.Arrays.DisallowShortArraySyntax">
 		<exclude-pattern>*/*</exclude-pattern>
 	</rule>
+
+	<!-- Test exclusions. -->
+	<!-- Triggered in the LogService test due to the mocked classes. -->
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>tests/log/class-logservice-test.php</exclude-pattern>
+	</rule>
+
+	<!-- Same as above. -->
+	<rule ref="Generic.Files.OneObjectStructurePerFile.MultipleFound">
+		<exclude-pattern>tests/log/class-logservice-test.php</exclude-pattern>
+	</rule>
+	<!-- ! Test exclusions. -->
 </ruleset>

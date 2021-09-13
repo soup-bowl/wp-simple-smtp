@@ -192,6 +192,34 @@ class LogService {
 	}
 
 	/**
+	 * Deletes all log entries relating to a certain email address.
+	 *
+	 * @param string $email Email address to search for.
+	 * @return integer Amount of entries deleted.
+	 */
+	public function delete_all_logs_to_email( $email ) {
+		$all = get_posts(
+			array(
+				'post_type'   => $this->post_type,
+				'numberposts' => -1,
+				'meta_query'  => array(
+					array(
+						'key'     => 'recipients',
+						'value'   => $email,
+						'compare' => 'LIKE',
+					),
+				),
+			)
+		);
+
+		foreach ( $all as $log ) {
+			wp_delete_post( $log->ID );
+		}
+
+		return count( $all );
+	}
+
+	/**
 	 * Converts the WordPress post object to the WP SMTP Log object.
 	 *
 	 * @param WP_Post $post The object.
