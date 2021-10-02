@@ -26,7 +26,7 @@ class Multisite extends Settings {
 	 * Registers the relevant WordPress hooks upon creation.
 	 */
 	public function __construct() {
-		parent::__construct( 'wpsimplesmtp_smtp_ms', 'wpsimplesmtp_ms_adminaccess_section' );
+		parent::__construct( true, 'wpsimplesmtp_smtp_ms', 'wpsimplesmtp_ms_adminaccess_section' );
 
 		add_action( 'network_admin_menu', [ &$this, 'add_network_menu' ] );
 		add_action( 'admin_init', [ &$this, 'network_settings_init' ] );
@@ -71,17 +71,17 @@ class Multisite extends Settings {
 			'wpsimplesmtp_smtp_ms'
 		);
 
-		$this->settings_field_generator( 'host', __( 'Host', 'simple-smtp' ), 'text', 'smtp.example.com', '', true );
-		$this->settings_field_generator( 'port', __( 'Port', 'simple-smtp' ), 'number', '587', '', true );
-		$this->settings_field_generator( 'auth', __( 'Authenticate', 'simple-smtp' ), 'checkbox', '', '', true );
-		$this->settings_field_generator( 'user', __( 'Username', 'simple-smtp' ), 'text', 'foobar@example.com', '', true );
-		$this->settings_field_generator( 'pass', __( 'Password', 'simple-smtp' ), 'password', '', '', true );
-		$this->settings_field_generator( 'from', __( 'Force from', 'simple-smtp' ), 'email', 'do-not-reply@example.com', '', true );
-		$this->settings_field_generator( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', _x( 'WordPress System', 'Force from e-mail address', 'simple-smtp' ), '', true );
-		$this->settings_field_generator_multiple( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types(), 'dropdown', '', '', true );
-		$this->settings_field_generator( 'noverifyssl', __( 'Disable SSL Verification', 'simple-smtp' ), 'checkbox', '', __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ), true );
-		$this->settings_field_generator( 'disable', __( 'Disable Emails', 'simple-smtp' ), 'checkbox', '', __( 'Prevents email dispatch on this WordPress site.', 'simple-smtp' ), true );
-		$this->settings_field_generator( 'log', __( 'Logging', 'simple-smtp' ), 'checkbox', '', '', true );
+		$this->generate_generic_field( 'host', __( 'Host', 'simple-smtp' ), 'text', 'smtp.example.com', '', true );
+		$this->generate_generic_field( 'port', __( 'Port', 'simple-smtp' ), 'number', '587', '', true );
+		$this->generate_checkbox( 'auth', __( 'Authenticate', 'simple-smtp' ), '', '', true );
+		$this->generate_generic_field( 'user', __( 'Username', 'simple-smtp' ), 'text', 'foobar@example.com', '', true );
+		$this->generate_generic_field( 'pass', __( 'Password', 'simple-smtp' ), 'password', '', '', true );
+		$this->generate_generic_field( 'from', __( 'Force from', 'simple-smtp' ), 'email', 'do-not-reply@example.com', '', true );
+		$this->generate_generic_field( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', _x( 'WordPress System', 'Force from e-mail address', 'simple-smtp' ), '', true );
+		$this->generate_selection( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types(), '', '', true );
+		$this->generate_checkbox( 'noverifyssl', __( 'Disable SSL Verification', 'simple-smtp' ), '', __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ), true );
+		$this->generate_checkbox( 'disable', __( 'Disable Emails', 'simple-smtp' ), '', __( 'Prevents email dispatch on this WordPress site.', 'simple-smtp' ), true );
+		$this->generate_checkbox( 'log', __( 'Logging', 'simple-smtp' ), '', '', true );
 
 		add_settings_field(
 			'wpssmtp_smtp_siteselection',

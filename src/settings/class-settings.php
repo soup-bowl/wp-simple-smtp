@@ -14,6 +14,13 @@ namespace wpsimplesmtp;
  */
 class Settings {
 	/**
+	 * For settings generator - Multisite modifier.
+	 *
+	 * @var boolean
+	 */
+	protected $ms;
+
+	/**
 	 * For settings generator - Page assignation.
 	 *
 	 * @var string
@@ -30,10 +37,12 @@ class Settings {
 	/**
 	 * Constructor.
 	 *
-	 * @param string $page    For settings generator - Page assignation.
-	 * @param string $section For settings generator - Section assignation.
+	 * @param boolean $ms      For settings generator - Multisite modifier.
+	 * @param string  $page    For settings generator - Page assignation.
+	 * @param string  $section For settings generator - Section assignation.
 	 */
-	public function __construct( $page = 'wpsimplesmtp_smtp', $section = 'wpsimplesmtp_smtp_section' ) {
+	public function __construct( $ms = false, $page = 'wpsimplesmtp_smtp', $section = 'wpsimplesmtp_smtp_section' ) {
+		$this->ms      = $ms;
 		$this->page    = $page;
 		$this->section = $section;
 	}
@@ -54,40 +63,70 @@ class Settings {
 	/**
 	 * Generates an generic input box.
 	 *
-	 * @param string  $name        Code name of input.
-	 * @param string  $name_pretty Name shown to user.
-	 * @param string  $type        Input element type. Normally 'text'.
-	 * @param string  $example     Text shown as a placeholder.
-	 * @param string  $subtext     Text displayed underneath input box.
-	 * @param boolean $ms_mode     Whether the settings are being generated for multisite/network purposes.
+	 * @param string $name        Code name of input.
+	 * @param string $name_pretty Name shown to user.
+	 * @param string $type        Input element type. Normally 'text'.
+	 * @param string $example     Text shown as a placeholder.
+	 * @param string $subtext     Text displayed underneath input box.
 	 */
-	public function settings_field_generator( $name, $name_pretty, $type, $example = '', $subtext = '', $ms_mode = false ) {
-		$value = $this->options->get( $name, true, $ms_mode );
+	public function generate_generic_field( $name, $name_pretty, $type = 'text', $example = '', $subtext = '' ) {
+		$value = $this->options->get( $name, true, $this->ms );
 
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $value, $type, $example, $subtext, $ms_mode ) {
+			function () use ( $name, $value, $type, $example, $subtext ) {
 				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
 				$has_env = '';
-				if ( ! $ms_mode && 'CONFIG' !== $value->source ) {
+				if ( ! $this->ms && 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
 
-				switch ( $type ) {
-					case 'checkbox':
-						?>
-						<input id='wpss_<?php echo esc_attr( $name ); ?>' type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
-						<?php
-						break;
-					default:
-						?>
-						<input id='wpss_<?php echo esc_attr( $name ); ?>' class='regular-text ltr' type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
-						<?php
-						break;
+				?>
+				<input id='wpss_<?php echo esc_attr( $name ); ?>' class='regular-text ltr' type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
+				<?php
+
+				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					echo wp_kses( $value->source, [] );
 				}
 
-				if ( ! $ms_mode && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				if ( ! empty( $subtext ) ) {
+					echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
+				}
+			},
+			$this->page,
+			$this->section,
+			[
+				'label_for' => 'wpss_' . esc_attr( $name ),
+			]
+		);
+	}
+
+	/**
+	 * Generates an generic input box.
+	 *
+	 * @param string $name        Code name of input.
+	 * @param string $name_pretty Name shown to user.
+	 * @param string $subtext     Text displayed underneath input box.
+	 */
+	public function generate_checkbox( $name, $name_pretty, $subtext = '' ) {
+		$value = $this->options->get( $name, true, $this->ms );
+
+		add_settings_field(
+			'wpssmtp_smtp_' . $name,
+			$name_pretty,
+			function () use ( $name, $value, $subtext ) {
+				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
+				$has_env = '';
+				if ( ! $this->ms && 'CONFIG' !== $value->source ) {
+					$has_env = 'disabled';
+				}
+
+				?>
+				<input id='wpss_<?php echo esc_attr( $name ); ?>' type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
+				<?php
+
+				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 					echo wp_kses( $value->source, [] );
 				}
 
@@ -106,39 +145,31 @@ class Settings {
 	/**
 	 * Generates an generic input multi-select.
 	 *
-	 * @param string  $name        Code name of input.
-	 * @param string  $name_pretty Name shown to user.
-	 * @param array   $options     Array of possible selections, with the index used as a key.
-	 * @param string  $type        Input element type. Normally 'text'.
-	 * @param string  $example     Text shown as a placeholder.
-	 * @param string  $subtext     Text displayed underneath input box.
-	 * @param boolean $ms_mode     Whether the settings are being generated for multisite/network purposes.
+	 * @param string $name        Code name of input.
+	 * @param string $name_pretty Name shown to user.
+	 * @param array  $options     Array of possible selections, with the index used as a key.
+	 * @param string $subtext     Text displayed underneath input box.
 	 */
-	public function settings_field_generator_multiple( $name, $name_pretty, $options, $type, $example = '', $subtext = '', $ms_mode = false ) {
-		$value = $this->options->get( $name, true, $ms_mode );
+	public function generate_selection( $name, $name_pretty, $options, $subtext = '' ) {
+		$value = $this->options->get( $name, true, $this->ms );
 
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $value, $options, $type, $example, $subtext, $ms_mode ) {
+			function () use ( $name, $value, $options, $subtext ) {
 				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
 				$has_env = '';
-				if ( ! $ms_mode && 'CONFIG' !== $value->source ) {
+				if ( ! $this->ms && 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
 
-				switch ( $type ) {
-					case 'dropdown':
-					default:
-						?>
-						<select id='wpss_<?php echo esc_attr( $name ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php echo esc_attr( $has_env ); ?>>
-							<?php foreach ( $options as $key => $option ) : ?>
-							<option value='<?php echo esc_attr( $key ); ?>' <?php echo esc_attr( isset( $value ) && (string) $key === (string) $value->value ) ? 'selected' : ''; ?>><?php echo esc_attr( $option ); ?></option>
-							<?php endforeach; ?>
-						</select>
-						<?php
-						break;
-				}
+				?>
+				<select id='wpss_<?php echo esc_attr( $name ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php echo esc_attr( $has_env ); ?>>
+					<?php foreach ( $options as $key => $option ) : ?>
+					<option value='<?php echo esc_attr( $key ); ?>' <?php echo esc_attr( isset( $value ) && (string) $key === (string) $value->value ) ? 'selected' : ''; ?>><?php echo esc_attr( $option ); ?></option>
+					<?php endforeach; ?>
+				</select>
+				<?php
 				echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
 			},
 			$this->page,
