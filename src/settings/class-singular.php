@@ -172,12 +172,15 @@ class Singular extends Settings {
 			__( 'Email recipient', 'simple-smtp' ),
 			function () {
 				?>
-				<input class='regular-text ltr' type='text' name='wpssmtp_test_email_recipient' value='<?php echo esc_attr( wp_get_current_user()->user_email ); ?>'>
+				<input id='wpss_test_recipient' class='regular-text ltr' type='text' name='wpssmtp_test_email_recipient' value='<?php echo esc_attr( wp_get_current_user()->user_email ); ?>'>
 				<p class='description'><?php esc_html_e( 'Separate multiple emails with a semi-colon (;).', 'simple-smtp' ); ?></p>
 				<?php
 			},
 			'wpsimplesmtp_smtp_test',
-			'wpsimplesmtp_test_email'
+			'wpsimplesmtp_test_email',
+			[
+				'label_for' => 'wpss_test_recipient',
+			]
 		);
 
 		add_settings_field(
@@ -185,11 +188,14 @@ class Singular extends Settings {
 			__( 'HTML Mode', 'simple-smtp' ),
 			function () {
 				?>
-				<input type='checkbox' name='wpssmtp_test_email_is_html' value='1'>
+				<input id='wpss_test_html' type='checkbox' name='wpssmtp_test_email_is_html' value='1'>
 				<?php
 			},
 			'wpsimplesmtp_smtp_test',
-			'wpsimplesmtp_test_email'
+			'wpsimplesmtp_test_email',
+			[
+				'label_for' => 'wpss_test_html',
+			]
 		);
 	}
 

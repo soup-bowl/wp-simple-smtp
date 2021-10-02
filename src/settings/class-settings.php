@@ -96,7 +96,10 @@ class Settings {
 				}
 			},
 			$this->page,
-			$this->section
+			$this->section,
+			[
+				'label_for' => 'wpss_' . esc_attr( $name ),
+			]
 		);
 	}
 
@@ -139,7 +142,10 @@ class Settings {
 				echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
 			},
 			$this->page,
-			$this->section
+			$this->section,
+			[
+				'label_for' => 'wpss_' . esc_attr( $name ),
+			]
 		);
 	}
 
