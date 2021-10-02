@@ -106,16 +106,17 @@ class Settings {
 	 * Generates an generic input box.
 	 *
 	 * @param string $name        Code name of input.
-	 * @param string $name_pretty Name shown to user.
+	 * @param string $name_pretty Left-hand column name shown to user.
+	 * @param string $description Appears alongside the checkbox.
 	 * @param string $subtext     Text displayed underneath input box.
 	 */
-	public function generate_unique_checkbox( $name, $name_pretty, $subtext = '' ) {
+	public function generate_unique_checkbox( $name, $name_pretty, $description = '', $subtext = '' ) {
 		$value = $this->options->get( $name, true, $this->ms );
 
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $value, $subtext ) {
+			function () use ( $name, $description, $value, $subtext ) {
 				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
 				$has_env = '';
 				if ( ! $this->ms && 'CONFIG' !== $value->source ) {
@@ -123,7 +124,10 @@ class Settings {
 				}
 
 				?>
-				<input id='wpss_<?php echo esc_attr( $name ); ?>' type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
+				<label for="wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]">
+					<input id='wpss_<?php echo esc_attr( $name ); ?>' type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
+					<?php echo esc_html( $description ); ?>
+				</label>
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {

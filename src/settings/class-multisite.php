@@ -73,7 +73,7 @@ class Multisite extends Settings {
 
 		$this->generate_generic_field( 'host', __( 'Host', 'simple-smtp' ), 'text', 'smtp.example.com' );
 		$this->generate_generic_field( 'port', __( 'Port', 'simple-smtp' ), 'number', '587' );
-		$this->generate_unique_checkbox( 'auth', __( 'Authenticate', 'simple-smtp' ) );
+		$this->generate_unique_checkbox( 'auth', __( 'Authenticate', 'simple-smtp' ), __( 'Authenticate connection with username and password.', 'simple-smtp' ) );
 		$this->generate_generic_field( 'user', __( 'Username', 'simple-smtp' ), 'text', 'foobar@example.com' );
 		$this->generate_generic_field( 'pass', __( 'Password', 'simple-smtp' ), 'password' );
 		$this->generate_generic_field( 'from', __( 'Force from', 'simple-smtp' ), 'email', 'do-not-reply@example.com' );

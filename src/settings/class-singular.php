@@ -143,7 +143,7 @@ class Singular extends Settings {
 
 		$this->generate_generic_field( 'host', __( 'Host', 'simple-smtp' ), 'text', 'smtp.example.com' );
 		$this->generate_generic_field( 'port', __( 'Port', 'simple-smtp' ), 'number', '587' );
-		$this->generate_unique_checkbox( 'auth', __( 'Authenticate', 'simple-smtp' ), '' );
+		$this->generate_unique_checkbox( 'auth', __( 'Authenticate', 'simple-smtp' ), __( 'Authenticate connection with username and password.', 'simple-smtp' ) );
 		$this->generate_generic_field( 'user', __( 'Username', 'simple-smtp' ), 'text', 'foobar@example.com' );
 		$this->generate_generic_field( 'pass', __( 'Password', 'simple-smtp' ), 'password', '' );
 		$this->generate_generic_field( 'from', __( 'Force from', 'simple-smtp' ), 'email', 'do-not-reply@example.com' );
@@ -194,7 +194,10 @@ class Singular extends Settings {
 			__( 'HTML Mode', 'simple-smtp' ),
 			function () {
 				?>
-				<input id='wpss_test_html' type='checkbox' name='wpssmtp_test_email_is_html' value='1'>
+				<label for="wpssmtp_test_email_is_html">
+					<input id='wpss_test_html' type='checkbox' name='wpssmtp_test_email_is_html' value='1'>
+					<?php esc_html_e( 'Send the test email with HTML content instead of plain text.', 'simple-smtp' ); ?>
+				</label>
 				<?php
 			},
 			'wpsimplesmtp_smtp_test',
