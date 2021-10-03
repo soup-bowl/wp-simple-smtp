@@ -208,7 +208,7 @@ class Multisite extends Settings {
 		}
 
 		// Done with saving - send them back.
-		wp_safe_redirect( admin_url( 'network/settings.php?page=wpsimplesmtpms' ) );
+		wp_safe_redirect( network_admin_url( 'settings.php?page=wpsimplesmtpms' ) );
 		exit;
 	}
 }
