@@ -64,20 +64,20 @@ class Settings {
 	 * Generates an generic input box.
 	 *
 	 * @param string $name        Code name of input.
-	 * @param string $name_pretty Name shown to user.
-	 * @param string $type        Input element type. Normally 'text'.
-	 * @param string $example     Text shown as a placeholder.
-	 * @param string $subtext     Text displayed underneath input box.
+	 * @param string $name_pretty Left-side column name shown to user.
+	 * @param string $type        Override text input element with number, password, email, etc.
+	 * @param string $example     Content to be shown as a placeholder.
+	 * @param string $description Text displayed underneath the input box.
 	 */
-	public function generate_generic_field( $name, $name_pretty, $type = 'text', $example = '', $subtext = '' ) {
+	public function generate_generic_field( $name, $name_pretty, $type = 'text', $example = '', $description = '' ) {
 		$value = $this->options->get( $name, true, $this->ms );
 
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $value, $type, $example, $subtext ) {
-				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
-				$has_env = '';
+			function () use ( $name, $value, $type, $example, $description ) {
+				$description = ( ! empty( $description ) ) ? "<p class='description'>{$description}</p>" : '';
+				$has_env     = '';
 				if ( ! $this->ms && 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
@@ -90,8 +90,8 @@ class Settings {
 					echo wp_kses( "<span class='wpsmtp-badge wpsmtp-badge-info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
 				}
 
-				if ( ! empty( $subtext ) ) {
-					echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
+				if ( ! empty( $description ) ) {
+					echo wp_kses( $description, [ 'p' => [ 'class' => [] ] ] );
 				}
 			},
 			$this->page,
@@ -103,22 +103,22 @@ class Settings {
 	}
 
 	/**
-	 * Generates an generic input box.
+	 * Generates a singular checkbox field.
 	 *
-	 * @param string $name        Code name of input.
-	 * @param string $name_pretty Left-hand column name shown to user.
-	 * @param string $description Appears alongside the checkbox.
-	 * @param string $subtext     Text displayed underneath input box.
+	 * @param string $name           Code name of input.
+	 * @param string $name_pretty    Left-side column name shown to user.
+	 * @param string $alongside_text Appears alongside the checkbox.
+	 * @param string $description    Text displayed underneath the input box.
 	 */
-	public function generate_unique_checkbox( $name, $name_pretty, $description = '', $subtext = '' ) {
+	public function generate_unique_checkbox( $name, $name_pretty, $alongside_text = '', $description = '' ) {
 		$value = $this->options->get( $name, true, $this->ms );
 
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $description, $value, $subtext ) {
-				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
-				$has_env = '';
+			function () use ( $name, $alongside_text, $value, $description ) {
+				$description = ( ! empty( $description ) ) ? "<p class='description'>{$description}</p>" : '';
+				$has_env     = '';
 				if ( ! $this->ms && 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
@@ -126,7 +126,7 @@ class Settings {
 				?>
 				<label for="wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]">
 					<input id='wpss_<?php echo esc_attr( $name ); ?>' type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
-					<?php echo esc_html( $description ); ?>
+					<?php echo esc_html( $alongside_text ); ?>
 				</label>
 				<?php
 
@@ -134,8 +134,8 @@ class Settings {
 					echo wp_kses( "<span class='wpsmtp-badge wpsmtp-badge-info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
 				}
 
-				if ( ! empty( $subtext ) ) {
-					echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
+				if ( ! empty( $description ) ) {
+					echo wp_kses( $description, [ 'p' => [ 'class' => [] ] ] );
 				}
 			},
 			$this->page,
@@ -150,7 +150,7 @@ class Settings {
 	 * Generates a settings area for multiple checkbox placements.
 	 *
 	 * @param string   $name        Code name of input.
-	 * @param string   $name_pretty Name shown to user.
+	 * @param string   $name_pretty Left-side column name shown to user.
 	 * @param callback $callback    Function is called within the fieldest.
 	 */
 	public function generate_checkbox_area( $name, $name_pretty, $callback ) {
@@ -172,14 +172,14 @@ class Settings {
 	/**
 	 * Generates a checkbox without WordPress settings API for use within generate_checkbox_area callback.
 	 *
-	 * @param string $name        Code name of input.
-	 * @param string $name_pretty Name shown to user.
-	 * @param string $subtext     Text displayed underneath input box.
+	 * @param string $name           Code name of input.
+	 * @param string $alongside_text Appears alongside the checkbox. Required to help identify the field in the collective.
+	 * @param string $description    Text displayed underneath the input box.
 	 */
-	public function generate_checkbox( $name, $name_pretty, $subtext = '' ) {
-		$value   = $this->options->get( $name, true, $this->ms );
-		$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
-		$has_env = '';
+	public function generate_checkbox( $name, $alongside_text, $description = '' ) {
+		$value       = $this->options->get( $name, true, $this->ms );
+		$description = ( ! empty( $description ) ) ? "<p class='description'>{$description}</p>" : '';
+		$has_env     = '';
 		if ( ! $this->ms && 'CONFIG' !== $value->source ) {
 			$has_env = 'disabled';
 		}
@@ -192,8 +192,8 @@ class Settings {
 		?>
 		<label for='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]'>
 			<input id='wpss_<?php echo esc_attr( $name ); ?>' type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
-			<?php echo esc_html( $name_pretty ); ?> <?php echo wp_kses( $debuginfo, [ 'span' => [ 'class' => [] ] ] ); ?>
-			<?php echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] ); ?>
+			<?php echo esc_html( $alongside_text ); ?> <?php echo wp_kses( $debuginfo, [ 'span' => [ 'class' => [] ] ] ); ?>
+			<?php echo wp_kses( $description, [ 'p' => [ 'class' => [] ] ] ); ?>
 		</label><br>
 		<?php
 	}
@@ -202,19 +202,19 @@ class Settings {
 	 * Generates an generic input multi-select.
 	 *
 	 * @param string $name        Code name of input.
-	 * @param string $name_pretty Name shown to user.
+	 * @param string $name_pretty Left-side column name shown to user.
 	 * @param array  $options     Array of possible selections, with the index used as a key.
-	 * @param string $subtext     Text displayed underneath input box.
+	 * @param string $description Text displayed underneath the input box.
 	 */
-	public function generate_selection( $name, $name_pretty, $options, $subtext = '' ) {
+	public function generate_selection( $name, $name_pretty, $options, $description = '' ) {
 		$value = $this->options->get( $name, true, $this->ms );
 
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function () use ( $name, $value, $options, $subtext ) {
-				$subtext = ( ! empty( $subtext ) ) ? "<p class='description'>{$subtext}</p>" : '';
-				$has_env = '';
+			function () use ( $name, $value, $options, $description ) {
+				$description = ( ! empty( $description ) ) ? "<p class='description'>{$description}</p>" : '';
+				$has_env     = '';
 				if ( ! $this->ms && 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
@@ -226,7 +226,7 @@ class Settings {
 					<?php endforeach; ?>
 				</select>
 				<?php
-				echo wp_kses( $subtext, [ 'p' => [ 'class' => [] ] ] );
+				echo wp_kses( $description, [ 'p' => [ 'class' => [] ] ] );
 			},
 			$this->page,
 			$this->section,
