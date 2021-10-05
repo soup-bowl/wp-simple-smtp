@@ -76,14 +76,14 @@ class Multisite extends Settings {
 		$this->generate_unique_checkbox( 'auth', __( 'Authenticate', 'simple-smtp' ), __( 'Authenticate connection with username and password', 'simple-smtp' ) );
 		$this->generate_generic_field( 'user', __( 'Username', 'simple-smtp' ), 'text', 'foobar@example.com' );
 		$this->generate_generic_field( 'pass', __( 'Password', 'simple-smtp' ), 'password' );
-		$this->generate_generic_field( 'from', __( 'Force from', 'simple-smtp' ), 'email', 'do-not-reply@example.com' );
-		$this->generate_generic_field( 'fromname', __( 'Force from name', 'simple-smtp' ), 'text', _x( 'WordPress System', 'Force from e-mail address', 'simple-smtp' ) );
+		$this->generate_generic_field( 'from', __( 'Force from e-mail address', 'simple-smtp' ), 'email', 'do-not-reply@example.com' );
+		$this->generate_generic_field( 'fromname', __( 'Force from e-mail sender name', 'simple-smtp' ), 'text', _x( 'WordPress System', 'Force from e-mail address', 'simple-smtp' ) );
 		$this->generate_selection( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types() );
 		$this->generate_checkbox_area(
 			'adt',
 			__( 'Options', 'simple-smtp' ),
 			function() {
-				$this->generate_checkbox( 'disable', __( 'Disable email services', 'simple-smtp' ), __( 'When marked, all multisite email services will be disabled.' ,'simple-smtp' ) );
+				$this->generate_checkbox( 'disable', __( 'Disable email services', 'simple-smtp' ), __( 'When marked, all multisite email services will be disabled.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'log', __( 'Log all sent emails to the database', 'simple-smtp' ), __( 'Works with the WordPress privacy features.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'noverifyssl', __( 'Disable SSL Verification (advanced)', 'simple-smtp' ), __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ) );
 			}

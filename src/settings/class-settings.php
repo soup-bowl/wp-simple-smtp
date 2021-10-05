@@ -124,7 +124,7 @@ class Settings {
 				}
 
 				?>
-				<label for="wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]">
+				<label for='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]'>
 					<input id='wpss_<?php echo esc_attr( $name ); ?>' type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
 					<?php echo esc_html( $alongside_text ); ?>
 				</label>
