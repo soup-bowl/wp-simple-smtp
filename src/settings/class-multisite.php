@@ -77,7 +77,7 @@ class Multisite extends Settings {
 		$this->generate_generic_field( 'user', __( 'Username', 'simple-smtp' ), 'text', 'foobar@example.com' );
 		$this->generate_generic_field( 'pass', __( 'Password', 'simple-smtp' ), 'password' );
 		$this->generate_generic_field( 'from', __( 'Force from e-mail address', 'simple-smtp' ), 'email', 'do-not-reply@example.com' );
-		$this->generate_generic_field( 'fromname', __( 'Force from e-mail sender name', 'simple-smtp' ), 'text', _x( 'WordPress System', 'Force from e-mail address', 'simple-smtp' ) );
+		$this->generate_generic_field( 'fromname', __( 'Force from e-mail sender name', 'simple-smtp' ), 'text', _x( 'WordPress System', 'Force from e-mail sender name', 'simple-smtp' ) );
 		$this->generate_selection( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types() );
 		$this->generate_checkbox_area(
 			'adt',
