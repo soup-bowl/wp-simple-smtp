@@ -194,7 +194,7 @@ class Singular extends Settings {
 			__( 'HTML Mode', 'simple-smtp' ),
 			function () {
 				?>
-				<label for='wpssmtp_test_email_is_html'>
+				<label for='wpss_test_html'>
 					<input id='wpss_test_html' type='checkbox' name='wpssmtp_test_email_is_html' value='1'>
 					<?php esc_html_e( 'Send the test email with HTML content instead of plain text', 'simple-smtp' ); ?>
 				</label>
