@@ -198,6 +198,7 @@ class LogService {
 	 * @return integer Amount of entries deleted.
 	 */
 	public function delete_all_logs_to_email( $email ) {
+		// @phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 		$all = get_posts(
 			array(
 				'post_type'   => $this->post_type,
@@ -211,6 +212,7 @@ class LogService {
 				),
 			)
 		);
+		// @phpcs:enable
 
 		foreach ( $all as $log ) {
 			wp_delete_post( $log->ID );
