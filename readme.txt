@@ -73,6 +73,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = 1.2.2 =
+* Add: Filter for the log entries. Thanks to [Kebbet](https://github.com/kebbet) [#57](https://github.com/soup-bowl/wp-simple-smtp/issues/57).
 * Change: Input boxes clearer and more WordPress-standardised ([#51](https://github.com/soup-bowl/wp-simple-smtp/issues/51), [#52](https://github.com/soup-bowl/wp-simple-smtp/pull/52)).
 * Fix: Use network_admin_url instead of crafting a URL. Thanks to [Kebbet](https://github.com/kebbet) [#53](https://github.com/soup-bowl/wp-simple-smtp/issues/53).
 

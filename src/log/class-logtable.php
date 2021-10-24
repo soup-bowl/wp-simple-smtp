@@ -36,7 +36,13 @@ class LogTable {
 	 * @param integer $maximum_per_page Limits the table display.
 	 */
 	public function display( $page, $maximum_per_page = 5 ) {
-		$maximum_per_page = apply_filters( 'simple_smtp_log_table_max_per_page', $maximum_per_page );
+		/**
+		 * Overrides the default log limit to show a custom acount of entries in the log viewer.
+		 *
+		 * @param int $maximum_per_page The amount of entries to be shown in the log.
+		 */
+		$maximum_per_page = (int) apply_filters( 'simple_smtp_log_table_max_per_page', $maximum_per_page );
+		$maximum_per_page = ( $maximum_per_page < 1 ) ? 1 : $maximum_per_page;
 		$page             = ( $page < 0 ) ? 0 : $page;
 		$entries          = $this->log_service->get_log_entries( ( $page + 1 ), $maximum_per_page );
 		$pages            = $this->log_service->get_log_entry_pages( $maximum_per_page );
