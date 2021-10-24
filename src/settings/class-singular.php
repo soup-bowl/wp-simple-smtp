@@ -215,7 +215,7 @@ class Singular extends Settings {
 	 * @return array Parameter #1 with possible changes.
 	 */
 	public function post_processing( $options ) {
-		if ( extension_loaded( 'openssl' ) && '' !== $options['pass'] ) {
+		if ( extension_loaded( 'openssl' ) && ! empty( $options['pass'] ) ) {
 			$pass_opt = $this->options->encrypt( 'pass', $options['pass'] );
 
 			$options['pass']   = $pass_opt['string'];
