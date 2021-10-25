@@ -35,6 +35,13 @@ class Settings {
 	protected $section;
 
 	/**
+	 * String that represents a dummy password on the front-end.
+	 *
+	 * @var string
+	 */
+	protected $dummy_password;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param boolean $ms      For settings generator - Multisite modifier.
@@ -45,6 +52,8 @@ class Settings {
 		$this->ms      = $ms;
 		$this->page    = $page;
 		$this->section = $section;
+
+		$this->dummy_password = '******';
 	}
 
 	/**
@@ -77,13 +86,14 @@ class Settings {
 			$name_pretty,
 			function () use ( $name, $value, $type, $example, $description ) {
 				$description = ( ! empty( $description ) ) ? "<p class='description'>{$description}</p>" : '';
+				$prv_input   = ( 'password' === $type && ! empty( $value->value ) ) ? $this->dummy_password : $value->value;
 				$has_env     = '';
 				if ( ! $this->ms && 'CONFIG' !== $value->source ) {
 					$has_env = 'disabled';
 				}
 
 				?>
-				<input id='wpss_<?php echo esc_attr( $name ); ?>' class='regular-text ltr' type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $value->value ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
+				<input id='wpss_<?php echo esc_attr( $name ); ?>' class='regular-text ltr' type='<?php echo esc_attr( $type ); ?>' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' value='<?php echo esc_attr( $prv_input ); ?>' placeholder='<?php echo esc_attr( $example ); ?>' <?php echo esc_attr( $has_env ); ?>>
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
