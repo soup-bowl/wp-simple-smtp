@@ -6,7 +6,6 @@
 .env.example
 .gitignore
 .travis.yml
-SECURITY.md
 docker-compose.yml
 phpcs.xml.dist
 phpunit.xml
