@@ -41,6 +41,20 @@ class Singular extends Settings {
 	protected $log_table;
 
 	/**
+	 * Provides testing functions for checking the mail functionality.
+	 *
+	 * @var Mailtest
+	 */
+	protected $mail_test;
+
+	/**
+	 * Settings aspects relating to the log view.
+	 *
+	 * @var MailView
+	 */
+	protected $mail_view;
+
+	/**
 	 * Registers the relevant WordPress hooks upon creation.
 	 */
 	public function __construct() {
