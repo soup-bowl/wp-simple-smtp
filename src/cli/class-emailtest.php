@@ -20,15 +20,18 @@ class EmailTest {
 	 * Tests the site email functionality.
 	 *
 	 * <email>
-	 * : Email address to send the test to.s
+	 * : Email address to send the test to.
 	 *
 	 * @when before_wp_load
+	 *
+	 * @param array $args       Command-line arguments.
+	 * @param array $assoc_args Associated arguments.
 	 */
 	public function test_email( $args, $assoc_args ) {
-		if ( is_email( $args[0] )) {
+		if ( is_email( $args[0] ) ) {
 			$email     = Mailtest::generate_test_email( true );
 			$recipient = sanitize_email( $args[0] );
-			
+
 			$is_sent = wp_mail( $recipient, $email['subject'], $email['message'], $email['headers'] );
 
 			if ( $is_sent ) {
