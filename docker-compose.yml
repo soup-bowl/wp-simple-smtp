@@ -31,8 +31,8 @@ services:
     volumes:
     - ".:/var/www/html/wp-content/plugins/simple-smtp"
     ports:
-    - 80:80
-    - 443:443
+    - 8080:80
+    - 4443:443
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: root
