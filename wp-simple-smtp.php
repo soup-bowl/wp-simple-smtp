@@ -44,8 +44,7 @@ if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALID
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	$email_cli = new CLIEmailTest();
-	WP_CLI::add_command( 'test-email', [ &$email_cli, 'test_email' ] );
+	WP_CLI::add_command( 'email-test', [ new CLIEmailTest(), 'test_email' ] );
 }
 
 if ( is_admin() ) {
