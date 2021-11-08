@@ -22,7 +22,7 @@ class EmailTest {
 	 *
 	 * <email>
 	 * : Email address to send the test to.
-	 * 
+	 *
 	 * [--html]
 	 * : Sends a HTML-based email instead of plaintext.
 	 *

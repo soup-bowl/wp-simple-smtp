@@ -24,7 +24,6 @@ use wpsimplesmtp\Mail;
 use wpsimplesmtp\MailDisable;
 use wpsimplesmtp\Mailtest;
 use wpsimplesmtp\Options;
-use wpsimplesmtp\cli\EmailTest as CLIEmailTest;
 
 /**
  * Autoloader.
@@ -44,7 +43,8 @@ if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALID
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	WP_CLI::add_command( 'email-test', [ new CLIEmailTest(), 'test_email' ] );
+	WP_CLI::add_command( 'email-test', [ new wpsimplesmtp\cli\EmailTest(), 'test_email' ] );
+	WP_CLI::add_command( 'email-log', [ new wpsimplesmtp\cli\EmailLog(), 'load_log' ] );
 }
 
 if ( is_admin() ) {

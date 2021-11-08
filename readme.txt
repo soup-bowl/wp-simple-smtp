@@ -76,7 +76,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = 1.2.3 =
-* Add: [WordPress CLI](https://wp-cli.org/) support for testing emails.
+* Add: [WordPress CLI](https://wp-cli.org/) support. See the FAQ for usage details.
 * Change: Password not returned plaintext in settings ([#61](https://github.com/soup-bowl/wp-simple-smtp/issues/61)).
 
 = 1.2.2 =
