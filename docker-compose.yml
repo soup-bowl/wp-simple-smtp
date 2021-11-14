@@ -1,13 +1,13 @@
 version: '3.6'
 services:
   db:
-    image: mysql:latest
+    image: docker.io/library/mysql:latest
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: s9f6sd759r32r7f0dsf5673894956
       MYSQL_DATABASE: wordpress
   db_pma:
-    image: phpmyadmin/phpmyadmin:latest
+    image: docker.io/phpmyadmin/phpmyadmin:latest
     depends_on:
     - db
     ports:
@@ -18,7 +18,7 @@ services:
       PMA_PASSWORD: s9f6sd759r32r7f0dsf5673894956
   mail:
     # Port 1025 for SMTP.
-    image: mailhog/mailhog:latest
+    image: docker.io/mailhog/mailhog:latest
     ports:
     - 8081:8025
     - 8083:1025
@@ -30,6 +30,7 @@ services:
       context: ./.docker
     volumes:
     - ".:/var/www/html/wp-content/plugins/simple-smtp"
+    - ".docker/mu-plugins:/var/www/html/wp-content/mu-plugins"
     ports:
     - 8080:80
     - 4443:443

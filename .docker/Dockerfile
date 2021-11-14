@@ -1,4 +1,4 @@
-FROM wordpress:php7.4-apache
+FROM docker.io/wordpress:php7.4-apache
 
 RUN apt-get update && apt-get install less
 
