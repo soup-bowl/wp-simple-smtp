@@ -58,6 +58,14 @@ If openssl is available to PHP, then the password will be **encrypted** ([not ha
 = Can I change the amount of entries shown in the log view? =
 This can be adjusted by the 'simple_smtp_log_table_max_per_page' filter. Returning an integer value to this filter hook will adjust the table page limit.
 
+= Does this plugin support WordPress CLI? =
+Yes. With [WP-CLI](https://wp-cli.org/) you can perform the following actions:
+
+* `email-log` View the log if enabled.
+* `email-test` Send a test email.
+
+To view the available options and help documentation, run `wp help` or `wp help <function name>`.
+
 = Does this plugin work on WordPress Multisite? =
 Yes. Each site can have unique settings, unless overriding is on. The network will use the main site settings, so network admin emails will show up in the main site log.
 
@@ -76,6 +84,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = 1.2.3 =
+* Add: [WordPress CLI](https://wp-cli.org/) support. See the FAQ for usage details.
 * Change: Password not returned plaintext in settings ([#61](https://github.com/soup-bowl/wp-simple-smtp/issues/61)).
 
 = 1.2.2 =

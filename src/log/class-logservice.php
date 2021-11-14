@@ -232,6 +232,9 @@ class LogService {
 			return null;
 		}
 
+		$error = get_post_meta( $post->ID, 'error', true );
+		$error = ( 'WPSS_MAIL_OFF' === $error ) ? __( 'Email was disabled at this time.', 'simple-smtp' ) : $error;
+
 		$log = new Log();
 		$log->set_id( $post->ID );
 		$log->set_subject( $post->post_title );
@@ -239,7 +242,7 @@ class LogService {
 		$log->set_recipients( json_decode( get_post_meta( $post->ID, 'recipients', true ) ) );
 		$log->set_headers( json_decode( get_post_meta( $post->ID, 'headers', true ) ) );
 		$log->set_headers_unified( get_post_meta( $post->ID, 'headers', true ) );
-		$log->set_error( get_post_meta( $post->ID, 'error', true ) );
+		$log->set_error( $error );
 		$log->set_attachments( $this->get_log_entry_attachments( $post->ID ) );
 		$log->set_timestamp( get_post_meta( $post->ID, 'timestamp', true ) );
 

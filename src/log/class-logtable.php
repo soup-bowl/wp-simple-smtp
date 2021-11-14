@@ -68,18 +68,16 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
-				$error      = get_post_meta( $entry->get_id(), 'error', true );
-				$error      = ( 'WPSS_MAIL_OFF' === $error ) ? __( 'Email was disabled at this time.', 'simple-smtp' ) : $error;
 				$recipients = implode( ', ', $entry->get_recipients() );
 				$actions    = $this->render_log_entry_buttons( $entry );
 				$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->get_timestamp() ) );
-				$fail_atr   = ( ! empty( $error ) ) ? 'class="site-archived"' : '';
+				$fail_atr   = ( ! empty( $entry->get_error() ) ) ? 'class="site-archived"' : '';
 				echo wp_kses(
 					"<tr {$fail_atr}>
 					<td class=\"has-row-actions\">{$recipients}{$actions}</td>
 					<td>" . $entry->get_subject() . '</td>
 					<td><abbr title="' . $entry->get_timestamp() . "\">{$date}</abbr></td>
-					<td>{$error}</td>
+					<td>{$entry->get_error()}</td>
 					</tr>",
 					$this->allowed_table_html()
 				);
