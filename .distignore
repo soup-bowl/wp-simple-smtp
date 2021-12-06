@@ -5,6 +5,7 @@
 /tests
 .env.example
 .gitignore
+.gitpod.yml
 .travis.yml
 docker-compose.yml
 phpcs.xml.dist
