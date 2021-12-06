@@ -1,7 +1,6 @@
 tasks:
   - init: |
-      sudo find . -type d -exec chmod 755 {} \;
-      sudo find . -type f -exec chmod 644 {} \;
+      chmod 755 .
       docker-compose pull
     command: |
       docker-compose up
