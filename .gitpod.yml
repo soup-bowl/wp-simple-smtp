@@ -1,7 +1,8 @@
 tasks:
   - init: |
       chmod 755 .
-      docker-compose pull
+      docker pull debian
+      docker-compose composer
     command: |
       docker run --rm --tty --volume $PWD:/app --user $(id -u):$(id -g) composer install --ignore-platform-reqs
       docker-compose up
