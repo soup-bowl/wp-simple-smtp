@@ -86,6 +86,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 = 1.2.3 =
 * Add: [WordPress CLI](https://wp-cli.org/) support. See the FAQ for usage details.
 * Change: Password not returned plaintext in settings ([#61](https://github.com/soup-bowl/wp-simple-smtp/issues/61)).
+* Fix: Multisite-only config caused an instantiation error ([#67](https://github.com/soup-bowl/wp-simple-smtp/issues/67)).
 
 = 1.2.2 =
 * Add: Filter for the log entries. Thanks to [Kebbet](https://github.com/kebbet) [#57](https://github.com/soup-bowl/wp-simple-smtp/issues/57).

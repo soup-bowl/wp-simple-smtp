@@ -75,10 +75,11 @@ class Mail {
 	 */
 	public function process_mail( $phpmailer ) {
 		$config = get_option( 'wpssmtp_smtp' );
+		$host   = $this->options->get( 'host' )->value;
 
-		if ( ! empty( $config ) ) {
+		if ( ! empty( $host ) ) {
 			// phpcs:disable WordPress.NamingConventions.ValidVariableName
-			$phpmailer->Host     = $this->options->get( 'host' )->value;
+			$phpmailer->Host     = $host;
 			$phpmailer->Port     = $this->options->get( 'port' )->value;
 			$phpmailer->Username = $this->options->get( 'user' )->value;
 			$phpmailer->Password = $this->options->get( 'pass' )->value;
