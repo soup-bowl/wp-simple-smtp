@@ -89,13 +89,22 @@ class EmailLog {
 		$list_format = [];
 		foreach ( $entries as $entry ) {
 			$list_format[] = [
-				'ID'       => $entry->get_id(),
-				'Subject'  => $entry->get_subject(),
-				'Date'     => $entry->get_timestamp(),
-				'Response' => $entry->get_error(),
+				__( 'Mail ID', 'simple-smtp' ) => $entry->get_id(),
+				__( 'Subject', 'simple-smtp' ) => $entry->get_subject(),
+				__( 'Date', 'simple-smtp' )    => $entry->get_timestamp(),
+				__( 'Error', 'simple-smtp' )   => $entry->get_error(),
 			];
 		}
 
-		Utils\format_items( 'table', $list_format, [ 'ID', 'Subject', 'Date', 'Response' ] );
+		Utils\format_items(
+			'table',
+			$list_format,
+			[
+				__( 'Mail ID', 'simple-smtp' ),
+				__( 'Subject', 'simple-smtp' ),
+				__( 'Date', 'simple-smtp' ),
+				__( 'Error', 'simple-smtp' ),
+			]
+		);
 	}
 }
