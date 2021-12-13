@@ -23,6 +23,7 @@ If no errors occur, you'll now have the following local bindings:
 To speed this up even more, I've included a small script that interfaces with [WP CLI][cli] to bypass the 5 minute install process. This will give you a basic functioning WordPress site with typically default development installation choices. The username is **admin** and the password is **password**. 
 
 * For a regular install, run `docker-compose exec www quickstart`.
+* For a nightly install, run `docker-compose exec www quickstart beta`.
 * For a multisite instance, run `docker-compose exec www quickstart ms`.
 
 This **does not setup SMTP**, to avoid impeding testing procedures. You'll still need to do that.
