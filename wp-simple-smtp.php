@@ -45,6 +45,7 @@ if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALID
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	WP_CLI::add_command( 'email-test', [ new wpsimplesmtp\cli\EmailTest(), 'test_email' ] );
 	WP_CLI::add_command( 'email-log', [ new wpsimplesmtp\cli\EmailLog(), 'load_log' ] );
+	WP_CLI::add_command( 'email-view', [ new wpsimplesmtp\cli\EmailLog(), 'view_email' ] );
 }
 
 if ( is_admin() ) {
