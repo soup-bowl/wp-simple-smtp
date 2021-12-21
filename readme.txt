@@ -84,6 +84,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = Edge =
+* Fix: Incorrect capability type used by the log viewer. Thanks to [Benoît Chantre](https://github.com/benoitchantre) [#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74).
 
 = 1.2.3 =
 * Add: [WordPress CLI](https://wp-cli.org/) support. See the FAQ for usage details.
