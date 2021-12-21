@@ -46,7 +46,7 @@ class MailView {
 			menu_page_url( 'wpsimplesmtp', false )
 		) . '&resend';
 
-		if ( current_user_can( 'administrator' ) && isset( $log ) ) {
+		if ( current_user_can( 'manage_options' ) && isset( $log ) ) {
 			$recipients = implode( ', ', $log->get_recipients() );
 			$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $log->get_timestamp() ) );
 
