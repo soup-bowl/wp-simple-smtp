@@ -94,6 +94,9 @@ function wpsmtp_deactivation() {
 		wp_next_scheduled( 'wpss_clear_resent' ),
 		'wpss_clear_resent'
 	);
+
+	// Clear out remaining log files upon deactivation.
+	( new LogService() )->delete_all_logs();
 }
 
 /**
