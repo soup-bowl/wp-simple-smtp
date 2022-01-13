@@ -71,6 +71,52 @@ add_action(
 			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.css', [], '1.2' );
 			wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.3', true );
 			wp_set_script_translations( 'wpss_config', 'simple-smtp' );
+
+			$smtp_settings = [
+				[
+					'name'           => 'Gmail',
+					'server'         => 'smtp.gmail.com',
+					'port'           => '587',
+					'authentication' => true,
+					'encryption'     => 'tls',
+				],
+				[
+					'name'           => 'Microsoft Exchange',
+					'server'         => 'smtp.office365.com',
+					'port'           => '587',
+					'authentication' => true,
+					'encryption'     => 'tls',
+				],
+				[
+					'name'           => 'SendGrid',
+					'server'         => 'smtp.sendgrid.net',
+					'port'           => '587',
+					'authentication' => true,
+					'user'           => 'apikey',
+					'encryption'     => 'tls',
+				],
+				[
+					'name'           => 'Pepipost',
+					'server'         => 'smtp.pepipost.com',
+					'port'           => '587',
+					'authentication' => true,
+				],
+				[
+					'name'           => 'SendinBlue',
+					'server'         => 'smtp-relay.sendinblue.com',
+					'port'           => '587',
+					'authentication' => true,
+				],
+				[
+					'name'           => 'Amazon SES',
+					'server'         => 'email-smtp.<CHANGE>.amazonaws.com',
+					'port'           => '465',
+					'authentication' => true,
+					'encryption'     => 'tls',
+				],
+			];
+
+			wp_localize_script( 'wpss_config', 'wpss_qc_settings', $smtp_settings );
 		}
 	}
 );
