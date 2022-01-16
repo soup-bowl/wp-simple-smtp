@@ -2,7 +2,7 @@
 Contributors: soupbowl
 Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 7.0
 Stable tag: 1.2.3
 License: MIT
@@ -91,7 +91,9 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = Edge =
-* Change: (For new installs) logs purge automatically after a month ([#70](https://github.com/soup-bowl/wp-simple-smtp/issues/70), [#71](https://github.com/soup-bowl/wp-simple-smtp/issues/71))
+* Change: (For new installs) logs purge automatically after a month ([#70](https://github.com/soup-bowl/wp-simple-smtp/issues/70), [#71](https://github.com/soup-bowl/wp-simple-smtp/issues/71)).
+* Change: Quick config settings now contained within plugin ([#78](https://github.com/soup-bowl/wp-simple-smtp/issues/78)).
+* Change: Tightened permissions to the log viewer ([#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74)).
 * Fix: Incorrect capability type used by the log viewer. Thanks to [Benoît Chantre](https://github.com/benoitchantre) [#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74).
 
 = 1.2.3 =
