@@ -2,7 +2,7 @@
 Contributors: soupbowl
 Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 7.0
 Stable tag: 1.2.3
 License: MIT
