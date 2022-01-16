@@ -84,6 +84,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = Edge =
+* Change: Quick config settings now contained within plugin ([#78](https://github.com/soup-bowl/wp-simple-smtp/issues/78)).
 * Change: Tightened permissions to the log viewer ([#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74)).
 * Fix: Incorrect capability type used by the log viewer. Thanks to [Benoît Chantre](https://github.com/benoitchantre) [#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74).
 

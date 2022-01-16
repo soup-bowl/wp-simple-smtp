@@ -13,15 +13,10 @@ const { __, _x, _n, _nx } = wp.i18n;
  */
 function wpss_loadin() {
 	if ( null !== document.getElementById( 'wpss-conf' ) ) {
-		jQuery.getJSON(
-			"https://www.soupbowl.io/wp-json/wprass/v1/sources",
-			function( data ) {
-				wpss_load_quicksettings( data );
-				document.getElementById( 'wpss-quickset' ).onchange = function( stuff ) {
-					wpss_input_selection( data, stuff.target.value );
-				};
-			}
-		);
+		wpss_load_quicksettings( wpss_qc_settings );
+		document.getElementById( 'wpss-quickset' ).onchange = function( stuff ) {
+			wpss_input_selection( wpss_qc_settings, stuff.target.value );
+		};
 	}
 }
 
@@ -47,10 +42,10 @@ function wpss_load_quicksettings( data ) {
 	selector_c1.outerHTML = "<th scope=\"row\">" + __( 'Quick Config', 'simple-smtp' ) + "</th>";
 
 	// Content cell.
-	var datacount = data.configurations.length;
+	var datacount = data.length;
 	options      += '<option>' + __( 'Select', 'simple-smtp' ) + '</option>';
 	for (i = 0; i < datacount; i++) {
-		options += '<option>' + data.configurations[i].name + '</option>';
+		options += '<option>' + data[i].name + '</option>';
 	}
 	selector.innerHTML = options;
 	selector_c2.appendChild( selector );
@@ -69,10 +64,10 @@ function wpss_load_quicksettings( data ) {
  */
 function wpss_input_selection( data, name ) {
 	var s = null;
-	var c = data.configurations.length;
+	var c = data.length;
 	for (i = 0; i < c; i++) {
-		if ( data.configurations[i].name == name ) {
-			s = data.configurations[i];
+		if ( data[i].name == name ) {
+			s = data[i];
 			break;
 		}
 	}
