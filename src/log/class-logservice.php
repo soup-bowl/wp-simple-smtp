@@ -203,7 +203,7 @@ class LogService {
 				'post_type'   => $this->post_type,
 				'numberposts' => -1,
 				'date_query'  => [
-					'before' => date( 'Y-m-d', ( time() - $int_time_diff ) )
+					'before' => gmdate( 'Y-m-d', ( time() - $int_time_diff ) ),
 				],
 			)
 		);
