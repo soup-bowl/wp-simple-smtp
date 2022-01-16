@@ -67,8 +67,11 @@ add_action(
 add_action(
 	'wpss_clear_logs',
 	function() {
+		$is_disabled = apply_filters( 'simple_smtp_disable_log_prune', false );
 		// 2629800 = 1 Month.
-		( new LogService() )->prune_logs( 2629800 );
+		if ( ! $is_disabled ) {
+			( new LogService() )->prune_logs( 2629800 );
+		}
 	}
 );
 
