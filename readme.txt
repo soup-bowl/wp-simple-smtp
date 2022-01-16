@@ -84,6 +84,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = Edge =
+* Add: Read logged emails via WP-CLI.
 
 = 1.2.3 =
 * Add: [WordPress CLI](https://wp-cli.org/) support. See the FAQ for usage details.
