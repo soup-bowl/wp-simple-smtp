@@ -41,9 +41,9 @@ class EmailTest {
 			$is_sent = wp_mail( $recipient, $email['subject'], $email['message'], $email['headers'] );
 
 			if ( $is_sent ) {
-				WP_CLI::success( __( 'Test email sent!', 'simple-smtp' ) );
+				WP_CLI::success( __( 'Test email sent successfully.', 'simple-smtp' ) );
 			} else {
-				WP_CLI::error( __( 'Email failed to send. Check the logs to see what happened.', 'simple-smtp' ) );
+				WP_CLI::error( __( 'Test email failed. Please check your configuration and try again.', 'simple-smtp' ) );
 			}
 		} else {
 			WP_CLI::error( __( 'Email address provided is invalid.', 'simple-smtp' ) );

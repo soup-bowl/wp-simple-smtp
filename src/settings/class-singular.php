@@ -257,6 +257,23 @@ class Singular extends Settings {
 			<?php if ( $this->can_edit_settings( 'wpssmtp_disable_settings' ) ) : ?>
 				<form id='wpss-conf' action='options.php' method='post'>
 					<?php
+					if ( ! empty( $_REQUEST['status'] ) ) {
+						$has_pass     = ( 'pass' === $_REQUEST['status'] ) ? true : false;
+						$notice_level = ( $has_pass ) ? 'notice-success' : 'notice-error';
+						$notice       = ( $has_pass ) ? __( 'Test email sent successfully.', 'simple-smtp' ) : __( 'Test email failed. Please check your configuration and try again.', 'simple-smtp' );
+
+						echo wp_kses(
+							"<div class='notice is-dismissible {$notice_level}'><p><strong>{$notice}</strong></p></div>",
+							[
+								'div'    => [
+									'class' => [],
+								],
+								'p'      => [],
+								'strong' => [],
+							]
+						);
+					}
+
 					settings_fields( 'wpsimplesmtp_smtp' );
 					do_settings_sections( 'wpsimplesmtp_smtp' );
 					submit_button();
