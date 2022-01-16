@@ -65,6 +65,14 @@ add_action(
 );
 
 add_action(
+	'wpss_clear_logs',
+	function() {
+		// 2629800 = 1 Month.
+		( new LogService() )->prune_logs( 2629800 );
+	}
+);
+
+add_action(
 	'admin_enqueue_scripts',
 	function ( $page ) {
 		if ( 'settings_page_wpsimplesmtp' === $page || 'settings_page_wpsimplesmtpms' === $page ) {
@@ -83,6 +91,10 @@ add_action(
 function wpsmtp_activation() {
 	if ( ! wp_next_scheduled( 'wpss_clear_resent' ) ) {
 		wp_schedule_event( time(), 'hourly', 'wpss_clear_resent' );
+	}
+
+	if ( ! wp_next_scheduled( 'wpss_clear_logs' ) ) {
+		wp_schedule_event( time(), 'hourly', 'wpss_clear_logs' );
 	}
 }
 
