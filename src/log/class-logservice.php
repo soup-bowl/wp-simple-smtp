@@ -266,7 +266,7 @@ class LogService {
 	 * @return Log
 	 */
 	private function wp_to_obj( $post ) {
-		if ( empty( $post ) ) {
+		if ( empty( $post ) || $this->post_type !== $post->post_type ) {
 			return null;
 		}
 
