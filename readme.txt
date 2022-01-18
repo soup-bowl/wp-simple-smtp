@@ -93,7 +93,8 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 = 1.2.4 =
 * Added: Read logged emails via WP-CLI.
 * Added: Status message from testing emails ([#81](https://github.com/soup-bowl/wp-simple-smtp/issues/81)).
-* Change: (For new installs) logs purge automatically after a month ([#70](https://github.com/soup-bowl/wp-simple-smtp/issues/70), [#71](https://github.com/soup-bowl/wp-simple-smtp/issues/71)).
+* Change: Uninstalling the plugin will remove the lingering logs ([#70](https://github.com/soup-bowl/wp-simple-smtp/issues/70)).
+* Change: (For new installs) logs purge automatically after a month ([#71](https://github.com/soup-bowl/wp-simple-smtp/issues/71)).
 * Change: Quick config settings now contained within plugin ([#78](https://github.com/soup-bowl/wp-simple-smtp/issues/78)).
 * Change: Tightened permissions to the log viewer ([#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74)).
 * Fix: Incorrect capability type used by the log viewer. Thanks to [Benoît Chantre](https://github.com/benoitchantre) [#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74).
