@@ -8,3 +8,7 @@ fi
 if [ "$1" == "beta" ]; then
 	wp core update --version=nightly --allow-root
 fi
+
+wp plugin install wp-crontrol --allow-root
+
+wp plugin activate simple-smtp wp-crontrol --allow-root

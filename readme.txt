@@ -52,6 +52,13 @@ The over-ride hierachy is as follows, with top being the most important.
 * Multisite network settings.
 * Locally-configured settings.
 
+= How do I stop the logs auto-prune? =
+Register the following hook (typically in your theme functions.php) to disable the auto-pruning functionality:
+
+```
+add_filter( 'simple_smtp_disable_log_prune', '__return_true' ); 
+```
+
 = How is the SMTP password stored? = 
 If openssl is available to PHP, then the password will be **encrypted** ([not hashed](https://stackoverflow.com/a/4948393)) when stored in the database. If unavailable, the SMTP password will be saved into the database as **plaintext**. The more recommended way of storing the password is to define SMTP_PASS in your wp-config.php file, which should already be locked and inaccessible from the front-end.
 
@@ -86,6 +93,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 = Edge =
 * Added: Read logged emails via WP-CLI.
 * Added: Status message from testing emails ([#81](https://github.com/soup-bowl/wp-simple-smtp/issues/81)).
+* Change: (For new installs) logs purge automatically after a month ([#70](https://github.com/soup-bowl/wp-simple-smtp/issues/70), [#71](https://github.com/soup-bowl/wp-simple-smtp/issues/71)).
 * Change: Quick config settings now contained within plugin ([#78](https://github.com/soup-bowl/wp-simple-smtp/issues/78)).
 * Change: Tightened permissions to the log viewer ([#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74)).
 * Fix: Incorrect capability type used by the log viewer. Thanks to [Benoît Chantre](https://github.com/benoitchantre) [#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74).

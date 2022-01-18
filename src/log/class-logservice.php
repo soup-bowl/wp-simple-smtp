@@ -206,6 +206,30 @@ class LogService {
 	}
 
 	/**
+	 * Prunes the log collection based on the specified time interval.
+	 *
+	 * @param integer $int_time_diff After this UNIX timeframe difference will be removed.
+	 * @return boolean
+	 */
+	public function prune_logs( $int_time_diff ) {
+		$all = get_posts(
+			array(
+				'post_type'   => $this->post_type,
+				'numberposts' => -1,
+				'date_query'  => [
+					'before' => gmdate( 'Y-m-d', ( time() - $int_time_diff ) ),
+				],
+			)
+		);
+
+		foreach ( $all as $log ) {
+			wp_delete_post( $log->ID );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Deletes all log entries relating to a certain email address.
 	 *
 	 * @param string $email Email address to search for.

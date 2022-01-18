@@ -67,6 +67,17 @@ add_action(
 );
 
 add_action(
+	'wpss_clear_logs',
+	function() {
+		$is_disabled = apply_filters( 'simple_smtp_disable_log_prune', false );
+		// 2629800 = 1 Month.
+		if ( ! $is_disabled ) {
+			( new LogService() )->prune_logs( 2629800 );
+		}
+	}
+);
+
+add_action(
 	'admin_enqueue_scripts',
 	function ( $page ) {
 		if ( 'settings_page_wpsimplesmtp' === $page || 'settings_page_wpsimplesmtpms' === $page ) {
@@ -90,6 +101,10 @@ function wpsmtp_activation() {
 	if ( ! wp_next_scheduled( 'wpss_clear_resent' ) ) {
 		wp_schedule_event( time(), 'hourly', 'wpss_clear_resent' );
 	}
+
+	if ( ! wp_next_scheduled( 'wpss_clear_logs' ) ) {
+		wp_schedule_event( time(), 'hourly', 'wpss_clear_logs' );
+	}
 }
 
 /**
@@ -100,6 +115,9 @@ function wpsmtp_deactivation() {
 		wp_next_scheduled( 'wpss_clear_resent' ),
 		'wpss_clear_resent'
 	);
+
+	// Clear out remaining log files upon deactivation.
+	( new LogService() )->delete_all_logs();
 }
 
 /**
