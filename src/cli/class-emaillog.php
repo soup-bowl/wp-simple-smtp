@@ -80,12 +80,36 @@ class EmailLog {
 	}
 
 	/**
+	 * Displays the contents of an email.
+	 *
+	 * <ID>
+	 * : ID of the email you wish to load up.
+	 *
+	 * @when before_wp_load
+	 *
+	 * @param array $args       Command-line arguments.
+	 * @param array $assoc_args Associated arguments.
+	 */
+	public function view_email( $args, $assoc_args ) {
+		$email = $this->log_service->get_log_entry_by_id( (int) $args[0] );
+		if ( ! empty( $email ) ) {
+			WP_CLI::line( 'Recipient(s): ' . implode( ', ', $email->get_recipients() ) );
+			WP_CLI::line( 'Subject: ' . $email->get_subject() );
+			WP_CLI::line( 'Headers: ' . implode( ', ', $email->get_headers() ) );
+			WP_CLI::line( 'Contents:' );
+			WP_CLI::line( $email->get_body() );
+		} else {
+			WP_CLI::error( __( 'Email not found.', 'simple-smtp' ) );
+		}
+	}
+
+	/**
 	 * Generates a CLI output list of entries derrived from the input.
 	 *
 	 * @param Log[] $entries Log entry collection.
 	 * @return void Prints the log to the page.
 	 */
-	public function list( $entries ) {
+	private function list( $entries ) {
 		$list_format = [];
 		foreach ( $entries as $entry ) {
 			$list_format[] = [

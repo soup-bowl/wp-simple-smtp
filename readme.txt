@@ -84,6 +84,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = Edge =
+* Added: Read logged emails via WP-CLI.
 * Added: Status message from testing emails ([#81](https://github.com/soup-bowl/wp-simple-smtp/issues/81)).
 * Change: Quick config settings now contained within plugin ([#78](https://github.com/soup-bowl/wp-simple-smtp/issues/78)).
 * Change: Tightened permissions to the log viewer ([#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74)).
