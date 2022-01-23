@@ -12,4 +12,4 @@ assignees: ''
 
 
 **What is your update/replacement suggestion?**
-
+(Where possible, please provide a link to the official settings page).
