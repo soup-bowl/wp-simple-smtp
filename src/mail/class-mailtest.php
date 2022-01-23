@@ -90,9 +90,16 @@ class Mailtest {
 				$recipients[ $i ] = sanitize_email( trim( $recipients[ $i ] ) );
 			}
 
-			wp_mail( $recipients, $email['subject'], $email['message'], $email['headers'] );
+			$success = wp_mail( $recipients, $email['subject'], $email['message'], $email['headers'] );
 
-			wp_safe_redirect( admin_url( 'options-general.php?page=wpsimplesmtp' ) );
+			wp_safe_redirect(
+				add_query_arg(
+					[
+						'status' => ( $success ) ? 'pass' : 'fail',
+					],
+					admin_url( 'options-general.php?page=wpsimplesmtp' )
+				)
+			);
 			exit;
 		} else {
 			wp_die( esc_attr_e( 'You are not permitted to send a test email.', 'simple-smtp' ) );

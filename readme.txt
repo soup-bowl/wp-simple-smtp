@@ -2,15 +2,17 @@
 Contributors: soupbowl
 Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 7.0
-Stable tag: 1.2.3
+Stable tag: 1.3
 License: MIT
 
-Adds a simple mail configuration panel into your WordPress installation. Supports logging and config variables.
+Adds a simple mail configuration panel into your WordPress installation. Supports temporary logging and config variables.
 
 == Description ==
 Adds a simple, no-fuss SMTP settings to your WordPress installation that lets you define custom settings, which is especially useful for hosts with no control over the php `mail` functionality.
+
+If logging is enabled, a new segment in the settings panel will show up with a 30-day overview of recent emails, and will automatically prune older logs. Please see the FAQ if you want a more permanent solution.
 
 ## Environment and constant overriding (optional)
 This plugin will prefer environmental and constant-stored values over the plugin-saved equivalent settings, making it easier to use this plugin via deployment.
@@ -52,6 +54,13 @@ The over-ride hierachy is as follows, with top being the most important.
 * Multisite network settings.
 * Locally-configured settings.
 
+= How do I stop the logs from automatically purging? =
+The logs by default will auto-prune to avoid keeping sensitive details in logs and contributing to database bloat. But if you wish to keep the logs more permanently, then register the following hook (typically in your theme functions.php) to disable the auto-pruning functionality:
+
+```
+add_filter( 'simple_smtp_disable_log_prune', '__return_true' ); 
+```
+
 = How is the SMTP password stored? = 
 If openssl is available to PHP, then the password will be **encrypted** ([not hashed](https://stackoverflow.com/a/4948393)) when stored in the database. If unavailable, the SMTP password will be saved into the database as **plaintext**. The more recommended way of storing the password is to define SMTP_PASS in your wp-config.php file, which should already be locked and inaccessible from the front-end.
 
@@ -83,6 +92,15 @@ To help diagnose disabled input boxes, when the WordPress site is in [debugging 
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
+= 1.3 =
+* Added: Read logged emails via WP-CLI.
+* Added: Status message from testing emails ([#81](https://github.com/soup-bowl/wp-simple-smtp/issues/81)).
+* Change: Uninstalling the plugin will remove the lingering logs ([#70](https://github.com/soup-bowl/wp-simple-smtp/issues/70)).
+* Change: (For new installs) logs purge automatically after a month ([#71](https://github.com/soup-bowl/wp-simple-smtp/issues/71)).
+* Change: Quick config settings now contained within plugin ([#78](https://github.com/soup-bowl/wp-simple-smtp/issues/78)).
+* Change: Tightened permissions to the log viewer ([#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74)).
+* Fix: Incorrect capability type used by the log viewer. Thanks to [Benoît Chantre](https://github.com/benoitchantre) [#74](https://github.com/soup-bowl/wp-simple-smtp/issues/74).
+
 = 1.2.3 =
 * Add: [WordPress CLI](https://wp-cli.org/) support. See the FAQ for usage details.
 * Change: Password not returned plaintext in settings ([#61](https://github.com/soup-bowl/wp-simple-smtp/issues/61)).

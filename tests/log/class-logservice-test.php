@@ -67,6 +67,13 @@ class WP_Post {
 	 * @var string
 	 */
 	public $post_content = 'Example Content';
+
+	/**
+	 * Post Type.
+	 *
+	 * @var string
+	 */
+	public $post_type = 'sbss_email_log';
 }
 
 /**

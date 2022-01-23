@@ -10,7 +10,7 @@
  * Plugin Name:       Simple SMTP
  * Description:       Adds mail configuration to WordPress in a simple, standardised plugin.
  * Plugin URI:        https://www.soupbowl.io/wp-plugins
- * Version:           1.2.3
+ * Version:           1.3
  * Author:            soup-bowl
  * Author URI:        https://www.soupbowl.io
  * License:           MIT
@@ -19,6 +19,7 @@
 use wpsimplesmtp\LogService;
 use wpsimplesmtp\Singular as Settings;
 use wpsimplesmtp\Multisite as SettingsMultisite;
+use wpsimplesmtp\QuickConfig;
 use wpsimplesmtp\Privacy;
 use wpsimplesmtp\Mail;
 use wpsimplesmtp\MailDisable;
@@ -45,6 +46,7 @@ if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALID
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	WP_CLI::add_command( 'email-test', [ new wpsimplesmtp\cli\EmailTest(), 'test_email' ] );
 	WP_CLI::add_command( 'email-log', [ new wpsimplesmtp\cli\EmailLog(), 'load_log' ] );
+	WP_CLI::add_command( 'email-view', [ new wpsimplesmtp\cli\EmailLog(), 'view_email' ] );
 }
 
 if ( is_admin() ) {
@@ -65,12 +67,27 @@ add_action(
 );
 
 add_action(
+	'wpss_clear_logs',
+	function() {
+		$is_disabled = apply_filters( 'simple_smtp_disable_log_prune', false );
+		// 2629800 = 1 Month.
+		if ( ! $is_disabled ) {
+			( new LogService() )->prune_logs( 2629800 );
+		}
+	}
+);
+
+add_action(
 	'admin_enqueue_scripts',
 	function ( $page ) {
 		if ( 'settings_page_wpsimplesmtp' === $page || 'settings_page_wpsimplesmtpms' === $page ) {
 			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.css', [], '1.2' );
 			wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.3', true );
 			wp_set_script_translations( 'wpss_config', 'simple-smtp' );
+
+			$smtp_settings = QuickConfig::settings();
+
+			wp_localize_script( 'wpss_config', 'wpss_qc_settings', $smtp_settings );
 		}
 	}
 );
@@ -84,6 +101,10 @@ function wpsmtp_activation() {
 	if ( ! wp_next_scheduled( 'wpss_clear_resent' ) ) {
 		wp_schedule_event( time(), 'hourly', 'wpss_clear_resent' );
 	}
+
+	if ( ! wp_next_scheduled( 'wpss_clear_logs' ) ) {
+		wp_schedule_event( time(), 'hourly', 'wpss_clear_logs' );
+	}
 }
 
 /**
@@ -94,6 +115,9 @@ function wpsmtp_deactivation() {
 		wp_next_scheduled( 'wpss_clear_resent' ),
 		'wpss_clear_resent'
 	);
+
+	// Clear out remaining log files upon deactivation.
+	( new LogService() )->delete_all_logs();
 }
 
 /**
