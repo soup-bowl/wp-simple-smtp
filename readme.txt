@@ -7,10 +7,12 @@ Requires PHP: 7.0
 Stable tag: 1.3
 License: MIT
 
-Adds a simple mail configuration panel into your WordPress installation. Supports logging and config variables.
+Adds a simple mail configuration panel into your WordPress installation. Supports temporary logging and config variables.
 
 == Description ==
 Adds a simple, no-fuss SMTP settings to your WordPress installation that lets you define custom settings, which is especially useful for hosts with no control over the php `mail` functionality.
+
+If logging is enabled, a new segment in the settings panel will show up with a 30-day overview of recent emails, and will automatically prune older logs. Please see the FAQ if you want a more permanent solution.
 
 ## Environment and constant overriding (optional)
 This plugin will prefer environmental and constant-stored values over the plugin-saved equivalent settings, making it easier to use this plugin via deployment.
@@ -52,8 +54,8 @@ The over-ride hierachy is as follows, with top being the most important.
 * Multisite network settings.
 * Locally-configured settings.
 
-= How do I stop the logs auto-prune? =
-Register the following hook (typically in your theme functions.php) to disable the auto-pruning functionality:
+= How do I stop the logs from automatically purging? =
+The logs by default will auto-prune to avoid keeping sensitive details in logs and contributing to database bloat. But if you wish to keep the logs more permanently, then register the following hook (typically in your theme functions.php) to disable the auto-pruning functionality:
 
 ```
 add_filter( 'simple_smtp_disable_log_prune', '__return_true' ); 
