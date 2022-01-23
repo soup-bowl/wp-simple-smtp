@@ -61,7 +61,7 @@ class EmailLog {
 			 *
 			 * @param int $maximum_per_page The amount of entries to be shown in the log.
 			 */
-			$maximum_per_page = (int) apply_filters( 'simple_smtp_log_table_max_per_page', 5 );
+			$maximum_per_page = (int) apply_filters( 'simple_smtp_log_table_max_per_page', 20 );
 			$maximum_per_page = ( isset( $args[1] ) && is_numeric( $args[1] ) ) ? (int) $args[1] : $maximum_per_page;
 			$maximum_per_page = ( $maximum_per_page < 1 ) ? 1 : $maximum_per_page;
 		}

@@ -35,7 +35,7 @@ class LogTable {
 	 * @param integer $page             The page to be displayed.
 	 * @param integer $maximum_per_page Limits the table display.
 	 */
-	public function display( $page, $maximum_per_page = 5 ) {
+	public function display( $page, $maximum_per_page = 20 ) {
 		/**
 		 * Overrides the default log limit to show a custom acount of entries in the log viewer.
 		 *
