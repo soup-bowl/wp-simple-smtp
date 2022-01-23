@@ -10,6 +10,8 @@ Please report any discovered vulnerabilities in the issues section of this proje
 
 The 'security' tag may also be added or removed to reports at maintainer discretion.
 
+[Report a security vulnerability](https://github.com/soup-bowl/wp-simple-smtp/issues/new?assignees=&labels=bug,security&template=bug_report.md&title=).
+
 ## Fix Timeframes
 
 All **bug reports relating to security exploits** will be dealt with as a matter of urgency, marked as top priority to maintainers and release managers. We cannot guarantee timeframes outside of **'ASAP'**.
