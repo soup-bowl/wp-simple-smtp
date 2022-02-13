@@ -159,13 +159,15 @@ class LogTable {
 
 		$purge_all_label = __( 'Purge Log', 'simple-smtp' );
 		$purge_all_url   = add_query_arg(
-				array( 'ssnonce' => wp_create_nonce( 'wpss_purgelog' ) ),
+				array(
+					'ssnonce' => wp_create_nonce( 'wpss_purgelog' )
+				),
 				menu_page_url( 'wpsimplesmtp', false )
 			) . '&delete_all';
 
 		return (object) [
 			'next'   => '<a href="' . esc_url( $next_url ) . '" class="button"' . $next_allow . '>' . $next_label . '</a>',
-			'back'   => '<a href="' . esc_url( $back_url ) . '" class="button"' .  $back_allow . '>' . $back_label . '</a>',
+			'back'   => '<a href="' . esc_url( $back_url ) . '" class="button"' . $back_allow . '>' . $back_label . '</a>',
 			'delete' => '<a href="' . esc_url( $purge_all_url ) . '" class="button">' . $purge_all_label . '</a>',
 		];
 	}
@@ -191,8 +193,8 @@ class LogTable {
 		$resend_url = add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) . '&resend';
 		$delete_url = add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) . '&delete';
 
-		$view   = '<span class="view"><a href="' . esc_url ( $view_url ) . '">' . $view_label. '</a></span>';
-		$delete = '<span class="delete"><a href="' . esc_url ( $delete_url ) . '">' . $delete_label. '</a></span>';
+		$view   = '<span class="view"><a href="' . esc_url( $view_url ) . '">' . $view_label . '</a></span>';
+		$delete = '<span class="delete"><a href="' . esc_url( $delete_url ) . '">' . $delete_label . '</a></span>';
 		$resend = '';
 		if ( ! in_array( (int) $entry->get_id(), $recents, true ) ) {
 			$resend = '<span class="view"><a href="' . esc_url( $resend_url ) . '">' . $resend_label . '</a></span>';
