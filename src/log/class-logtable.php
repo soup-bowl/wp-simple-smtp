@@ -55,14 +55,14 @@ class LogTable {
 		];
 
 		echo wp_kses(
-			"<table class=\"wp-list-table widefat fixed striped\">
+			'<table class="wp-list-table widefat fixed striped">
 			<thead>
-			<th scope=\"col\" class=\"manage-column column-primary\">{$labels[0]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[1]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[2]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[3]}</th>
+			<th scope="col" class="manage-column column-primary">' . $labels[0] . '</th>
+			<th scope="col" class="manage-column">' . $labels[1] . '</th>
+			<th scope="col" class="manage-column">' . $labels[2] . '</th>
+			<th scope="col" class="manage-column">' . $labels[3] . '</th>
 			</thead>
-			<tbody>",
+			<tbody>',
 			$this->allowed_table_html()
 		);
 
@@ -73,12 +73,12 @@ class LogTable {
 				$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->get_timestamp() ) );
 				$fail_atr   = ( ! empty( $entry->get_error() ) ) ? 'class="site-archived"' : '';
 				echo wp_kses(
-					"<tr {$fail_atr}>
-					<td class=\"has-row-actions\">{$recipients}{$actions}</td>
-					<td>" . $entry->get_subject() . '</td>
-					<td><abbr title="' . $entry->get_timestamp() . "\">{$date}</abbr></td>
-					<td>{$entry->get_error()}</td>
-					</tr>",
+					'<tr ' . $fail_atr . '>
+					<td class="has-row-actions">' . $recipients . $actions . '</td>
+					<td>' . $entry->get_subject() . '</td>
+					<td><abbr title="' . $entry->get_timestamp() . '">' . $date . '</abbr></td>
+					<td>' . $entry->get_error() . '</td>
+					</tr>',
 					$this->allowed_table_html()
 				);
 			}
@@ -93,14 +93,14 @@ class LogTable {
 		}
 
 		echo wp_kses(
-			"</tbody>
+			'</tbody>
 			<tfoot>
-			<th scope=\"col\" class=\"manage-column\">{$labels[0]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[1]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[2]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[3]}</th>
+			<th scope="col" class="manage-column">' . $labels[0] . '</th>
+			<th scope="col" class="manage-column">' . $labels[1] . '</th>
+			<th scope="col" class="manage-column">' . $labels[2] . '</th>
+			<th scope="col" class="manage-column">' . $labels[3] . '</th>
 			</tfoot>
-			</table>",
+			</table>',
 			$this->allowed_table_html()
 		);
 
@@ -115,7 +115,7 @@ class LogTable {
 			return;
 		}
 		echo wp_kses(
-			"<p><i>{$message}</i> {$nav_buttons->back} {$nav_buttons->next} {$nav_buttons->delete}</p>",
+			'<p><i>' . $message . '</i> ' . $nav_buttons->back . ' ' . $nav_buttons->next . ' ' . $nav_buttons->delete . '</p>',
 			[
 				'p' => [],
 				'i' => [],
@@ -166,9 +166,9 @@ class LogTable {
 		) . '&delete_all';
 
 		return (object) [
-			'next'   => "<a href='{$next_url}' class='button' {$next_allow}>{$next_label}</a>",
-			'back'   => "<a href='{$back_url}' class='button' {$back_allow}>{$back_label}</a>",
-			'delete' => "<a href='{$purge_all_url}' class='button'>{$purge_all_label}</a>",
+			'next'   => '<a href="' . esc_url( $next_url ) . '" class="button"' . $next_allow . '>' . $next_label . '</a>',
+			'back'   => '<a href="' . esc_url( $back_url ) . '" class="button"' .  $back_allow . '>' . $back_label . '</a>',
+			'delete' => '<a href="' . esc_url( $purge_all_url ) . '" class="button">' . $purge_all_label . '</a>',
 		];
 	}
 
@@ -189,20 +189,20 @@ class LogTable {
 		$resend_label = __( 'Resend', 'simple-smtp' );
 		$delete_label = __( 'Delete', 'simple-smtp' );
 
-		$view_url   = esc_html( add_query_arg( 'eid', $entry->get_id(), menu_page_url( 'wpsimplesmtp', false ) ) );
-		$resend_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&resend';
-		$delete_url = esc_html( add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) ) . '&delete';
+		$view_url   = add_query_arg( 'eid', $entry->get_id(), menu_page_url( 'wpsimplesmtp', false ) );
+		$resend_url = add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) . '&resend';
+		$delete_url = add_query_arg( $resend_param, menu_page_url( 'wpsimplesmtp', false ) ) . '&delete';
 
-		$view   = "<span class=\"view\"><a href=\"{$view_url}\" aria-label=\"View\">{$view_label}</a></span>";
-		$delete = "<span class=\"delete\"><a href=\"{$delete_url}\" aria-label=\"View\">{$delete_label}</a></span>";
+		$view   = '<span class="view"><a href="' . esc_url ( $view_url ) . '">' . $view_label. '</a></span>';
+		$delete = '<span class="delete"><a href="' . esc_url ( $delete_url ) . '">' . $delete_label. '</a></span>';
 		$resend = '';
 		if ( ! in_array( (int) $entry->get_id(), $recents, true ) ) {
-			$resend = "<span class=\"view\"><a href=\"{$resend_url}\" aria-label=\"View\">{$resend_label}</a></span>";
+			$resend = '<span class="view"><a href="' . esc_url( $resend_url ) . '">' . $resend_label . '</a></span>';
 		} else {
 			$resend = '<span class="view">' . _x( 'Resent', 'Greyed out action link when an e-mail has been resent', 'simple-smtp' ) . '</span>';
 		}
 
-		$row_actions = "<div class=\"row-actions\">{$view} | {$resend} | {$delete}</div>";
+		$row_actions = '<div class="row-actions">' . $view . ' | ' . $resend . ' | ' . $delete . '</div>';
 
 		return $row_actions;
 	}
