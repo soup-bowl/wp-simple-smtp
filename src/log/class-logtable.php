@@ -160,7 +160,7 @@ class LogTable {
 		$purge_all_label = __( 'Purge Log', 'simple-smtp' );
 		$purge_all_url   = add_query_arg(
 			array(
-				'ssnonce' => wp_create_nonce( 'wpss_purgelog' )
+				'ssnonce' => wp_create_nonce( 'wpss_purgelog' ),
 			),
 			menu_page_url( 'wpsimplesmtp', false )
 		) . '&delete_all';
