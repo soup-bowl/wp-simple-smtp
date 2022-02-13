@@ -159,11 +159,11 @@ class LogTable {
 
 		$purge_all_label = __( 'Purge Log', 'simple-smtp' );
 		$purge_all_url   = add_query_arg(
-				array(
-					'ssnonce' => wp_create_nonce( 'wpss_purgelog' )
-				),
-				menu_page_url( 'wpsimplesmtp', false )
-			) . '&delete_all';
+			array(
+				'ssnonce' => wp_create_nonce( 'wpss_purgelog' )
+			),
+			menu_page_url( 'wpsimplesmtp', false )
+		) . '&delete_all';
 
 		return (object) [
 			'next'   => '<a href="' . esc_url( $next_url ) . '" class="button"' . $next_allow . '>' . $next_label . '</a>',
