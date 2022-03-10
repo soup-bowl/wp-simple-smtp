@@ -1,0 +1,19 @@
+$bp_handheld: 782px;
+$bp_desktop:  1200px;
+
+@mixin breakpoint($class) {
+
+	@if $class == handheld {
+		@media (max-width: #{rem( $bp_handheld )} ) {
+			@content;
+		}
+	} @else if $class == desktop {
+
+		@media (min-width: #{rem( $bp_desktop )} ) {
+			@content;
+		}
+	} @else {
+
+		@warn "Breakpoint mixin supports: handheld, desktop";
+	}
+}

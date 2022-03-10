@@ -2,6 +2,7 @@
 /.git
 /.github
 /.vscode
+/sass
 /tests
 .env.example
 .gitignore
