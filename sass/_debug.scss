@@ -11,26 +11,23 @@
 	vertical-align: baseline;
 	border-radius: 10rem;
 
-	color: #fff;
-	background-color: #6c757d;
+	color: $color_text_inv;
+	background-color: $color_badge_grey_blue;;
 
-	.wpsmtp-badge-info {
-		color: #fff;
-		background-color: #17a2b8;
+	&.wpsmtp-badge-info {
+		background-color: $color_badge_blue;
 	}
 	
-	.wpsmtp-badge-success {
-		color: #fff;
-		background-color: #28a745;
+	&.wpsmtp-badge-success {
+		background-color: $color_badge_green;
 	}
 	
-	.wpsmtp-badge-warning {
-		color: #212529;
-		background-color: #ffc107;
+	&.wpsmtp-badge-warning {
+		color: $color_text_grey;
+		background-color: $color_badge_yellow;
 	}
 	
-	.wpsmtp-badge-danger {
-		color: #fff;
-		background-color: #dc3545;
+	&.wpsmtp-badge-danger {
+		background-color: $color_badge_red;
 	}
 }

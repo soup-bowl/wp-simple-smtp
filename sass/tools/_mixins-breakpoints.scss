@@ -1,6 +1,3 @@
-$bp_handheld: 782px;
-$bp_desktop:  1200px;
-
 @mixin breakpoint($class) {
 
 	@if $class == handheld {
