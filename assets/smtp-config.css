@@ -57,6 +57,5 @@
 	display:block;
 }}
 @media (max-width: 782px) {.wp-list-table.wpsmtp-log-table tfoot th:first-child ~ th, .wp-list-table.wpsmtp-log-table tfoot tr:not(.inline-edit-row):not(.no-items) td.column-primary ~ td:not(.check-column) {
-background-color: orange;
-display: none;;
+	display: none;
 }}
