@@ -123,7 +123,7 @@ class Mail {
 	 * Run housekeeping before an email is dispatched.
 	 *
 	 * @param array $parameters The parameters currently held.
-	 * @return array The same paramter array, with some additions from this function.
+	 * @return array The same parameter array, with some additions from this function.
 	 */
 	public function preprocess_mail( $parameters ) {
 		global $wpss_mail_id;

@@ -57,11 +57,11 @@ class EmailLog {
 			$maximum_per_page = PHP_INT_MAX;
 		} else {
 			/**
-			 * Overrides the default log limit to show a custom acount of entries in the log viewer.
+			 * Overrides the default log limit to show a custom account of entries in the log viewer.
 			 *
 			 * @param int $maximum_per_page The amount of entries to be shown in the log.
 			 */
-			$maximum_per_page = (int) apply_filters( 'simple_smtp_log_table_max_per_page', 5 );
+			$maximum_per_page = (int) apply_filters( 'simple_smtp_log_table_max_per_page', 20 );
 			$maximum_per_page = ( isset( $args[1] ) && is_numeric( $args[1] ) ) ? (int) $args[1] : $maximum_per_page;
 			$maximum_per_page = ( $maximum_per_page < 1 ) ? 1 : $maximum_per_page;
 		}
@@ -104,7 +104,7 @@ class EmailLog {
 	}
 
 	/**
-	 * Generates a CLI output list of entries derrived from the input.
+	 * Generates a CLI output list of entries derived from the input.
 	 *
 	 * @param Log[] $entries Log entry collection.
 	 * @return void Prints the log to the page.

@@ -14,12 +14,16 @@ Adds a simple, no-fuss SMTP settings to your WordPress installation that lets yo
 
 If logging is enabled, a new segment in the settings panel will show up with a 30-day overview of recent emails, and will automatically prune older logs. Please see the FAQ if you want a more permanent solution.
 
+For more information, please see the [project wiki on GitHub](https://github.com/soup-bowl/wp-simple-smtp/wiki).
+
 ## Environment and constant overriding (optional)
+
 This plugin will prefer environmental and constant-stored values over the plugin-saved equivalent settings, making it easier to use this plugin via deployment.
 
 These can be either stored in your systems env setup, or in wp-config.php as `define( 'SEE_BELOW', 'your_value_here' );`.
 
 ### Accepted Parameters
+
 * `SMTP_HOST` (string) Mail server hostname.
 * `SMTP_PORT` (integer) Port address (usually 25, 465 or 587).
 * `SMTP_AUTH` (integer, 1 or 0) Pass below credentials to your mail server.
