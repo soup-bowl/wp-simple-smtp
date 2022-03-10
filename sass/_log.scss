@@ -10,6 +10,7 @@
 		&.wp-list-table {
 
 			tr {
+
 				&:not(.inline-edit-row):not(.no-items) td:not(.column-primary)::before {
 					position: static;
 					left: initial;
@@ -24,6 +25,7 @@
 			}
 
 			tfoot {
+
 				th:first-child ~ th,
 				tr:not(.inline-edit-row):not(.no-items) td.column-primary ~ td:not(.check-column) {
 					display: none;
