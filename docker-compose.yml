@@ -2,7 +2,6 @@ version: '3.6'
 services:
   db:
     image: docker.io/library/mariadb:latest
-    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: s9f6sd759r32r7f0dsf5673894956
       MYSQL_DATABASE: wordpress
