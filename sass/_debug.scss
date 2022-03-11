@@ -7,10 +7,9 @@
 	text-align: center;
 	white-space: nowrap;
 	vertical-align: baseline;
+	border-radius: 10rem;
 	color: $color_text_inv;
 	background-color: $color_badge_grey_blue;
-
-	@include circular;
 
 	&.wpsmtp-badge-info {
 		background-color: $color_badge_blue;
