@@ -1,13 +1,8 @@
 .wpsmtp-badge {
-	display: inline-block;
 	padding: .25em .6em;
-	font-size: 75%;
+	font-size: rem(10.5px);
 	font-weight: 700;
-	line-height: 1;
-	text-align: center;
-	white-space: nowrap;
-	vertical-align: baseline;
-	border-radius: 10rem;
+	border-radius: rem(16px);
 	color: $color_text_inv;
 	background-color: $color_badge_grey_blue;
 
