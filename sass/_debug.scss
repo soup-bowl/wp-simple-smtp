@@ -1,18 +1,16 @@
 .wpsmtp-badge {
 	display: inline-block;
-	padding: .25em .4em;
-	padding-right: .6em;
-	padding-left: .6em;
+	padding: .25em .6em .25em .6em;
 	font-size: 75%;
 	font-weight: 700;
 	line-height: 1;
 	text-align: center;
 	white-space: nowrap;
 	vertical-align: baseline;
-	border-radius: 10rem;
-
 	color: $color_text_inv;
 	background-color: $color_badge_grey_blue;
+
+	@include circular;
 
 	&.wpsmtp-badge-info {
 		background-color: $color_badge_blue;

@@ -8,9 +8,7 @@
  */
 @function stripUnit($value) {
 
-	$return_value: math.div($value, ($value * 0 + 1));
-
-	@return $return_value;
+	@return math.div($value, ($value * 0 + 1));
 }
 
 /**
@@ -21,7 +19,11 @@
  */
 @function rem($pxValue) {
 
-	$return_value: math.div(stripUnit($pxValue), stripUnit($html-font-size));
+	$return_value: math.div(stripUnit($pxValue), stripUnit($html_font_size));
 
 	@return #{$return_value}rem;
+}
+
+@mixin circular() {
+	border-radius: 100%;
 }
