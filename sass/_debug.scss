@@ -1,4 +1,4 @@
-.wpsmtp-badge {
+.#{$prefix}badge {
 	padding: .25em .6em;
 	font-size: rem(10.5px);
 	font-weight: 700;
@@ -6,20 +6,22 @@
 	color: $color_text_inv;
 	background-color: $color_badge_grey_blue;
 
-	&.wpsmtp-badge-info {
+	&.info {
 		background-color: $color_badge_blue;
 	}
 	
-	&.wpsmtp-badge-success {
-		background-color: $color_badge_green;
-	}
-	
-	&.wpsmtp-badge-warning {
+	&.warning {
 		color: $color_text_grey;
 		background-color: $color_badge_yellow;
 	}
+
+	// Not in use?
+	&.success {
+		background-color: $color_badge_green;
+	}
 	
-	&.wpsmtp-badge-danger {
+	// Not in use?	
+	&.danger {
 		background-color: $color_badge_red;
 	}
 }

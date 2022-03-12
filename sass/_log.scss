@@ -1,6 +1,6 @@
 @include breakpoint(handheld) {
 
-	.wpsmtp-log-table {
+	.#{$prefix}log-table {
 
 		.log-row {
 			display: flex;
