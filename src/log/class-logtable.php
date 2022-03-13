@@ -76,7 +76,7 @@ class LogTable {
 					'<tr class="' . esc_attr( $row_classes ) . '">
 					<td data-colname="' . $labels[0] . '" class="has-row-actions">' . $recipients . $actions . '</td>
 					<td data-colname="' . $labels[1] . '">' . $entry->get_subject() . '</td>
-					<td data-colname="' . $labels[2] . '"><abbr title="' . $entry->get_timestamp() . '"\>' . $date . '</abbr></td>
+					<td data-colname="' . $labels[2] . '"><abbr title="' . $entry->get_timestamp() . '">' . $date . '</abbr></td>
 					<td data-colname="' . $labels[3] . '">' . $entry->get_error() . '</td>
 					</tr>',
 					$this->allowed_table_html()
