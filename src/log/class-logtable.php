@@ -55,14 +55,14 @@ class LogTable {
 		];
 
 		echo wp_kses(
-			"<table class=\"wpsmtp-log-table wp-list-table widefat fixed striped\">
+			'<table class="wpsmtp-log-table wp-list-table widefat fixed striped">
 			<thead>
-			<th scope=\"col\" class=\"manage-column column-primary\">{$labels[0]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[1]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[2]}</th>
-			<th scope=\"col\" class=\"manage-column\">{$labels[3]}</th>
+			<th scope="col" class="manage-column column-primary">' . $labels[0] . '</th>
+			<th scope="col" class="manage-column">' . $labels[1] . '</th>
+			<th scope="col" class="manage-column">' . $labels[2] . '</th>
+			<th scope="col" class="manage-column">' . $labels[3] . '</th>
 			</thead>
-			<tbody>",
+			<tbody>',
 			$this->allowed_table_html()
 		);
 
