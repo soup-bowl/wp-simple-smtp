@@ -68,12 +68,12 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
-				$recipients = implode( ', ', $entry->get_recipients() );
-				$actions    = $this->render_log_entry_buttons( $entry );
-				$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->get_timestamp() ) );
-				$fail_atr   = ( ! empty( $entry->get_error() ) ) ? 'class="site-archived log-row"' : 'class="log-row"';
+				$recipients  = implode( ', ', $entry->get_recipients() );
+				$actions     = $this->render_log_entry_buttons( $entry );
+				$date        = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->get_timestamp() ) );
+				$row_classes = ( ! empty( $entry->get_error() ) ) ? 'site-archived log-row' : 'log-row';
 				echo wp_kses(
-					'<tr ' . $fail_atr . '>
+					'<tr class="' . esc_attr( $row_classes ) . '">
 					<td data-colname="' . $labels[0] . '" class="has-row-actions">' . $recipients . $actions . '</td>
 					<td data-colname="' . $labels[1] . '">' . $entry->get_subject() . '</td>
 					<td data-colname="' . $labels[2] . '"><abbr title="' . $entry->get_timestamp() . '"\>' . $date . '</abbr></td>
