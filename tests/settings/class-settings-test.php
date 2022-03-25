@@ -51,7 +51,7 @@ class SettingsTest extends TestCase {
 	 * Checks that the system is correctly identifying the dummy password and handles it as no change to the system.
 	 */
 	public function test_dummy_passwords() {
-		$smtp_password = (getenv('SMTP_PASS') !== false) ? getenv('SMTP_PASS') : '';
+		$smtp_password = (getenv( 'SMTP_PASS' ) !== false) ? getenv( 'SMTP_PASS' ) : '';
 		$options_good  = [ 'pass' => 'abc' ];
 		$options_dummy = [ 'pass' => '******' ];
 
