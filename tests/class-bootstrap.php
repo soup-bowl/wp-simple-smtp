@@ -71,11 +71,11 @@ function get_option( $option, $default = false ) {
 	switch ( $option ) {
 		case 'wpssmtp_smtp':
 			return [
-				'host' => (getenv('SMTP_HOST') !== false) ? getenv('SMTP_HOST') : 'localhost',
-				'port' => (getenv('SMTP_PORT') !== false) ? getenv('SMTP_PORT') : '25',
-				'user' => (getenv('SMTP_USER') !== false) ? getenv('SMTP_USER') : '',
-				'pass' => (getenv('SMTP_PASS') !== false) ? getenv('SMTP_PASS') : '',
-				'auth' => (getenv('SMTP_AUTH') !== false) ? getenv('SMTP_AUTH') : '0',
+				'host' => ( getenv( 'SMTP_HOST' ) !== false ) ? getenv( 'SMTP_HOST' ) : 'localhost',
+				'port' => ( getenv( 'SMTP_PORT' ) !== false ) ? getenv( 'SMTP_PORT' ) : '25',
+				'user' => ( getenv( 'SMTP_USER' ) !== false ) ? getenv( 'SMTP_USER' ) : '',
+				'pass' => ( getenv( 'SMTP_PASS' ) !== false ) ? getenv( 'SMTP_PASS' ) : '',
+				'auth' => ( getenv( 'SMTP_AUTH' ) !== false ) ? getenv( 'SMTP_AUTH' ) : '0',
 			];
 		default:
 			if ( ! empty( $sbss_temp_store[ $option ] ) ) {

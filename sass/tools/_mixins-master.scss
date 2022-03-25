@@ -1,0 +1,25 @@
+@use 'sass:math';
+
+/**
+ * Strip any unit from a string
+ *
+ * @param string $value The string we want to remove unit from
+ * @return int
+ */
+@function stripUnit($value) {
+
+	@return math.div($value, ($value * 0 + 1));
+}
+
+/**
+ * Convert a pixel value to rem.
+ *
+ * @param string $pxValue The pixel value we want to convert
+ * @return string
+ */
+@function rem($pxValue) {
+
+	$return_value: math.div(stripUnit($pxValue), stripUnit($html_font_size));
+
+	@return #{$return_value}rem;
+}

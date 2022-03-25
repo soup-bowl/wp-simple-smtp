@@ -97,7 +97,7 @@ class Settings {
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					echo wp_kses( "<span class='wpsmtp-badge wpsmtp-badge-info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
+					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
 				}
 
 				if ( ! empty( $description ) ) {
@@ -141,7 +141,7 @@ class Settings {
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					echo wp_kses( "<span class='wpsmtp-badge wpsmtp-badge-info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
+					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
 				}
 
 				if ( ! empty( $description ) ) {
@@ -196,7 +196,7 @@ class Settings {
 
 		$debuginfo = '';
 		if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$debuginfo = "<span class='wpsmtp-badge wpsmtp-badge-info'>{$value->source}</span>";
+			$debuginfo = "<span class='wpsmtp-badge info'>{$value->source}</span>";
 		}
 
 		?>
