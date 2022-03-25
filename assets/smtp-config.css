@@ -42,3 +42,20 @@
 .wpsmtp-multisite-table th {
 	padding: 8px 10px;
 }
+@media (max-width: 782px) {.wpsmtp-log-table .log-row {
+	display: flex;
+	flex-direction: column;
+}}
+@media (max-width: 782px) {.wp-list-table.wpsmtp-log-table tr:not(.inline-edit-row):not(.no-items) td:not(.column-primary)::before {
+	position: static;
+	left:initial;
+	font-weight: 700;
+	padding-bottom: 2px;
+}}
+@media (max-width: 782px) {.wp-list-table.wpsmtp-log-table tr .row-actions {
+	left: 0;
+	display:block;
+}}
+@media (max-width: 782px) {.wp-list-table.wpsmtp-log-table tfoot th:first-child ~ th, .wp-list-table.wpsmtp-log-table tfoot tr:not(.inline-edit-row):not(.no-items) td.column-primary ~ td:not(.check-column) {
+	display: none;
+}}
