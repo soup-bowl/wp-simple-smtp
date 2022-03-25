@@ -55,7 +55,7 @@ class LogTable {
 		];
 
 		echo wp_kses(
-			'<table class="wp-list-table widefat fixed striped">
+			'<table class="wpsmtp-log-table wp-list-table widefat fixed striped">
 			<thead>
 			<th scope="col" class="manage-column column-primary">' . $labels[0] . '</th>
 			<th scope="col" class="manage-column">' . $labels[1] . '</th>
@@ -68,16 +68,16 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
-				$recipients = implode( ', ', $entry->get_recipients() );
-				$actions    = $this->render_log_entry_buttons( $entry );
-				$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->get_timestamp() ) );
-				$fail_atr   = ( ! empty( $entry->get_error() ) ) ? 'class="site-archived"' : '';
+				$recipients  = implode( ', ', $entry->get_recipients() );
+				$actions     = $this->render_log_entry_buttons( $entry );
+				$date        = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->get_timestamp() ) );
+				$row_classes = ( ! empty( $entry->get_error() ) ) ? 'site-archived log-row' : 'log-row';
 				echo wp_kses(
-					'<tr ' . $fail_atr . '>
-					<td class="has-row-actions">' . $recipients . $actions . '</td>
-					<td>' . $entry->get_subject() . '</td>
-					<td><abbr title="' . $entry->get_timestamp() . '">' . $date . '</abbr></td>
-					<td>' . $entry->get_error() . '</td>
+					'<tr class="' . esc_attr( $row_classes ) . '">
+					<td data-colname="' . $labels[0] . '" class="has-row-actions">' . $recipients . $actions . '</td>
+					<td data-colname="' . $labels[1] . '">' . $entry->get_subject() . '</td>
+					<td data-colname="' . $labels[2] . '"><abbr title="' . $entry->get_timestamp() . '">' . $date . '</abbr></td>
+					<td data-colname="' . $labels[3] . '">' . $entry->get_error() . '</td>
 					</tr>',
 					$this->allowed_table_html()
 				);
@@ -228,8 +228,9 @@ class LogTable {
 				'class' => [],
 			],
 			'td'    => [
-				'class'   => [],
-				'colspan' => [],
+				'class'        => [],
+				'colspan'      => [],
+				'data-colname' => [],
 			],
 			'div'   => [
 				'class' => [],
