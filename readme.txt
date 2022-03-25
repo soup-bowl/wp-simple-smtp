@@ -66,6 +66,8 @@ The logs by default will auto-prune to avoid keeping sensitive details in logs a
 = How is the SMTP password stored? = 
 If openssl is available to PHP, then the password will be **encrypted** ([not hashed](https://stackoverflow.com/a/4948393)) when stored in the database. If unavailable, the SMTP password will be saved into the database as **plaintext**. The more recommended way of storing the password is to define SMTP_PASS in your wp-config.php file, which should already be locked and inaccessible from the front-end.
 
+Note: Multisite over-ride password is currently **not encrypted**. [Please see this issue](https://github.com/soup-bowl/wp-simple-smtp/issues/63).
+
 = Can I change the amount of entries shown in the log view? =
 This can be adjusted by the 'simple_smtp_log_table_max_per_page' filter. Returning an integer value to this filter hook will adjust the table page limit.
 
