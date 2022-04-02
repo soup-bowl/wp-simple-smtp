@@ -199,7 +199,8 @@ function at_a_glance_items( $items = array() ) {
 					esc_url( $edit_link )
 				) . "\n";
 			} else {
-				echo sprintf( '<li class="%1$s-count">%2$s</li>',
+				echo sprintf(
+					'<li class="%1$s-count">%2$s</li>',
 					esc_attr( $type ),
 					esc_html( $text ),
 				) . "\n";
