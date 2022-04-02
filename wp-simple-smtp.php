@@ -160,3 +160,44 @@ add_action( 'admin_notices', 'wpsmtp_has_error' );
 
 register_activation_hook( __FILE__, 'wpsmtp_activation' );
 register_deactivation_hook( __FILE__, 'wpsmtp_deactivation' );
+
+/**
+ * Adds post-type info to 'At a Glance'-dashboard widget.
+ *
+ * @since 1.x.x
+ *
+ * @param array $items The items to display in the `At a Glance-dashboard`.
+ * @return array $items All existing plus the new items.
+ */
+function at_a_glance_items( $items = array() ) {
+
+	// @soup-bowl - Maybe add a check if logging is enabled or not? Do not the best way to do that, do you=
+
+	$post_types = array( 'sbss_email_log' );
+
+	foreach ( $post_types as $type ) {
+
+		if ( ! post_type_exists( $type ) ) {
+			continue;
+		}
+		$num_posts = wp_count_posts( $type );
+
+		if ( $num_posts ) {
+
+			$published  = intval( $num_posts->publish );
+			$post_type  = get_post_type_object( $type );
+			/* translators: %s: counter of how many posts. */
+			$text      = _n( '%s e-mail sent', '%s e-mails sent', $published, 'simple-smtp' );
+			$text      = sprintf( $text, number_format_i18n( $published ) );
+			$edit_link = admin_url( 'options-general.php?page=wpsimplesmtp' ); // @soup-bowl - Maybe add ID to log table so user is scrolled to that position?
+
+			if ( current_user_can( $post_type->cap->edit_posts ) ) {
+				echo sprintf( '<li class="post-count %1$s-count"><a href="%3$s">%2$s</a></li>', $type, $text, $edit_link ) . "\n";
+			} else {
+				echo sprintf( '<li class="%1$s-count">%2$s</li>', $type, $text ) . "\n";
+			}
+		}
+	}
+	return $items;
+}
+add_filter( 'dashboard_glance_items', 'at_a_glance_items', 10, 1 );
