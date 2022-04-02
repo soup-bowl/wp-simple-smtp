@@ -184,17 +184,25 @@ function at_a_glance_items( $items = array() ) {
 
 		if ( $num_posts ) {
 
-			$published  = intval( $num_posts->publish );
-			$post_type  = get_post_type_object( $type );
+			$published = intval( $num_posts->publish );
+			$post_type = get_post_type_object( $type );
 			/* translators: %s: counter of how many posts. */
 			$text      = _n( '%s e-mail sent', '%s e-mails sent', $published, 'simple-smtp' );
 			$text      = sprintf( $text, number_format_i18n( $published ) );
 			$edit_link = admin_url( 'options-general.php?page=wpsimplesmtp' ); // @soup-bowl - Maybe add ID to log table so user is scrolled to that position?
 
 			if ( current_user_can( $post_type->cap->edit_posts ) ) {
-				echo sprintf( '<li class="post-count %1$s-count"><a href="%3$s">%2$s</a></li>', $type, $text, $edit_link ) . "\n";
+				echo sprintf(
+					'<li class="post-count %1$s-count"><a href="%3$s">%2$s</a></li>',
+					esc_attr( $type ),
+					esc_html( $text ),
+					esc_url( $edit_link )
+				) . "\n";
 			} else {
-				echo sprintf( '<li class="%1$s-count">%2$s</li>', $type, $text ) . "\n";
+				echo sprintf( '<li class="%1$s-count">%2$s</li>',
+					esc_attr( $type ),
+					esc_html( $text ),
+				) . "\n";
 			}
 		}
 	}
