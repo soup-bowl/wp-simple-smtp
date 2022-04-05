@@ -297,7 +297,7 @@ class Singular extends Settings {
 							$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
 						}
 
-						echo wp_kses( '<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>', [ 'h2' => [] ] );
+						echo wp_kses( '<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>', [ 'h2' => [ 'id' => [] ] ] );
 						$this->log_table->display( $page );
 					}
 				}
