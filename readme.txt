@@ -97,6 +97,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 
 == Changelog ==
 = Develop =
+* Added: Glance view on the dashboard to see mail usage (Thanks [Kebbet](https://github.com/kebbet) - [PR 101](https://github.com/soup-bowl/wp-simple-smtp/pull/101), [PR 102](https://github.com/soup-bowl/wp-simple-smtp/pull/102)).
 * Fix: Table view appears correctly on mobile (Thanks [Kebbet](https://github.com/kebbet) - [PR 93](https://github.com/soup-bowl/wp-simple-smtp/pull/93)).
 
 = 1.3 =
