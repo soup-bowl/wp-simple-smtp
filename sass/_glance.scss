@@ -1,0 +1,15 @@
+#dashboard_right_now {
+
+	li {
+
+		&.email-log-count {
+
+			a {
+
+				&::before {
+					content: "\f467";
+				}
+			}
+		}
+	}
+}

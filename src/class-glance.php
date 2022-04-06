@@ -12,7 +12,7 @@ namespace wpsimplesmtp;
 use wpsimplesmtp\Options;
 
 /**
- * Displays useful information in the dashboard widget display.
+ * Displays useful information in the dashboard widget `At a Glance`.
  */
 class Glance {
 	/**
@@ -26,14 +26,14 @@ class Glance {
 	}
 
 	/**
-	 * Adds post-type info to 'At a Glance'-dashboard widget.
+	 * Adds post-type info to `At a Glance`-dashboard widget.
 	 *
 	 * @since 1.x.x
 	 *
-	 * @param array $items The items to display in the `At a Glance-dashboard`.
+	 * @param array $items The items to display in the `At a Glance`-dashboard.
 	 * @return array $items All existing plus the new items.
 	 */
-	function at_a_glance_items( $items = [] ) {
+	public function at_a_glance_items( $items = [] ) {
 		$post_types = [ 'sbss_email_log' ];
 
 		foreach ( $post_types as $type ) {
@@ -47,21 +47,22 @@ class Glance {
 
 				$published = intval( $num_posts->publish );
 				$post_type = get_post_type_object( $type );
-				/* translators: %s: counter of how many posts. */
-				$text      = _n( '%s e-mail sent', '%s e-mails sent', $published, 'simple-smtp' );
+				/* translators: %s: counter of how many email log entries. */
+				$text      = _n( '%s e-mail log entry', '%s e-mail log entries', $published, 'simple-smtp' );
 				$text      = sprintf( $text, number_format_i18n( $published ) );
-				$edit_link = admin_url( 'options-general.php?page=wpsimplesmtp' ); // @soup-bowl - Maybe add ID to log table so user is scrolled to that position?
+				$edit_link = admin_url( 'options-general.php?page=wpsimplesmtp#log' );
 
+				// Echo list element is a hack so we can add classes to the list element.
 				if ( current_user_can( $post_type->cap->edit_posts ) ) {
 					echo sprintf(
-						'<li class="post-count %1$s-count"><a href="%3$s">%2$s</a></li>',
+						'<li class="email-log-count %1$s-count"><a href="%3$s">%2$s</a></li>',
 						esc_attr( $type ),
 						esc_html( $text ),
 						esc_url( $edit_link )
 					) . "\n";
 				} else {
 					echo sprintf(
-						'<li class="%1$s-count">%2$s</li>',
+						'<li class="email-log-count %1$s-count">%2$s</li>',
 						esc_attr( $type ),
 						esc_html( $text ),
 					) . "\n";
