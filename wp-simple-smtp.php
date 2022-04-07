@@ -83,14 +83,22 @@ add_action(
 add_action(
 	'admin_enqueue_scripts',
 	function ( $page ) {
-		if ( 'settings_page_wpsimplesmtp' === $page || 'settings_page_wpsimplesmtpms' === $page ) {
+		$assets_pages = array(
+			'settings_page_wpsimplesmtp',
+			'settings_page_wpsimplesmtpms',
+			'index.php',
+		);
+		if ( in_array( $page, $assets_pages, true ) ) {
 			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/simple-smtp.css', [], '1.4' );
-			wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.3', true );
-			wp_set_script_translations( 'wpss_config', 'simple-smtp' );
 
-			$smtp_settings = QuickConfig::settings();
+			if ( 'index.php' !== $page ) {
+				wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.3', true );
+				wp_set_script_translations( 'wpss_config', 'simple-smtp' );
 
-			wp_localize_script( 'wpss_config', 'wpss_qc_settings', $smtp_settings );
+				$smtp_settings = QuickConfig::settings();
+
+				wp_localize_script( 'wpss_config', 'wpss_qc_settings', $smtp_settings );
+			}
 		}
 	}
 );
