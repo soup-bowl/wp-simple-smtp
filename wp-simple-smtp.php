@@ -86,7 +86,7 @@ add_action(
 		$assets_pages = array(
 			'settings_page_wpsimplesmtp',
 			'settings_page_wpsimplesmtpms',
-			'index.php'
+			'index.php',
 		);
 		if ( in_array( $page, $assets_pages, true ) ) {
 			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/simple-smtp.css', [], '1.4' );
