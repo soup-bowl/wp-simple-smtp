@@ -117,10 +117,14 @@ class LogTable {
 		echo wp_kses(
 			'<p><i>' . $message . '</i> ' . $nav_buttons->back . ' ' . $nav_buttons->next . ' ' . $nav_buttons->delete . '</p>',
 			[
-				'p' => [],
-				'i' => [],
-				'a' => [
+				'p'    => [],
+				'i'    => [],
+				'a'    => [
 					'href'     => [],
+					'class'    => [],
+					'disabled' => [],
+				],
+				'span' => [
 					'class'    => [],
 					'disabled' => [],
 				],
@@ -154,8 +158,18 @@ class LogTable {
 			],
 			$current
 		);
-		$next_allow = ( $current_page >= $max_pages ) ? 'disabled' : '';
-		$back_allow = ( $current_page <= 0 ) ? 'disabled' : '';
+		$next_allow = '';
+		$next_tag   = 'a';
+		$back_allow = '';
+		$back_tag   = 'a';
+		if ( $current_page >= $max_pages ) {
+			$next_allow = ' disabled';
+			$next_tag   = 'span';
+		}
+		if ( $current_page <= 0 ) {
+			$back_allow = ' disabled';
+			$back_tag   = 'span';
+		}
 
 		$purge_all_label = __( 'Purge Log', 'simple-smtp' );
 		$purge_all_url   = add_query_arg(
@@ -166,8 +180,8 @@ class LogTable {
 		) . '&delete_all';
 
 		return (object) [
-			'next'   => '<a href="' . esc_url( $next_url ) . '" class="button"' . $next_allow . '>' . $next_label . '</a>',
-			'back'   => '<a href="' . esc_url( $back_url ) . '" class="button"' . $back_allow . '>' . $back_label . '</a>',
+			'next'   => '<' . $next_tag . ' href="' . esc_url( $next_url ) . '" class="button"' . $next_allow . '>' . $next_label . '</' . $next_tag . '>',
+			'back'   => '<' . $back_tag . ' href="' . esc_url( $back_url ) . '" class="button"' . $back_allow . '>' . $back_label . '</' . $back_tag . '>',
 			'delete' => '<a href="' . esc_url( $purge_all_url ) . '" class="button">' . $purge_all_label . '</a>',
 		];
 	}
