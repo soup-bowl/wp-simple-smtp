@@ -28,7 +28,7 @@ class Glance {
 	/**
 	 * Adds post-type info to `At a Glance`-dashboard widget.
 	 *
-	 * @since 1.x.x
+	 * @since 1.3.1
 	 *
 	 * @param array $items The items to display in the `At a Glance`-dashboard.
 	 * @return array $items All existing plus the new items.
