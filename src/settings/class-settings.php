@@ -97,7 +97,7 @@ class Settings {
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					echo wp_kses( "<span class='wpsmtp-badge wpsmtp-badge-info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
+					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
 				}
 
 				if ( ! empty( $description ) ) {
@@ -141,7 +141,7 @@ class Settings {
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					echo wp_kses( "<span class='wpsmtp-badge wpsmtp-badge-info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
+					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
 				}
 
 				if ( ! empty( $description ) ) {
@@ -161,7 +161,7 @@ class Settings {
 	 *
 	 * @param string   $name        Code name of input.
 	 * @param string   $name_pretty Left-side column name shown to user.
-	 * @param callback $callback    Function is called within the fieldest.
+	 * @param callback $callback    Function is called within the fieldset.
 	 */
 	public function generate_checkbox_area( $name, $name_pretty, $callback ) {
 		add_settings_field(
@@ -196,7 +196,7 @@ class Settings {
 
 		$debuginfo = '';
 		if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$debuginfo = "<span class='wpsmtp-badge wpsmtp-badge-info'>{$value->source}</span>";
+			$debuginfo = "<span class='wpsmtp-badge info'>{$value->source}</span>";
 		}
 
 		?>
@@ -247,7 +247,7 @@ class Settings {
 	}
 
 	/**
-	 * Checks the encrytion key is valid, if exists.
+	 * Checks the encryption key is valid, if exists.
 	 */
 	public function encryption_keycheck() {
 		if ( ! empty( get_option( 'wpssmtp_echk' ) ) && ! $this->options->check_encryption_key() ) {

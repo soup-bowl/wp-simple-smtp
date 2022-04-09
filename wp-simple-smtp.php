@@ -9,10 +9,10 @@
  * @wordpress-plugin
  * Plugin Name:       Simple SMTP
  * Description:       Adds mail configuration to WordPress in a simple, standardised plugin.
- * Plugin URI:        https://www.soupbowl.io/wp-plugins
- * Version:           1.3
- * Author:            soup-bowl
- * Author URI:        https://www.soupbowl.io
+ * Plugin URI:        https://github.com/soup-bowl/wp-simple-smtp
+ * Version:           1.3.1
+ * Author:            soup-bowl & Contributors
+ * Author URI:        https://github.com/soup-bowl/wp-simple-smtp
  * License:           MIT
  */
 
@@ -25,6 +25,7 @@ use wpsimplesmtp\Mail;
 use wpsimplesmtp\MailDisable;
 use wpsimplesmtp\Mailtest;
 use wpsimplesmtp\Options;
+use wpsimplesmtp\Glance;
 
 /**
  * Autoloader.
@@ -52,6 +53,8 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 if ( is_admin() ) {
 	new Settings();
 	( new Privacy() )->hooks();
+	( new Glance() )->hooks();
+
 	if ( is_multisite() ) {
 		new SettingsMultisite();
 	}
@@ -80,14 +83,22 @@ add_action(
 add_action(
 	'admin_enqueue_scripts',
 	function ( $page ) {
-		if ( 'settings_page_wpsimplesmtp' === $page || 'settings_page_wpsimplesmtpms' === $page ) {
-			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.css', [], '1.2' );
-			wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.3', true );
-			wp_set_script_translations( 'wpss_config', 'simple-smtp' );
+		$assets_pages = array(
+			'settings_page_wpsimplesmtp',
+			'settings_page_wpsimplesmtpms',
+			'index.php',
+		);
+		if ( in_array( $page, $assets_pages, true ) ) {
+			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/simple-smtp.css', [], '1.4' );
 
-			$smtp_settings = QuickConfig::settings();
+			if ( 'index.php' !== $page ) {
+				wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.3', true );
+				wp_set_script_translations( 'wpss_config', 'simple-smtp' );
 
-			wp_localize_script( 'wpss_config', 'wpss_qc_settings', $smtp_settings );
+				$smtp_settings = QuickConfig::settings();
+
+				wp_localize_script( 'wpss_config', 'wpss_qc_settings', $smtp_settings );
+			}
 		}
 	}
 );

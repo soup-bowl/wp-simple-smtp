@@ -2,11 +2,15 @@
 /.git
 /.github
 /.vscode
+/sass
 /tests
+.distignore
 .env.example
 .gitignore
 .gitpod.yml
 .travis.yml
+composer.json
+composer.lock
 docker-compose.yml
 phpcs.xml.dist
 phpunit.xml

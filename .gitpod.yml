@@ -10,6 +10,7 @@ tasks:
       echo "Pausing for MySQL to complete..."&& sleep 15
       docker-compose exec www wp core install --url="https://8080-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}" --title="SMTP Dummy" --admin_user="admin" --admin_password="password" --admin_email="code@soupbowl.io" --allow-root
       docker-compose exec www wp plugin activate simple-smtp --allow-root
+      cp .env.example .env
 vscode:
   extensions:
     - ms-azuretools.vscode-docker

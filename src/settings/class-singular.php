@@ -89,7 +89,7 @@ class Singular extends Settings {
 			if ( $resp ) {
 				?>
 				<div class="notice notice-success is-dismissible">
-					<p><?php esc_html_e( 'Email resend request recieved.', 'simple-smtp' ); ?></p>
+					<p><?php esc_html_e( 'Email resend request received.', 'simple-smtp' ); ?></p>
 				</div>
 				<?php
 			} else {
@@ -229,7 +229,7 @@ class Singular extends Settings {
 	 * @return array Parameter #1 with possible changes.
 	 */
 	public function post_processing( $options ) {
-		// Skip condition check if the password recieved is a dummy (indicating to not replace the current stored one).
+		// Skip condition check if the password received is a dummy (indicating to not replace the current stored one).
 		if ( ! empty( $options['pass'] ) && $this->dummy_password === $options['pass'] ) {
 			$current_options   = get_option( 'wpssmtp_smtp' );
 			$options['pass']   = ( ! empty( $current_options['pass'] ) ) ? $current_options['pass'] : null;
@@ -297,7 +297,7 @@ class Singular extends Settings {
 							$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
 						}
 
-						echo wp_kses( '<h2>' . __( 'Email Log', 'simple-smtp' ) . '</h2>', [ 'h2' => [] ] );
+						echo wp_kses( '<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>', [ 'h2' => [ 'id' => [] ] ] );
 						$this->log_table->display( $page );
 					}
 				}

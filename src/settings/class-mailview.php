@@ -85,7 +85,7 @@ class MailView {
 															<li>
 																<?php echo esc_html( $attachment->basename() ); ?>
 																<?php if ( ! $attachment->exists() ) : ?>
-																	<span class="wpsmtp-badge wpsmtp-badge-warning"><?php esc_html_e( 'File missing', 'simple-smtp' ); ?></span>
+																	<span class="wpsmtp-badge warning"><?php esc_html_e( 'File missing', 'simple-smtp' ); ?></span>
 																<?php endif; ?>
 															</li>
 														<?php endforeach; ?>

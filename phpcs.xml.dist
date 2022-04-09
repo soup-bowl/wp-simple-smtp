@@ -2,6 +2,7 @@
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/.docker/*</exclude-pattern>
+	<exclude-pattern>/assets/simple-smtp.css</exclude-pattern><!-- Can't process minified files -->
 	<rule ref="WordPress" />
 
 	<!-- Argh, this... Please let me know if I'm doing something wrong. -->

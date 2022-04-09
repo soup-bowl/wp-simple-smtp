@@ -4,16 +4,29 @@ on:
     branches:
     - main
     - develop
+  pull_request:
+    branches:
+    - develop
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+    strategy:
+      matrix:
+        php-version:
+        - 7.3
+        - 7.4
+        - 8.0
+    services:
+      smtp_mock:
+        image: mailhog/mailhog:latest
+        ports:
+        - 1025:1025
 
-      # Grab the Composer dependencies.
+    steps:
+      - uses: actions/checkout@v2
+      
       - name: Composer Dependencies
         uses: php-actions/composer@v2
         with:
@@ -21,17 +34,23 @@ jobs:
           dev: yes
           args: --profile --ignore-platform-reqs
 
-      # Setup an env file... I tried passing them via 'env' but for whatever reason the VM doesn't see it.  
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: phpunit
+
       - name: Create .env Config
         run: |
           touch .env
-          echo SMTP_HOST="${{ secrets.CI_TEST_HOST }}" >> .env
-          echo SMTP_AUTH="1" >> .env
-          echo SMTP_USER="${{ secrets.CI_TEST_USER }}" >> .env
-          echo SMTP_PASS="${{ secrets.CI_TEST_PASSWORD }}" >> .env
-          echo SMTP_PORT="587" >> .env
-          echo SMTP_FROM="gh-unit@example.com" >> .env
+          echo SMTP_HOST=localhost >> .env
+          echo SMTP_AUTH=0 >> .env
+          echo SMTP_USER= >> .env
+          echo SMTP_PASS= >> .env
+          echo SMTP_PORT=1025 >> .env
+          echo SMTP_FROM=gh-unit@example.com >> .env
+          echo realpath .env
+          cat .env
 
-      # Run PHPUnit to brew a cup of tea, what do you think it bloody does.
       - name: Run PHPUnit
-        uses: php-actions/phpunit@v2
+        run: phpunit

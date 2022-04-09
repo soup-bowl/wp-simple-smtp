@@ -1,0 +1,27 @@
+.#{$prefix}badge {
+	padding: .25em .6em;
+	font-size: rem(10.5px);
+	font-weight: 700;
+	border-radius: rem(16px);
+	color: $color_text_inv;
+	background-color: $color_badge_grey_blue;
+
+	&.info {
+		background-color: $color_badge_blue;
+	}
+	
+	&.warning {
+		color: $color_text_grey;
+		background-color: $color_badge_yellow;
+	}
+
+	// Not in use?
+	&.success {
+		background-color: $color_badge_green;
+	}
+	
+	// Not in use?	
+	&.danger {
+		background-color: $color_badge_red;
+	}
+}

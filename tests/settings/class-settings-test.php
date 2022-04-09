@@ -51,20 +51,20 @@ class SettingsTest extends TestCase {
 	 * Checks that the system is correctly identifying the dummy password and handles it as no change to the system.
 	 */
 	public function test_dummy_passwords() {
-		$smtp_password = $_ENV['SMTP_PASS'];
+		$smtp_password = ( getenv( 'SMTP_PASS' ) !== false ) ? getenv( 'SMTP_PASS' ) : '';
 		$options_good  = [ 'pass' => 'abc' ];
 		$options_dummy = [ 'pass' => '******' ];
 
 		// Chuck an SMTP setting at it. It should return either the password, or the encrypted variant.
 		$response_good = $this->settings->post_processing( $options_good );
 		if ( extension_loaded( 'openssl' ) ) {
-			$this->assertEquals( 1, $response_good['pass_d'], '(OpenSSL on) The recieved password did not match the setting we sent.' );
+			$this->assertEquals( 1, $response_good['pass_d'], '(OpenSSL on) The received password did not match the setting we sent.' );
 		} else {
-			$this->assertEquals( $smtp_password, $response_good['pass'], '(OpenSSL off) The recieved password did not match the setting we sent.' );
+			$this->assertEquals( $smtp_password, $response_good['pass'], '(OpenSSL off) The received password did not match the setting we sent.' );
 		}
 
 		// Chuck the dummy trigger password. This should return the existing password.
 		$response_dummy = $this->settings->post_processing( $options_dummy );
-		$this->assertEquals( $smtp_password, $response_dummy['pass'], 'Passed dummy password, and did not recieve the previous setting response in return.' );
+		$this->assertEquals( $smtp_password, $response_dummy['pass'], 'Passed dummy password, and did not receive the previous setting response in return.' );
 	}
 }
