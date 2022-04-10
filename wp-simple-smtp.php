@@ -26,6 +26,7 @@ use wpsimplesmtp\MailDisable;
 use wpsimplesmtp\Mailtest;
 use wpsimplesmtp\Options;
 use wpsimplesmtp\Glance;
+use wpsimplesmtp\Dashboard;
 
 /**
  * Autoloader.
@@ -54,6 +55,7 @@ if ( is_admin() ) {
 	new Settings();
 	( new Privacy() )->hooks();
 	( new Glance() )->hooks();
+	( new Dashboard() )->hooks();
 
 	if ( is_multisite() ) {
 		new SettingsMultisite();
