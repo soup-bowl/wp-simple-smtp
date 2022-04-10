@@ -20,7 +20,7 @@ class Dashboard {
 	 */
 	public function hooks() {
 		add_action( 'wp_dashboard_setup', [ &$this, 'add_dashboard_widget' ], 20 );
-}
+	}
 
 	/**
 	 * Add custom Dashboard widget.
@@ -46,8 +46,8 @@ class Dashboard {
 	 */
 	public function content_dashboard_widget_high() {
 		$log_enabled = ( new Options() )->get( 'log' );
-		$host = ( new Options() )->get( 'host' );
-		$port = ( new Options() )->get( 'host' );
+		$host        = ( new Options() )->get( 'host' );
+		$port        = ( new Options() )->get( 'host' );
 
 		$string  = '<div>';
 		$string .= '<h3>' . __( 'Logging', 'simple-smtp' ) . '</h3>';
@@ -64,13 +64,13 @@ class Dashboard {
 		$string .= '<h3>' . __( 'Configuration', 'simple-smtp' ) . '</h3>';
 		$string .= '<ul>';
 		$string .= '<li>' . __( 'Custom e-mail settings are used.', 'simple-smtp' ) . '</li>';
-		$string .= '<li>' . 'sender (name and email address)' . '</li>';
+		$string .= '<li>sender (name and email address)</li>';
 		$string .= '<li>' . $host->value . '</li>';
 		$string .= '</ul>';
 		$string .= '</div>';
 
 		$string .= '<div class="wpsmtp-dashboard-footer">';
-		$string .= '<p>' . '<a href="#">' . __( 'Settings', 'simple-smtp' ) . '</a> | <a href="#">' . __( 'Log', 'simple-smtp' ) . '</a>  | <a href="#">' . __( 'Development', 'simple-smtp' ) . '</a>' . '</p>';
+		$string .= '<p><a href="#">' . __( 'Settings', 'simple-smtp' ) . '</a> | <a href="#">' . __( 'Log', 'simple-smtp' ) . '</a>  | <a href="#">' . __( 'Development', 'simple-smtp' ) . '</a></p>';
 		// $string .= '<p class="wpsmtp-credit">' . __( 'WordPress Simple SMTP - v 1.3.1', 'simple-smtp' ) . '</p>';
 		$string .= '</div>';
 		echo wp_kses_post( $string );
