@@ -96,6 +96,9 @@ To help diagnose disabled input boxes, when the WordPress site is in [debugging 
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
+= Unreleased =
+* Fix: Infinite loop when a plugin hooks into the mail routine functions and sends an email ([#116](https://github.com/soup-bowl/wp-simple-smtp/pull/116)).
+
 = 1.3.1 =
 * Added: Glance view on the dashboard to see mail usage (Thanks [Kebbet](https://github.com/kebbet) - [PR 101](https://github.com/soup-bowl/wp-simple-smtp/pull/101), [PR 102](https://github.com/soup-bowl/wp-simple-smtp/pull/102)).
 * Fix: Table view appears correctly on mobile (Thanks [Kebbet](https://github.com/kebbet) - [PR 93](https://github.com/soup-bowl/wp-simple-smtp/pull/93)).
