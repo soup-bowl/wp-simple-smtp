@@ -60,6 +60,12 @@ class LogService {
 	 * @return integer ID of the newly-inserted entry.
 	 */
 	public function new_log_entry( $log ) {
+		// Patch fix to stop Sucuri from spamming the log. Should be investigated more.
+		$dup_check = post_exists( $log->get_subject(), '', current_time( 'mysql' ), $this->post_type );
+		if ( 0 !== $dup_check ) {
+			return $dup_check;
+		}
+
 		$post_id = wp_insert_post(
 			[
 				'post_title'   => $log->get_subject(),
