@@ -75,8 +75,24 @@ class MailView {
 								<div class="inside">
 									<div id="minor-publishing">
 										<div id="misc-publishing-actions">
-											<div class="misc-pub-section"><?php esc_html_e( 'Recipient(s)', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong></div>
-											<div class="misc-pub-section"><?php esc_html_e( 'Date sent', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong></div>
+											<div class="misc-pub-section">
+												<?php esc_html_e( 'Recipient(s)', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong>
+											</div>
+											<div class="misc-pub-section">
+												<?php esc_html_e( 'Date sent', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong>
+											</div>
+											<?php if ( ! empty( $log->get_headers() ) ) : ?>
+												<div class="misc-pub-section">
+													<?php esc_html_e( 'Header(s)', 'simple-smtp' ); ?>:
+													<ol>
+														<?php foreach ( $log->get_headers_as_array() as $header ) : ?>
+															<li>
+																<strong><?php echo $header[0]; ?></strong>: <?php echo $header[1]; ?>
+															</li>
+														<?php endforeach; ?>
+													</ol>
+												</div>
+											<?php endif; ?>
 											<?php if ( ! empty( $log->get_attachments() ) ) : ?>
 												<div class="misc-pub-section">
 													<?php esc_html_e( 'Attachment(s)', 'simple-smtp' ); ?>:
@@ -110,7 +126,7 @@ class MailView {
 			</div>
 			<?php
 		} else {
-			wp_die( 'No email found.' );
+			wp_die( __( 'No email found.', 'simple-smtp' ) );
 		}
 	}
 }

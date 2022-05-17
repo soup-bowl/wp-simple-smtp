@@ -131,6 +131,20 @@ class Log {
 	}
 
 	/**
+	 * Same as get_headers, but the header strings are split.
+	 *
+	 * @return array[]
+	 */
+	public function get_headers_as_array() {
+		return array_map(
+			function( $header ) {
+				return explode( ':', $header );
+			},
+			$this->get_headers()
+		);
+	}
+
+	/**
 	 * The dispatch headers, unsplit.
 	 *
 	 * @return string
