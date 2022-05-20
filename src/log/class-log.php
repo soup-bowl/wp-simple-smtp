@@ -122,6 +122,15 @@ class Log {
 	}
 
 	/**
+	 * Gets the cc recipients.
+	 *
+	 * @return string|null
+	 */
+	public function get_cc() {
+		return $this->find_in_headers( 'cc' );
+	}
+
+	/**
 	 * Gets the server dispatch headers.
 	 *
 	 * @return string[]
@@ -133,15 +142,21 @@ class Log {
 	/**
 	 * Same as get_headers, but the header strings are split.
 	 *
+	 * @param $exclude_recipients Remove CC from the list.
 	 * @return array[]
 	 */
-	public function get_headers_as_array() {
-		return array_map(
-			function( $header ) {
-				return explode( ':', $header );
-			},
-			$this->get_headers()
-		);
+	public function get_headers_as_array( $exclude_recipients = true ) {
+		$collection = [];
+		foreach ( $this->get_headers() as $header ) {
+			$expd = explode( ':', $header );
+			if ( $exclude_recipients && 'cc' === strtolower( $expd[0] ) ) {
+				continue;
+			} else {
+				$collection[] = $expd;
+			}
+		}
+
+		return $collection;
 	}
 
 	/**
@@ -286,5 +301,22 @@ class Log {
 		$this->timestamp = $timestamp;
 
 		return $this;
+	}
+
+	/**
+	 * searches the header array for a particular header.
+	 *
+	 * @param string $needle Header to look for.
+	 * @return string[]
+	 */
+	private function find_in_headers( $needle ) {
+		$collection = [];
+		foreach ( $this->get_headers_as_array( false ) as $header ) {
+			if ( strtolower( $header[0] ) === strtolower( $needle ) ) {
+				$collection[] = $header[1];
+			}
+		}
+
+		return $collection;
 	}
 }
