@@ -47,8 +47,9 @@ class MailView {
 		) . '&resend';
 
 		if ( current_user_can( 'manage_options' ) && isset( $log ) ) {
-			$recipients = implode( ', ', $log->get_recipients() );
-			$date       = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $log->get_timestamp() ) );
+			$to   = implode( ', ', $log->get_recipients() );
+			$cc   = implode( ', ', $log->get_cc() );
+			$date = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $log->get_timestamp() ) );
 
 			$content = '';
 			if ( ! empty( $log->get_headers() ) && false !== strpos( $log->get_headers_unified(), 'Content-Type: text\/html' ) ) {
@@ -76,8 +77,13 @@ class MailView {
 									<div id="minor-publishing">
 										<div id="misc-publishing-actions">
 											<div class="misc-pub-section">
-												<?php esc_html_e( 'Recipient(s)', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $recipients ); ?></strong>
+												<?php esc_html_e( 'To', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $to ); ?></strong>
 											</div>
+											<?php if ( ! empty( $cc ) ) : ?>
+											<div class="misc-pub-section">
+												<?php esc_html_e( 'CC', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $cc ); ?></strong>
+											</div>
+											<?php endif; ?>
 											<div class="misc-pub-section">
 												<?php esc_html_e( 'Date sent', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong>
 											</div>
@@ -87,7 +93,11 @@ class MailView {
 													<ol>
 														<?php foreach ( $log->get_headers_as_array() as $header ) : ?>
 															<li>
-																<strong><?php echo $header[0]; ?></strong>: <?php echo $header[1]; ?>
+																<?php if ( isset( $header[1] ) ) : ?>
+																	<?php echo $header[0]; ?>: <strong><?php echo $header[1]; ?></strong>
+																<?php else : ?>
+																	<strong><?php echo $header[0]; ?></strong>
+																<?php endif; ?>
 															</li>
 														<?php endforeach; ?>
 													</ol>
