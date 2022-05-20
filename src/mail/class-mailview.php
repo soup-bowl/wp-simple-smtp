@@ -94,9 +94,9 @@ class MailView {
 														<?php foreach ( $log->get_headers_as_array() as $header ) : ?>
 															<li>
 																<?php if ( isset( $header[1] ) ) : ?>
-																	<?php echo $header[0]; ?>: <strong><?php echo $header[1]; ?></strong>
+																	<?php echo esc_html( $header[0] ); ?>: <strong><?php echo esc_html( $header[1] ); ?></strong>
 																<?php else : ?>
-																	<strong><?php echo $header[0]; ?></strong>
+																	<strong><?php echo esc_html( $header[0] ); ?></strong>
 																<?php endif; ?>
 															</li>
 														<?php endforeach; ?>
@@ -136,7 +136,7 @@ class MailView {
 			</div>
 			<?php
 		} else {
-			wp_die( __( 'No email found.', 'simple-smtp' ) );
+			wp_die( esc_html__( 'No email found.', 'simple-smtp' ) );
 		}
 	}
 }

@@ -142,7 +142,7 @@ class Log {
 	/**
 	 * Same as get_headers, but the header strings are split.
 	 *
-	 * @param $exclude_recipients Remove CC from the list.
+	 * @param bool $exclude_recipients Remove CC from the list.
 	 * @return array[]
 	 */
 	public function get_headers_as_array( $exclude_recipients = true ) {
@@ -304,7 +304,7 @@ class Log {
 	}
 
 	/**
-	 * searches the header array for a particular header.
+	 * Searches the header array for a particular header.
 	 *
 	 * @param string $needle Header to look for.
 	 * @return string[]
