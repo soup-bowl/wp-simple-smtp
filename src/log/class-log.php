@@ -147,12 +147,14 @@ class Log {
 	 */
 	public function get_headers_as_array( $exclude_recipients = true ) {
 		$collection = [];
-		foreach ( $this->get_headers() as $header ) {
-			$expd = explode( ':', $header );
-			if ( $exclude_recipients && 'cc' === strtolower( $expd[0] ) ) {
-				continue;
-			} else {
-				$collection[] = $expd;
+		if ( ! empty( $this->get_headers() ) ) {
+			foreach ( $this->get_headers() as $header ) {
+				$expd = explode( ':', $header );
+				if ( $exclude_recipients && 'cc' === strtolower( $expd[0] ) ) {
+					continue;
+				} else {
+					$collection[] = $expd;
+				}
 			}
 		}
 
