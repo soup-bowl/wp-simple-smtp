@@ -339,4 +339,21 @@ class Log {
 
 		return $collection;
 	}
+
+	/**
+	 * Extracts the email from angled brackets, if the syntax is so.
+	 *
+	 * @param string $input The subject to be inspected.
+	 * @return string Either the extracted email address, or the input is returned untouched.
+	 */
+	private function strip_email( $input ) {
+		$stripped = '';
+		$rc       = preg_match( '/(?<=\<).+?(?=\>)/', $input, $stripped );
+
+		if ( 1 === $rc ) {
+			return $stripped;
+		} else {
+			return $input;
+		}
+	}
 }
