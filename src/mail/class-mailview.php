@@ -78,9 +78,11 @@ class MailView {
 								<div class="inside">
 									<div id="minor-publishing">
 										<div id="misc-publishing-actions">
+											<?php if ( ! empty( $to ) ) : ?>
 											<div class="misc-pub-section">
 												<?php esc_html_e( 'To', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $to ); ?></strong>
 											</div>
+											<?php endif; ?>
 
 											<?php if ( ! empty( $from ) ) : ?>
 											<div class="misc-pub-section">
