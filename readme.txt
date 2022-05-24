@@ -2,9 +2,9 @@
 Contributors: soupbowl
 Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 1.3.1
+Stable tag: 1.3.1.1
 License: MIT
 
 Adds a simple mail configuration panel into your WordPress installation. Supports temporary logging and config variables.
@@ -98,6 +98,9 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 == Changelog ==
 = Unreleased =
 * Fix: Infinite loop when a plugin hooks into the mail routine functions and sends an email ([#116](https://github.com/soup-bowl/wp-simple-smtp/pull/116)).
+
+= 1.3.1.1 =
+* Verified working with WordPress 6.0.
 
 = 1.3.1 =
 * Added: Glance view on the dashboard to see mail usage (Thanks [Kebbet](https://github.com/kebbet) - [PR 101](https://github.com/soup-bowl/wp-simple-smtp/pull/101), [PR 102](https://github.com/soup-bowl/wp-simple-smtp/pull/102)).
