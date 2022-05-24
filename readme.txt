@@ -4,7 +4,7 @@ Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 1.3.1.1
+Stable tag: 1.3.2
 License: MIT
 
 Adds a simple mail configuration panel into your WordPress installation. Supports temporary logging and config variables.
@@ -96,6 +96,9 @@ To help diagnose disabled input boxes, when the WordPress site is in [debugging 
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
+= 1.3.2 =
+* Changed: Mail view now displays from, cc, bcc & the headers stored when logging is enabled.
+
 = 1.3.1.1 =
 * Verified working with WordPress 6.0.
 
