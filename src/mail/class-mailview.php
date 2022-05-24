@@ -48,7 +48,9 @@ class MailView {
 
 		if ( current_user_can( 'manage_options' ) && isset( $log ) ) {
 			$to   = implode( ', ', $log->get_recipients() );
+			$from = implode( ', ', $log->get_from() );
 			$cc   = implode( ', ', $log->get_cc() );
+			$bcc  = implode( ', ', $log->get_bcc() );
 			$date = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $log->get_timestamp() ) );
 
 			$content = '';
@@ -79,14 +81,29 @@ class MailView {
 											<div class="misc-pub-section">
 												<?php esc_html_e( 'To', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $to ); ?></strong>
 											</div>
+
+											<?php if ( ! empty( $from ) ) : ?>
+											<div class="misc-pub-section">
+												<?php esc_html_e( 'From', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $from ); ?></strong>
+											</div>
+											<?php endif; ?>
+
 											<?php if ( ! empty( $cc ) ) : ?>
 											<div class="misc-pub-section">
 												<?php esc_html_e( 'CC', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $cc ); ?></strong>
 											</div>
 											<?php endif; ?>
+
+											<?php if ( ! empty( $bcc ) ) : ?>
+											<div class="misc-pub-section">
+												<?php esc_html_e( 'BCC', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $bcc ); ?></strong>
+											</div>
+											<?php endif; ?>
+
 											<div class="misc-pub-section">
 												<?php esc_html_e( 'Date sent', 'simple-smtp' ); ?>: <strong><?php echo esc_html( $date ); ?></strong>
 											</div>
+
 											<?php if ( ! empty( $log->get_headers() ) ) : ?>
 												<div class="misc-pub-section">
 													<?php esc_html_e( 'Header(s)', 'simple-smtp' ); ?>:
@@ -103,6 +120,7 @@ class MailView {
 													</ol>
 												</div>
 											<?php endif; ?>
+
 											<?php if ( ! empty( $log->get_attachments() ) ) : ?>
 												<div class="misc-pub-section">
 													<?php esc_html_e( 'Attachment(s)', 'simple-smtp' ); ?>:

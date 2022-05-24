@@ -122,12 +122,30 @@ class Log {
 	}
 
 	/**
+	 * Gets the from details.
+	 *
+	 * @return string|null
+	 */
+	public function get_from() {
+		return $this->find_in_headers( 'from' );
+	}
+
+	/**
 	 * Gets the cc recipients.
 	 *
 	 * @return string|null
 	 */
 	public function get_cc() {
 		return $this->find_in_headers( 'cc' );
+	}
+
+	/**
+	 * Gets the bcc recipients.
+	 *
+	 * @return string|null
+	 */
+	public function get_bcc() {
+		return $this->find_in_headers( 'bcc' );
 	}
 
 	/**
@@ -150,7 +168,7 @@ class Log {
 		if ( ! empty( $this->get_headers() ) ) {
 			foreach ( $this->get_headers() as $header ) {
 				$expd = explode( ':', $header );
-				if ( $exclude_recipients && 'cc' === strtolower( $expd[0] ) ) {
+				if ( $exclude_recipients && in_array( strtolower( $expd[0] ), [ 'cc', 'bcc', 'from' ] ) ) {
 					continue;
 				} else {
 					$collection[] = $expd;
