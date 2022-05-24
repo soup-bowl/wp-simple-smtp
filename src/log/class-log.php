@@ -168,7 +168,7 @@ class Log {
 		if ( ! empty( $this->get_headers() ) ) {
 			foreach ( $this->get_headers() as $header ) {
 				$expd = explode( ':', $header );
-				if ( $exclude_recipients && in_array( strtolower( $expd[0] ), [ 'cc', 'bcc', 'from' ] ) ) {
+				if ( $exclude_recipients && in_array( strtolower( $expd[0] ), [ 'cc', 'bcc', 'from' ], true ) ) {
 					continue;
 				} else {
 					$collection[] = $expd;
