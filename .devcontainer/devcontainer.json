@@ -6,7 +6,8 @@
 	"settings": {},
 	"extensions": [],
 	"forwardPorts": [ 8080, 8081, 8082, 8083 ],
-	"postCreateCommand": "./.devcontainer/postrun.sh",
+	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+	"postStartCommand": "./.devcontainer/postStartCommand.sh",
 	"remoteUser": "vscode",
 	"features": {
 		"docker-in-docker": "latest"
