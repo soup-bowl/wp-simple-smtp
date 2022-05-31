@@ -49,6 +49,7 @@ class LogService {
 					'delete_post'         => 'manage_options',
 					'read_post'           => 'manage_options',
 				],
+				'label'        => __( 'E-mail log entries', 'wp-simple-smtp' ),
 			]
 		);
 	}
