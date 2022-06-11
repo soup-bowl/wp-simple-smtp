@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z ${CODESPACE_NAME+x} ]; then
+if [ ! -z ${CODESPACE_NAME+x} ]; then
 	WP_SITE_URL="https://${CODESPACE_NAME}-8080.githubpreview.dev"
 else
 	WP_SITE_URL="http://localhost:8080"
