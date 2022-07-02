@@ -49,7 +49,7 @@ class LogService {
 					'delete_post'         => 'manage_options',
 					'read_post'           => 'manage_options',
 				],
-				'label'        => _x( 'E-mail log entries', 'Post Type General Name', 'wp-simple-smtp' ),
+				'label'        => _x( 'E-mail log entries', 'Post Type General Name', 'simple-smtp' ),
 			]
 		);
 	}
