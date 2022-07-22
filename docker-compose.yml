@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   db:
-    image: docker.io/library/mariadb:latest
+    image: docker.io/library/mariadb:10.5.15 # Changed due to MariaDB Docker build issues.
     environment:
       MYSQL_ROOT_PASSWORD: s9f6sd759r32r7f0dsf5673894956
       MYSQL_DATABASE: wordpress
