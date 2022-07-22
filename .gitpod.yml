@@ -4,7 +4,7 @@ tasks:
       docker pull composer
       docker-compose pull
       docker-compose build www
-    command: sh ./.devcontainer/postCreateCommand.sh 
+    command: sh ./.devcontainer/postCreateCommand.sh
 vscode:
   extensions:
     - ms-azuretools.vscode-docker
