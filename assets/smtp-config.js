@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-const { __, _x, _n, _nx } = wp.i18n;
+const { __ } = wp.i18n;
 
 /**
  * Grabs the sources file. If it loads, we continue. If not, we do not display this feature.

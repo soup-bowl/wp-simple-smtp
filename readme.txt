@@ -98,6 +98,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 == Changelog ==
 = Unreleased =
 * Changed: Mail view now displays from, cc, bcc & the headers stored when logging is enabled.
+* Fix: Infinite loop when a plugin hooks into the mail routine functions and sends an email ([#116](https://github.com/soup-bowl/wp-simple-smtp/pull/116)).
 
 = 1.3.1.1 =
 * Verified working with WordPress 6.0.

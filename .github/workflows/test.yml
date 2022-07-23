@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Composer Dependencies
         uses: php-actions/composer@v2
         with:
