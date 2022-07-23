@@ -96,6 +96,9 @@ To help diagnose disabled input boxes, when the WordPress site is in [debugging 
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
 == Changelog ==
+= Unreleased =
+* Fix: Infinite loop when a plugin hooks into the mail routine functions and sends an email ([#116](https://github.com/soup-bowl/wp-simple-smtp/pull/116)).
+
 = 1.3.1.1 =
 * Verified working with WordPress 6.0.
 
