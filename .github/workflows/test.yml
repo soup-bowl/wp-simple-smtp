@@ -4,6 +4,11 @@ on:
     branches:
     - main
     - develop
+    paths-ignore:
+    - '.devcontainer/**'
+    - '.docker/**'
+    - '.github/**'
+    - '.vscode/**'
   pull_request:
     branches:
     - develop
