@@ -9,6 +9,7 @@
 
 namespace wpsimplesmtp;
 
+use wpsimplesmtp\Log;
 use wpsimplesmtp\LogService;
 
 /**
@@ -68,13 +69,12 @@ class LogTable {
 
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry ) {
-				$recipients  = implode( ', ', $entry->get_recipients() );
 				$actions     = $this->render_log_entry_buttons( $entry );
 				$date        = gmdate( get_option( 'time_format' ) . ', ' . get_option( 'date_format' ), strtotime( $entry->get_timestamp() ) );
 				$row_classes = ( ! empty( $entry->get_error() ) ) ? 'site-archived log-row' : 'log-row';
 				echo wp_kses(
 					'<tr class="' . esc_attr( $row_classes ) . '">
-					<td data-colname="' . $labels[0] . '" class="has-row-actions">' . $recipients . $actions . '</td>
+					<td data-colname="' . $labels[0] . '" class="has-row-actions">' . $this->display_recipients( $entry ) . $actions . '</td>
 					<td data-colname="' . $labels[1] . '">' . $entry->get_subject() . '</td>
 					<td data-colname="' . $labels[2] . '"><abbr title="' . $entry->get_timestamp() . '">' . $date . '</abbr></td>
 					<td data-colname="' . $labels[3] . '">' . $entry->get_error() . '</td>
@@ -219,6 +219,29 @@ class LogTable {
 		$row_actions = '<div class="row-actions">' . $view . ' | ' . $resend . ' | ' . $delete . '</div>';
 
 		return $row_actions;
+	}
+
+	/**
+	 * Compiles a list of recipients (to and cc) into a single string.
+	 *
+	 * @param Log $log_item Log entry item.
+	 * @return string
+	 */
+	private function display_recipients( $log_item ) {
+		$recipients = [];
+
+		if ( ! empty( $log_item->get_recipients() ) ) {
+			$recipients[] = 'to: ' . implode( ', ', $log_item->get_recipients() );
+		}
+
+		if ( ! empty( $log_item->get_cc() ) ) {
+			$recipients[] = 'cc: ' . implode( ', ', $log_item->get_cc() );
+		}
+
+		return wp_kses(
+			implode( ', ', $recipients ),
+			$this->allowed_table_html()
+		);
 	}
 
 	/**
