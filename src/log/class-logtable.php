@@ -231,11 +231,11 @@ class LogTable {
 		$recipients = [];
 
 		if ( ! empty( $log_item->get_recipients() ) ) {
-			$recipients[] = 'to: ' . implode( ', ', $log_item->get_recipients() );
+			$recipients[] = esc_html__( 'To', 'simple-smtp' ) . ': ' . implode( ', ', $log_item->get_recipients() );
 		}
 
 		if ( ! empty( $log_item->get_cc() ) ) {
-			$recipients[] = 'cc: ' . implode( ', ', $log_item->get_cc() );
+			$recipients[] = esc_html__( 'CC', 'simple-smtp' ) . ': ' . implode( ', ', $log_item->get_cc() );
 		}
 
 		return wp_kses(
