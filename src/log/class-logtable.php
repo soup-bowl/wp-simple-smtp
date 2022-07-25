@@ -238,6 +238,10 @@ class LogTable {
 			$recipients[] = esc_html__( 'CC', 'simple-smtp' ) . ': ' . implode( ', ', $log_item->get_cc() );
 		}
 
+		if ( ! empty( $log_item->get_bcc() ) ) {
+			$recipients[] = esc_html__( 'BCC', 'simple-smtp' ) . ': ' . implode( ', ', $log_item->get_bcc() );
+		}
+
 		return wp_kses(
 			implode( ', ', $recipients ),
 			$this->allowed_table_html()
