@@ -9,3 +9,18 @@ vscode:
   extensions:
     - ms-azuretools.vscode-docker
     - johnbillion.vscode-wordpress-hooks
+
+ports:
+  - port: 8080
+    name: WordPress
+    description: Main WordPress instance.
+  - port: 8081
+    name: MailHog
+    description: Access GUI for the MailHog interface.
+  - port: 8082
+    name: phpMyAdmin
+    description: Access GUI for the MariaDB instance.
+  - port: 8083
+    description: SMTP port for MailHog.
+  - port: 4443
+    description: Unused in GitPod.
