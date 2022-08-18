@@ -61,6 +61,13 @@ class QuickConfig {
 				'authentication' => true,
 				'encryption'     => 'tls',
 			],
+			[
+				'name'           => 'One.com',
+				'server'         => 'send.one.com',
+				'port'           => '465',
+				'authentication' => true,
+				'encryption'     => 'ssl',
+			],
 		];
 	}
 }
