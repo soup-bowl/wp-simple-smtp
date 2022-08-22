@@ -1,5 +1,5 @@
 ---
-name: Report missing/incorrect SMTP settings
+name: Report new, missing or incorrect SMTP settings
 about: Report issues with the Quick Config SMTP chooser.
 title: ''
 labels: smtp-setting
