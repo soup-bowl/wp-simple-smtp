@@ -15,6 +15,7 @@ namespace wpsimplesmtp;
 class QuickConfig {
 	/**
 	 * Returns an array of possible SMTP configuration options.
+	 * Before contributing, please read the wiki page in the link below.
 	 *
 	 * @link https://github.com/soup-bowl/wp-simple-smtp/wiki/SMTP-Quick-Config The resources for the SMTP entries.
 	 *
