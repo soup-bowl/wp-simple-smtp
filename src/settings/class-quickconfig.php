@@ -16,6 +16,8 @@ class QuickConfig {
 	/**
 	 * Returns an array of possible SMTP configuration options.
 	 *
+	 * @link https://github.com/soup-bowl/wp-simple-smtp/wiki/SMTP-Quick-Config The resources for the SMTP entries.
+	 *
 	 * @return array
 	 */
 	public static function settings() {
