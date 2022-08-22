@@ -95,6 +95,8 @@ To help diagnose disabled input boxes, when the WordPress site is in [debugging 
 = Can I report an issue, or contribute to development? =
 Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-simple-smtp) for writing issues and/or making pull requests.
 
+One of the easiest aspects to contribute to is the SMTP quick configuration segment. If you wish to maintain this aspect, suggest a new setting, or report broken entries, see the [SMTP quick config wiki page](https://github.com/soup-bowl/wp-simple-smtp/wiki/SMTP-Quick-Config).
+
 == Changelog ==
 = Unreleased =
 * Added: Mail view now displays from, cc, bcc & the headers stored when logging is enabled.
