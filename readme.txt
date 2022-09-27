@@ -98,7 +98,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 One of the easiest aspects to contribute to is the SMTP quick configuration segment. If you wish to maintain this aspect, suggest a new setting, or report broken entries, see the [SMTP quick config wiki page](https://github.com/soup-bowl/wp-simple-smtp/wiki/SMTP-Quick-Config).
 
 == Changelog ==
-= Unreleased =
+= 1.3.2 =
 * Added: Mail view now displays from, cc, bcc & the headers stored when logging is enabled.
 * Fix: Infinite loop when a plugin hooks into the mail routine functions and sends an email ([#116](https://github.com/soup-bowl/wp-simple-smtp/pull/116)).
 
