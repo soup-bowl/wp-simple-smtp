@@ -10,7 +10,7 @@
  * Plugin Name:       Simple SMTP
  * Description:       Adds mail configuration to WordPress in a simple, standardised plugin.
  * Plugin URI:        https://github.com/soup-bowl/wp-simple-smtp
- * Version:           1.3.1.1
+ * Version:           1.3.2
  * Author:            soup-bowl & Contributors
  * Author URI:        https://github.com/soup-bowl/wp-simple-smtp
  * License:           MIT
@@ -92,7 +92,7 @@ add_action(
 			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/simple-smtp.css', [], '1.4' );
 
 			if ( 'index.php' !== $page ) {
-				wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.3', true );
+				wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.4', true );
 				wp_set_script_translations( 'wpss_config', 'simple-smtp' );
 
 				$smtp_settings = QuickConfig::settings();

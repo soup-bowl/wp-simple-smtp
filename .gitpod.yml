@@ -4,14 +4,23 @@ tasks:
       docker pull composer
       docker-compose pull
       docker-compose build www
-    command: |
-      docker run --rm --tty --volume $PWD:/app --user $(id -u):$(id -g) composer install --ignore-platform-reqs
-      docker-compose up -d
-      echo "Pausing for MySQL to complete..."&& sleep 15
-      docker-compose exec www wp core install --url="https://8080-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}" --title="SMTP Dummy" --admin_user="admin" --admin_password="password" --admin_email="code@soupbowl.io" --allow-root
-      docker-compose exec www wp plugin activate simple-smtp --allow-root
-      cp .env.example .env
+    command: sh ./.devcontainer/postCreateCommand.sh
 vscode:
   extensions:
     - ms-azuretools.vscode-docker
     - johnbillion.vscode-wordpress-hooks
+
+ports:
+  - port: 8080
+    name: WordPress
+    description: Main WordPress instance.
+  - port: 8081
+    name: MailHog
+    description: Access GUI for the MailHog interface.
+  - port: 8082
+    name: phpMyAdmin
+    description: Access GUI for the MariaDB instance.
+  - port: 8083
+    description: SMTP port for MailHog.
+  - port: 4443
+    description: Unused in GitPod.

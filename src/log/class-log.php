@@ -122,12 +122,61 @@ class Log {
 	}
 
 	/**
+	 * Gets the from details.
+	 *
+	 * @return string|null
+	 */
+	public function get_from() {
+		return $this->find_in_headers( 'from' );
+	}
+
+	/**
+	 * Gets the cc recipients.
+	 *
+	 * @return string|null
+	 */
+	public function get_cc() {
+		return $this->find_in_headers( 'cc' );
+	}
+
+	/**
+	 * Gets the bcc recipients.
+	 *
+	 * @return string|null
+	 */
+	public function get_bcc() {
+		return $this->find_in_headers( 'bcc' );
+	}
+
+	/**
 	 * Gets the server dispatch headers.
 	 *
 	 * @return string[]
 	 */
 	public function get_headers() {
 		return $this->headers;
+	}
+
+	/**
+	 * Same as get_headers, but the header strings are split.
+	 *
+	 * @param bool $exclude_recipients Remove CC from the list.
+	 * @return array[]
+	 */
+	public function get_headers_as_array( $exclude_recipients = true ) {
+		$collection = [];
+		if ( ! empty( $this->get_headers() ) ) {
+			foreach ( $this->get_headers() as $header ) {
+				$expd = explode( ':', $header );
+				if ( $exclude_recipients && in_array( strtolower( $expd[0] ), [ 'cc', 'bcc', 'from' ], true ) ) {
+					continue;
+				} else {
+					$collection[] = $expd;
+				}
+			}
+		}
+
+		return $collection;
 	}
 
 	/**
@@ -272,5 +321,39 @@ class Log {
 		$this->timestamp = $timestamp;
 
 		return $this;
+	}
+
+	/**
+	 * Searches the header array for a particular header.
+	 *
+	 * @param string $needle Header to look for.
+	 * @return string[]
+	 */
+	private function find_in_headers( $needle ) {
+		$collection = [];
+		foreach ( $this->get_headers_as_array( false ) as $header ) {
+			if ( strtolower( $header[0] ) === strtolower( $needle ) ) {
+				$collection[] = $header[1];
+			}
+		}
+
+		return $collection;
+	}
+
+	/**
+	 * Extracts the email from angled brackets, if the syntax is so.
+	 *
+	 * @param string $input The subject to be inspected.
+	 * @return string Either the extracted email address, or the input is returned untouched.
+	 */
+	private function strip_email( $input ) {
+		$stripped = '';
+		$rc       = preg_match( '/(?<=\<).+?(?=\>)/', $input, $stripped );
+
+		if ( 1 === $rc ) {
+			return $stripped;
+		} else {
+			return $input;
+		}
 	}
 }
