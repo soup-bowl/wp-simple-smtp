@@ -4,7 +4,7 @@ Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 1.3.1.1
+Stable tag: 1.3.2
 License: MIT
 
 Adds a simple mail configuration panel into your WordPress installation. Supports temporary logging and config variables.
