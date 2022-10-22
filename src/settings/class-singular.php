@@ -234,7 +234,7 @@ class Singular extends Settings {
 			$current_options   = get_option( 'wpssmtp_smtp' );
 			$options['pass']   = ( ! empty( $current_options['pass'] ) ) ? $current_options['pass'] : null;
 			$options['pass_d'] = ( ! empty( $current_options['pass_d'] ) ) ? $current_options['pass_d'] : null;
-		} elseif ( extension_loaded( 'openssl' ) && ! empty( $options['pass'] && $this->dummy_password !== $options['pass'] ) ) {
+		} elseif ( extension_loaded( 'openssl' ) && ! empty( $options['pass'] ) && $this->dummy_password !== $options['pass'] ) {
 			$pass_opt = $this->options->encrypt( 'pass', $options['pass'] );
 
 			$options['pass']   = $pass_opt['string'];
