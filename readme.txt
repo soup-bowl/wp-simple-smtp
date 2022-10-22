@@ -4,7 +4,7 @@ Tags: mail,email,smtp,dispatch,sender
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 1.3.2
+Stable tag: 1.3.2.1
 License: MIT
 
 Adds a simple mail configuration panel into your WordPress installation. Supports temporary logging and config variables.
@@ -98,7 +98,7 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 One of the easiest aspects to contribute to is the SMTP quick configuration segment. If you wish to maintain this aspect, suggest a new setting, or report broken entries, see the [SMTP quick config wiki page](https://github.com/soup-bowl/wp-simple-smtp/wiki/SMTP-Quick-Config).
 
 == Changelog ==
-= Unreleased =
+= 1.3.2.1 =
 * Rollback: #116 fix regressed due to relying on a function not found in the general scope.
 
 = 1.3.2 =
