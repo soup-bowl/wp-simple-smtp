@@ -3,12 +3,32 @@
 {
 	"name": "Ubuntu",
 	"image" : "mcr.microsoft.com/vscode/devcontainers/base:0-jammy",
-	"settings": {},
-	"extensions": [],
 	"forwardPorts": [ 8080, 8081, 8082, 8083 ],
 	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
 	"postAttachCommand": "./.devcontainer/postAttachCommand.sh",
 	"features": {
 		"docker-in-docker": "latest"
+	},
+	"portsAttributes": {
+		"8080": {
+			"label": "WordPress"
+		},
+		"8081": {
+			"label": "MailHog"
+		},
+		"8082": {
+			"label": "phpMyAdmin"
+		},
+		"8083": {
+			"label": "SMTP"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"xdebug.php-debug",
+				"bmewburn.vscode-intelephense-client"
+			]
+		}
 	}
 }
