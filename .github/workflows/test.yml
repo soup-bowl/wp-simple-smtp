@@ -17,12 +17,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        php-version:
-        - 7.3
-        - 7.4
-        - 8.0
+        php-version: [7.3, 7.4, 8.0, 8.1, 8.2]
+
     services:
       smtp_mock:
         image: mailhog/mailhog:latest
@@ -39,12 +38,6 @@ jobs:
           dev: yes
           args: --profile --ignore-platform-reqs
 
-      - name: Setup PHP with tools
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          tools: phpunit
-
       - name: Create .env Config
         run: |
           touch .env
@@ -58,4 +51,6 @@ jobs:
           cat .env
 
       - name: Run PHPUnit
-        run: phpunit
+        run: vendor/bin/phpunit --configuration phpunit.xml --colors=always
+        env:
+          PHP_VERSION: ${{ matrix.php-version }}
