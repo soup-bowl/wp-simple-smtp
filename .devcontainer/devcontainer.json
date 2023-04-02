@@ -26,6 +26,11 @@
 	},
 	"customizations": {
 		"vscode": {
+			"settings": {
+				"intelephense.stubs": [
+					"wordpress"
+				]
+			},
 			"extensions": [
 				"xdebug.php-debug",
 				"bmewburn.vscode-intelephense-client"
