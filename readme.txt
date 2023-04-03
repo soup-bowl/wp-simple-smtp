@@ -148,6 +148,7 @@ One of the easiest aspects to contribute to is the SMTP quick configuration segm
 
 = 1.1.2 =
 * Verified working with WordPress 5.8.
+* Fix: PHP warning on the CLI interface ([#140](https://github.com/soup-bowl/wp-simple-smtp/issues/140)).
 
 = 1.1.1 =
 * Verified working with WordPress 5.7.
