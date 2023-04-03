@@ -100,6 +100,7 @@ One of the easiest aspects to contribute to is the SMTP quick configuration segm
 == Changelog ==
 = Unreleased =
 * Verified working with WordPress 6.1.
+* Fix: PHP warning on the CLI interface ([#140](https://github.com/soup-bowl/wp-simple-smtp/issues/140)).
 
 = 1.3.2.1 =
 * Rollback: #116 fix regressed due to relying on a function not found in the general scope.
@@ -148,7 +149,6 @@ One of the easiest aspects to contribute to is the SMTP quick configuration segm
 
 = 1.1.2 =
 * Verified working with WordPress 5.8.
-* Fix: PHP warning on the CLI interface ([#140](https://github.com/soup-bowl/wp-simple-smtp/issues/140)).
 
 = 1.1.1 =
 * Verified working with WordPress 5.7.
