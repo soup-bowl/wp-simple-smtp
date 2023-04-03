@@ -1,5 +1,7 @@
 FROM docker.io/wordpress:php8.0-apache
 
+RUN chmod 777 /var/log/apache2
+
 RUN apt-get -y update && apt-get -y --no-install-recommends install less \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
