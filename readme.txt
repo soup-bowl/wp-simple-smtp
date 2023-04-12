@@ -48,6 +48,12 @@ The one instance where an SMTP error can be caused by this plugin is if the SMTP
 
 You can always get assistance from your host and/or SMTP service provider.
 
+= Plugin compatibility =
+When using the **logging** functionality, the plugin will store the logged emails in the posts table, as an invisible post type. Normally this should work completely fine, but if you have a plugin that scans custom post types and sends an email about them, there's a chance the third-party plugin might get stuck in a loop. For plugins like this, it is best to disable the functionality on the logging post type (sbss_email_log).
+
+The following plugins have had reported issues:
+* [Sucuri Security](https://github.com/soup-bowl/wp-simple-smtp/issues/115).
+
 = One or more of the settings are greyed out =
 This plugin supports being overridden by DEFINE, so please check to see that you are not setting a define for a WP Simple SMTP option. These are most commonly stored in the wp-config.php file.
 
