@@ -73,7 +73,7 @@ class EmailLog {
 
 		$entries = $this->log_service->get_log_entries( $page, $maximum_per_page );
 
-		$this->list( $entries );
+		$this->list_log_entities( $entries );
 		if ( empty( $load_all ) ) {
 			WP_CLI::line( $message );
 		}
@@ -109,7 +109,7 @@ class EmailLog {
 	 * @param Log[] $entries Log entry collection.
 	 * @return void Prints the log to the page.
 	 */
-	private function list( $entries ) {
+	private function list_log_entities( $entries ) {
 		$list_format = [];
 		foreach ( $entries as $entry ) {
 			$list_format[] = [

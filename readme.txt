@@ -1,10 +1,10 @@
 === WordPress Simple SMTP ===
 Contributors: soupbowl
 Tags: mail,email,smtp,dispatch,sender
-Requires at least: 4.9
-Tested up to: 6.0
+Requires at least: 5.0
+Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 1.3.2.1
+Stable tag: 1.3.2.2
 License: MIT
 
 Adds a simple mail configuration panel into your WordPress installation. Supports temporary logging and config variables.
@@ -47,6 +47,12 @@ This plugin works by instructing **PHPMailer** - the mail library WordPress have
 The one instance where an SMTP error can be caused by this plugin is if the SMTP password is stored in the database when the **secret keys** have been regenerated. You will need to re-save the password to refresh the encryption keys.
 
 You can always get assistance from your host and/or SMTP service provider.
+
+= Plugin compatibility =
+When using the **logging** functionality, the plugin will store the logged emails in the posts table, as an invisible post type. Normally this should work completely fine, but if you have a plugin that scans custom post types and sends an email about them, there's a chance the third-party plugin might get stuck in a loop. For plugins like this, it is best to disable the functionality on the logging post type (sbss_email_log).
+
+The following plugins have had reported issues:
+* [Sucuri Security](https://github.com/soup-bowl/wp-simple-smtp/issues/115).
 
 = One or more of the settings are greyed out =
 This plugin supports being overridden by DEFINE, so please check to see that you are not setting a define for a WP Simple SMTP option. These are most commonly stored in the wp-config.php file.
@@ -98,6 +104,10 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 One of the easiest aspects to contribute to is the SMTP quick configuration segment. If you wish to maintain this aspect, suggest a new setting, or report broken entries, see the [SMTP quick config wiki page](https://github.com/soup-bowl/wp-simple-smtp/wiki/SMTP-Quick-Config).
 
 == Changelog ==
+= 1.3.2.2 =
+* Verified working with WordPress 6.1 and 6.2.
+* Fix: PHP warning on the CLI interface ([#140](https://github.com/soup-bowl/wp-simple-smtp/issues/140)).
+
 = 1.3.2.1 =
 * Rollback: #116 fix regressed due to relying on a function not found in the general scope.
 

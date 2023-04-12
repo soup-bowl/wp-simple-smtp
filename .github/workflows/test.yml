@@ -17,12 +17,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        php-version:
-        - 7.3
-        - 7.4
-        - 8.0
+        php-version: [7.3, 7.4, 8.0, 8.1, 8.2]
+
     services:
       smtp_mock:
         image: mailhog/mailhog:latest
@@ -30,20 +29,13 @@ jobs:
         - 1025:1025
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Composer Dependencies
-        uses: php-actions/composer@v2
+        uses: php-actions/composer@v6
         with:
-          suggest: yes
           dev: yes
           args: --profile --ignore-platform-reqs
-
-      - name: Setup PHP with tools
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          tools: phpunit
 
       - name: Create .env Config
         run: |
@@ -58,4 +50,6 @@ jobs:
           cat .env
 
       - name: Run PHPUnit
-        run: phpunit
+        run: vendor/bin/phpunit --configuration phpunit.xml --colors=always
+        env:
+          PHP_VERSION: ${{ matrix.php-version }}
