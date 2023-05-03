@@ -1,0 +1,70 @@
+name: Report new, missing or incorrect SMTP settings
+description: Report issues with the Quick Config SMTP chooser.
+labels: ["smtp-setting"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Reporting New or Updates to Quick Chooser
+
+        Use this form to specify missing, incorrect or new entries into the SMTP setting quick chooser.
+
+        Please note that not all submissions will be accepted. Criteria depends on platform popularity and subject to checks before adding.
+
+        ---
+  - type: dropdown
+    id: type
+    attributes:
+      label: New or Update
+      description: Are you amending an existing item, or suggesting a new one?
+      options:
+        - Updating/Amending
+        - New
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source of Settings
+      description: Provide us with the link to where you have found these changes. This helps to verify and keep a record of where maintainers can monitor future changes.
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Host Name
+      description: The name of the SMTP provider. If you're amending an existing item, this is what you see in the dropdown list.
+      placeholder: Microsoft Exchange
+    validations:
+      required: true
+  - type: input
+    id: server
+    attributes:
+      label:  SMTP Server Hostname
+      placeholder: smtp.example.com
+    validations:
+      required: true
+  - type: input
+    id: port
+    attributes:
+      label:  SMTP Server Port
+      placeholder: "587"
+    validations:
+      required: false
+  - type: dropdown
+    id: encryption
+    attributes:
+      label: Encryption Method
+      options:
+        - None (unlikely)
+        - TLS
+        - SSL
+    validations:
+      required: true
+  - type: checkboxes
+    id: auth
+    attributes:
+      label: Requires Authenticaton?
+      options:
+        - label: Requires a login 
+          required: true
