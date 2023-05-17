@@ -5,9 +5,11 @@ body:
   - type: markdown
     attributes:
       value: |
-        ### Report SMTP plugin bug
+        ### Request a Feature
 
         Describe what you would like to see, the more detail the better. For semi-complex suggestions, diagrams/mock-ups are always appreciated.
+
+        The plugin foundation is on the concept of simplicity and native-looking design. Suggestions and PRs outside of this remit are likely to be declined. In these scenarios, a reminder that the plugin is open-source - try your hand at your own version!
 
         **If you are planning to make a pull request, please still fill out the form and associate the PR with the issue**. Otherwise your PR may be rejected. Also [familiarise yourself with the contributing guidelines](https://github.com/soup-bowl/wp-simple-smtp/blob/develop/.github/CONTRIBUTING.md).
 
@@ -19,4 +21,3 @@ body:
       description: Go into as much detail as you possibly can.
     validations:
       required: true
-  

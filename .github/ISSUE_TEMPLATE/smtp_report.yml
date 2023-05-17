@@ -40,14 +40,14 @@ body:
   - type: input
     id: server
     attributes:
-      label:  SMTP Server Hostname
+      label: SMTP Server Hostname
       placeholder: smtp.example.com
     validations:
       required: true
   - type: input
     id: port
     attributes:
-      label:  SMTP Server Port
+      label: SMTP Server Port
       placeholder: "587"
     validations:
       required: false
@@ -66,5 +66,5 @@ body:
     attributes:
       label: Requires Authenticaton?
       options:
-        - label: Requires a login 
+        - label: Requires a login
           required: true

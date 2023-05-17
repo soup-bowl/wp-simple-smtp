@@ -37,4 +37,3 @@ body:
       label: Upload any screenshots, if applicable
     validations:
       required: false
-  
