@@ -20,6 +20,8 @@ If logging is enabled, a new segment in the settings panel will show up with a 3
 
 For more information, please see the [project wiki on GitHub](https://github.com/soup-bowl/wp-simple-smtp/wiki).
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/soup-bowl/wp-simple-smtp)
+
 ## Environment and constant overriding (optional)
 
 This plugin will prefer environmental and constant-stored values over the plugin-saved equivalent settings, making it easier to use this plugin via deployment.
