@@ -20,7 +20,9 @@ If logging is enabled, a new segment in the settings panel will show up with a 3
 
 For more information, please see the [project wiki on GitHub](https://github.com/soup-bowl/wp-simple-smtp/wiki).
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/soup-bowl/wp-simple-smtp)
+<p align="center">
+  <a href="https://gitpod.io/#https://github.com/soup-bowl/wp-simple-smtp"><img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod" /></a>
+</p>
 
 ## Environment and constant overriding (optional)
 
