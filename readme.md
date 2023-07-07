@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://soupbowl.io/assets/img/wp-ssmtp-150x150.webp" alt="Simple SMTP logo, a red envelope enclosed in a red circle" />
+  <img src="https://blog.soupbowl.io/assets/img/wp-ssmtp-150x150.webp" alt="Simple SMTP logo, a red envelope enclosed in a red circle" />
 </p>
 
 <h1 align="center">WordPress Simple SMTP</h1>
