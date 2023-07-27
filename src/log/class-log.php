@@ -165,7 +165,7 @@ class Log {
 	 */
 	public function get_headers_as_array( $exclude_recipients = true ) {
 		$collection = [];
-		$_headers = explode( 'rn', $this->get_headers() );
+		$_headers   = explode( 'rn', $this->get_headers() );
 
 		if ( ! empty( $_headers ) ) {
 			foreach ( $_headers as $header ) {
