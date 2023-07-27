@@ -165,9 +165,18 @@ class Log {
 	 */
 	public function get_headers_as_array( $exclude_recipients = true ) {
 		$collection = [];
-		if ( ! empty( $this->get_headers() ) ) {
-			foreach ( $this->get_headers() as $header ) {
+		$_headers = explode( 'rn', $this->get_headers() );
+
+		if ( ! empty( $_headers ) ) {
+			foreach ( $_headers as $header ) {
+				// Last caracters of the headers are always rn.
+				if ( empty( $header ) ) {
+					continue;
+				}
+
 				$expd = explode( ':', $header );
+				$expd = array_map( 'trim', $expd );
+
 				if ( $exclude_recipients && in_array( strtolower( $expd[0] ), [ 'cc', 'bcc', 'from' ], true ) ) {
 					continue;
 				} else {
