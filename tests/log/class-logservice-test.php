@@ -110,16 +110,6 @@ class LogServiceTest extends TestCase {
 					return 'test';
 			}
 		}
-
-		/**
-		 * Mock current_time function.
-		 * https://developer.wordpress.org/reference/functions/current_time/
-		 *
-		 * @return string
-		 */
-		function current_time() {
-			return '2021-01-01 12:00:00';
-		}
 	}
 
 	/**

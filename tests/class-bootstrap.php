@@ -16,6 +16,16 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $GLOBALS['sbss_temp_store'] = [];
 
 /**
+ * Mock current_time function.
+ * https://developer.wordpress.org/reference/functions/current_time/
+ *
+ * @return string
+ */
+function current_time() {
+	return '2021-01-01 12:00:00';
+}
+
+/**
  * Mocks the WordPress is_multisite check.
  * See https://developer.wordpress.org/reference/functions/is_multisite/ for more information.
  */
