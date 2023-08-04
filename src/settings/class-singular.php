@@ -31,7 +31,7 @@ class Singular extends Settings {
 	 *
 	 * @var LogService
 	 */
-	protected $log;
+	protected $log_service;
 
 	/**
 	 * Controls the display of the log table.
