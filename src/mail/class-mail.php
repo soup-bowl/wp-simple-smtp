@@ -88,7 +88,7 @@ class Mail {
 			$sec = $this->options->get( 'sec' );
 			if ( ! empty( $sec ) && in_array( (string) $sec->value, [ 'ssl', 'tls' ], true ) ) {
 				$phpmailer->SMTPSecure = $sec->value;
-			} elseif ( ! empty( $sec ) && in_array( (string) $sec->value, [ 'off' ], true ) )  {
+			} elseif ( ! empty( $sec ) && in_array( (string) $sec->value, [ 'off' ], true ) ) {
 				$phpmailer->SMTPAutoTLS = false;
 			}
 
