@@ -2,7 +2,7 @@
 Contributors: soupbowl
 Tags: mail,email,smtp,dispatch,sender
 Requires at least: 5.0
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.0
 Stable tag: 1.3.2.2
 License: MIT
@@ -105,6 +105,7 @@ One of the easiest aspects to contribute to is the SMTP quick configuration segm
 
 == Changelog ==
 = Unreleased =
+* Verified working with WordPress 6.3.
 * Added: None encryption setting ([#148](https://github.com/soup-bowl/wp-simple-smtp/issues/148)).
 
 = 1.3.2.2 =
