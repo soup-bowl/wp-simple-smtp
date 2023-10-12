@@ -26,17 +26,6 @@ For more information, please see the [project wiki on GitHub](https://github.com
 
 ## Download
 
-> [!NOTE]  
-> For the current release (1.3.2.2.), you may notice there's 3 unexpected new files in the `wp-simple-smtp` directory:
->
-> - `DOCKER_ENV`
-> - `docker_tag`
-> - `output.log`
->
-> These files were unfortunately [introduced during the deployment pipeline](https://github.com/soup-bowl/wp-simple-smtp/actions/runs/4682456082/jobs/8296334346), and have subsequently been packaged into the release file. I've since [added these to the exclusion list](https://github.com/soup-bowl/wp-simple-smtp/commit/d41631f216af2fd4d08e3e75ae31911930222fcb), so in later deployments they won't be present.
->
-> Until next release, you can delete these files without detrimental effect. Next update should remove these anyway.
-
 To download this plugin for your WordPress site, you can either [download it from the WordPress.org Plugin Directory](https://wordpress.org/plugins/simple-smtp/), or [visit the releases page](https://github.com/soup-bowl/wp-simple-smtp/releases/latest) to download and install it manually. 
 
 ## Environment and constant overriding (optional)
