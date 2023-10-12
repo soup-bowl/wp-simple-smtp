@@ -106,6 +106,7 @@ One of the easiest aspects to contribute to is the SMTP quick configuration segm
 == Changelog ==
 = Unreleased =
 * Verified working with WordPress 6.3.
+* Fix: $log_service deprecation notice ([#146](https://github.com/soup-bowl/wp-simple-smtp/issues/146)).
 * Added: None encryption setting ([#148](https://github.com/soup-bowl/wp-simple-smtp/issues/148)).
 
 = 1.3.2.2 =
