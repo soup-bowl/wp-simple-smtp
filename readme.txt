@@ -31,7 +31,7 @@ These can be either stored in your systems env setup, or in wp-config.php as `de
 * `SMTP_PASS` (string) The password for the mailer account.
 * `SMTP_FROM` (string) Enforce all emails come from this email address.
 * `SMTP_FROMNAME` (string) Enforce all emails to have a certain email name.
-* `SMTP_SEC` (string) Use a particular email security method (accepts 'def' (default), 'ssl' and 'tls').
+* `SMTP_SEC` (string) Use a particular email security method (accepts 'def' (default), 'ssl', 'tls' and 'off').
 * `SMTP_NOVERIFYSSL` (boolean) Disable validation of the SMTP server certificate (not recommended).
 * `SMTP_LOG` (boolean) Controls the logging capability and visibility.
 * `SMTP_DISABLE` (boolean) Disables the mailer. They will still be logged if enabled, but won't send out.
@@ -106,6 +106,7 @@ One of the easiest aspects to contribute to is the SMTP quick configuration segm
 == Changelog ==
 = Unreleased =
 * Verified working with WordPress 6.3.
+* Added: None encryption setting ([#148](https://github.com/soup-bowl/wp-simple-smtp/issues/148)).
 
 = 1.3.2.2 =
 * Verified working with WordPress 6.1 and 6.2.

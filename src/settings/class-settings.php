@@ -66,6 +66,7 @@ class Settings {
 			'def' => __( 'Default', 'simple-smtp' ),
 			'ssl' => __( 'SSL', 'simple-smtp' ),
 			'tls' => __( 'TLS', 'simple-smtp' ),
+			'off' => __( 'None', 'simple-smtp' ),
 		];
 	}
 
