@@ -2,7 +2,7 @@
 Contributors: soupbowl
 Tags: mail,email,smtp,dispatch,sender
 Requires at least: 5.0
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.0
 Stable tag: 1.3.2.2
 License: MIT
@@ -31,7 +31,7 @@ These can be either stored in your systems env setup, or in wp-config.php as `de
 * `SMTP_PASS` (string) The password for the mailer account.
 * `SMTP_FROM` (string) Enforce all emails come from this email address.
 * `SMTP_FROMNAME` (string) Enforce all emails to have a certain email name.
-* `SMTP_SEC` (string) Use a particular email security method (accepts 'def' (default), 'ssl' and 'tls').
+* `SMTP_SEC` (string) Use a particular email security method (accepts 'def' (default), 'ssl', 'tls' and 'off').
 * `SMTP_NOVERIFYSSL` (boolean) Disable validation of the SMTP server certificate (not recommended).
 * `SMTP_LOG` (boolean) Controls the logging capability and visibility.
 * `SMTP_DISABLE` (boolean) Disables the mailer. They will still be logged if enabled, but won't send out.
@@ -104,6 +104,11 @@ Yes! [Please see our GitHub repository here](https://github.com/soup-bowl/wp-sim
 One of the easiest aspects to contribute to is the SMTP quick configuration segment. If you wish to maintain this aspect, suggest a new setting, or report broken entries, see the [SMTP quick config wiki page](https://github.com/soup-bowl/wp-simple-smtp/wiki/SMTP-Quick-Config).
 
 == Changelog ==
+= Unreleased =
+* Verified working with WordPress 6.3.
+* Fix: $log_service deprecation notice ([#146](https://github.com/soup-bowl/wp-simple-smtp/issues/146)).
+* Added: None encryption setting ([#148](https://github.com/soup-bowl/wp-simple-smtp/issues/148)).
+
 = 1.3.2.2 =
 * Verified working with WordPress 6.1 and 6.2.
 * Fix: PHP warning on the CLI interface ([#140](https://github.com/soup-bowl/wp-simple-smtp/issues/140)).

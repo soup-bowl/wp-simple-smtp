@@ -31,7 +31,7 @@ class Singular extends Settings {
 	 *
 	 * @var LogService
 	 */
-	protected $log;
+	protected $log_service;
 
 	/**
 	 * Controls the display of the log table.
@@ -162,7 +162,7 @@ class Singular extends Settings {
 		$this->generate_generic_field( 'pass', __( 'Password', 'simple-smtp' ), 'password', '' );
 		$this->generate_generic_field( 'from', __( 'Force from e-mail address', 'simple-smtp' ), 'email', 'do-not-reply@example.com' );
 		$this->generate_generic_field( 'fromname', __( 'Force from e-mail sender name', 'simple-smtp' ), 'text', _x( 'WordPress System', 'Force from e-mail sender name', 'simple-smtp' ), '', true );
-		$this->generate_selection( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types() );
+		$this->generate_selection( 'sec', __( 'Security', 'simple-smtp' ), $this->acceptable_security_types(), __( 'Disabling this may risk email security.', 'simple-smtp' ) );
 		$this->generate_checkbox_area(
 			'adt',
 			__( 'Options', 'simple-smtp' ),

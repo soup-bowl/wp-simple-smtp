@@ -1,0 +1,39 @@
+name: Bug report
+description: Report any bugs your experiencing with Simple SMTP.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Report SMTP plugin bug
+
+        Please answer in as much detail as possible to help diagnose, locate and fix any possible bugs you have encountered.
+
+        **If you are planning to make a pull request, please still fill out the form and associate the PR with the issue**. Otherwise your PR may be rejected. Also [familiarise yourself with the contributing guidelines](https://github.com/soup-bowl/wp-simple-smtp/blob/develop/.github/CONTRIBUTING.md).
+
+        ---
+  - type: input
+    id: versions
+    attributes:
+      label: What WordPress, PHP and Simple SMTP versions are you using?
+      placeholder: e.g. WordPress 5.6, PHP 7.3, Simple SMTP 1.0.0. The more, the better.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What were you doing when the bug occurred?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What was the result you expected?
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Upload any screenshots, if applicable
+    validations:
+      required: false
