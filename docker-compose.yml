@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: s9f6sd759r32r7f0dsf5673894956
       MYSQL_DATABASE: wordpress
   db_pma:
-    image: docker.io/phpmyadmin/phpmyadmin:latest
+    image: docker.io/library/phpmyadmin:latest
     depends_on:
     - db
     ports:
@@ -21,6 +21,7 @@ services:
       PMA_PASSWORD: s9f6sd759r32r7f0dsf5673894956
   mail:
     # Port 1025 for SMTP.
+    # On ARM64, replace mailhog user with teawithfruit.
     image: docker.io/mailhog/mailhog:latest
     ports:
     - 8081:8025
