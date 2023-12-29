@@ -20,6 +20,9 @@ If logging is enabled, a new segment in the settings panel will show up with a 3
 
 For more information, please see the [project wiki on GitHub](https://github.com/soup-bowl/wp-simple-smtp/wiki).
 
+> [!WARNING]  
+> The plugin will be prioritising **bug fixes** for the foreseeable. However, the plugin is still **supported**. [Please read more here](https://blog.soupbowl.io/2023/12/state-of-open-source).
+
 <p align="center">
   <a href="https://gitpod.io/#https://github.com/soup-bowl/wp-simple-smtp"><img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod" /></a>
 </p>
