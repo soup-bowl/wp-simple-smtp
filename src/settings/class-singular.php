@@ -297,7 +297,13 @@ class Singular extends Settings {
 							$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
 						}
 
-						echo wp_kses( '<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>', [ 'h2' => [ 'id' => [] ] ] );
+						$log_limit    = apply_filters( 'simple_smtp_log_expiry', 2629800 );
+						$log_disabled = apply_filters( 'simple_smtp_disable_log_prune', false );
+						echo wp_kses(
+							'<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>
+							<p>Log expiry: ' . ( ( ! $log_disabled ) ? $this->seconds_to_duration( $log_limit ) : 'never' ) . '</p>',
+							[ 'h2' => [ 'id' => [] ], 'p' => [] ]
+						);
 						$this->log_table->display( $page );
 					}
 				}
@@ -305,5 +311,27 @@ class Singular extends Settings {
 			</form>
 		</div>
 		<?php
+	}
+
+	private function seconds_to_duration( $seconds ) {
+		$minute = 60;
+		$hour = 60 * $minute;
+		$day = 24 * $hour;
+		$month = 30 * $day;
+		$year = 12 * $month;
+	
+		if ($seconds < $minute) {
+			return $seconds . ' ' . __( 'seconds', 'simple-smtp' );
+		} elseif ($seconds < $hour) {
+			return round($seconds / $minute) . ' ' . __( 'minute(s)', 'simple-smtp' );
+		} elseif ($seconds < $day) {
+			return round($seconds / $hour) . ' ' . __( 'hour(s)', 'simple-smtp' );
+		} elseif ($seconds < $month) {
+			return round($seconds / $day) . ' ' . __( 'day(s)', 'simple-smtp' );
+		} elseif ($seconds < $year) {
+			return round($seconds / $month) . ' ' . __( 'month(s)', 'simple-smtp' );
+		} else {
+			return round($seconds / $year) . ' ' . __( 'year(s)', 'simple-smtp' );
+		}
 	}
 }
