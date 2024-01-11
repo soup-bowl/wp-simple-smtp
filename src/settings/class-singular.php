@@ -302,7 +302,10 @@ class Singular extends Settings {
 						echo wp_kses(
 							'<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>
 							<p>Log expiry: ' . ( ( ! $log_disabled ) ? $this->seconds_to_duration( $log_limit ) : 'never' ) . '</p>',
-							[ 'h2' => [ 'id' => [] ], 'p' => [] ]
+							[
+								'h2' => [ 'id' => [] ],
+								'p'  => [],
+							]
 						);
 						$this->log_table->display( $page );
 					}
@@ -313,25 +316,31 @@ class Singular extends Settings {
 		<?php
 	}
 
+	/**
+	 * Generates a human-readable time string from an input in second format.
+	 *
+	 * @param integer $seconds Seconds.
+	 * @return string Human-readable representation of seconds.
+	 */
 	private function seconds_to_duration( $seconds ) {
 		$minute = 60;
-		$hour = 60 * $minute;
-		$day = 24 * $hour;
-		$month = 30 * $day;
-		$year = 12 * $month;
-	
-		if ($seconds < $minute) {
+		$hour   = 60 * $minute;
+		$day    = 24 * $hour;
+		$month  = 30 * $day;
+		$year   = 12 * $month;
+
+		if ( $seconds < $minute ) {
 			return $seconds . ' ' . __( 'seconds', 'simple-smtp' );
-		} elseif ($seconds < $hour) {
-			return round($seconds / $minute) . ' ' . __( 'minute(s)', 'simple-smtp' );
-		} elseif ($seconds < $day) {
-			return round($seconds / $hour) . ' ' . __( 'hour(s)', 'simple-smtp' );
-		} elseif ($seconds < $month) {
-			return round($seconds / $day) . ' ' . __( 'day(s)', 'simple-smtp' );
-		} elseif ($seconds < $year) {
-			return round($seconds / $month) . ' ' . __( 'month(s)', 'simple-smtp' );
+		} elseif ( $seconds < $hour ) {
+			return round( $seconds / $minute ) . ' ' . __( 'minute(s)', 'simple-smtp' );
+		} elseif ( $seconds < $day ) {
+			return round( $seconds / $hour ) . ' ' . __( 'hour(s)', 'simple-smtp' );
+		} elseif ( $seconds < $month ) {
+			return round( $seconds / $day ) . ' ' . __( 'day(s)', 'simple-smtp' );
+		} elseif ( $seconds < $year ) {
+			return round( $seconds / $month ) . ' ' . __( 'month(s)', 'simple-smtp' );
 		} else {
-			return round($seconds / $year) . ' ' . __( 'year(s)', 'simple-smtp' );
+			return round( $seconds / $year ) . ' ' . __( 'year(s)', 'simple-smtp' );
 		}
 	}
 }
