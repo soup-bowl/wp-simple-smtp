@@ -90,7 +90,7 @@ class LogServiceTest extends TestCase {
 	/**
 	 * Per-test constructor.
 	 */
-	public function setUp():void {
+	public function setUp(): void {
 		$this->log_service = new LogService();
 
 		/**

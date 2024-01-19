@@ -26,7 +26,7 @@ class OptionsTest extends TestCase {
 	/**
 	 * Constructor.
 	 */
-	public function setUp():void {
+	public function setUp(): void {
 		if ( ! defined( 'SECURE_AUTH_KEY' ) ) {
 			define( 'SECURE_AUTH_KEY', 's7r0237r897d89s69r83289' );
 		}

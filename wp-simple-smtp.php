@@ -37,7 +37,7 @@ $disabled = ( new Options() )->get( 'disable' );
 if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALIDATE_BOOLEAN ) ) {
 	add_action(
 		'plugins_loaded',
-		function() {
+		function () {
 			global $phpmailer;
 			$phpmailer = new MailDisable();
 		}
@@ -64,14 +64,14 @@ new Mail();
 
 add_action(
 	'wpss_clear_resent',
-	function() {
+	function () {
 		delete_option( 'wpss_resent' );
 	}
 );
 
 add_action(
 	'wpss_clear_logs',
-	function() {
+	function () {
 		$is_disabled = apply_filters( 'simple_smtp_disable_log_prune', false );
 		// 2629800 = 1 Month.
 		if ( ! $is_disabled ) {
@@ -136,7 +136,7 @@ function wpsmtp_deactivation() {
  */
 add_action(
 	'init',
-	function() {
+	function () {
 		( new LogService() )->register_log_storage();
 	}
 );
