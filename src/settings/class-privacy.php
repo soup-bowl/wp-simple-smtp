@@ -57,11 +57,10 @@ class Privacy {
 	/**
 	 * Searches for the requested email address in the mail log.
 	 *
-	 * @param string  $email_address Email address to lookup.
-	 * @param integer $page          Pagination indicator (TODO).
+	 * @param string $email_address Email address to lookup.
 	 * @return array
 	 */
-	public function remove_data( $email_address, $page = 1 ) {
+	public function remove_data( $email_address ) {
 		$count = $this->log_service->delete_all_logs_to_email( $email_address );
 
 		return array(

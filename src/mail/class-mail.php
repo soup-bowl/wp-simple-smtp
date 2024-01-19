@@ -43,7 +43,7 @@ class Mail {
 		if ( ! empty( $from->value ) ) {
 			add_filter(
 				'wp_mail_from',
-				function ( $email ) use ( $from ) {
+				function () use ( $from ) {
 					return $from->value;
 				}
 			);
@@ -53,7 +53,7 @@ class Mail {
 		if ( ! empty( $from_name->value ) ) {
 			add_filter(
 				'wp_mail_from_name',
-				function ( $email ) use ( $from_name ) {
+				function () use ( $from_name ) {
 					return $from_name->value;
 				}
 			);

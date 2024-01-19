@@ -87,10 +87,9 @@ class EmailLog {
 	 *
 	 * @when before_wp_load
 	 *
-	 * @param array $args       Command-line arguments.
-	 * @param array $assoc_args Associated arguments.
+	 * @param array $args Command-line arguments.
 	 */
-	public function view_email( $args, $assoc_args ) {
+	public function view_email( $args ) {
 		$email = $this->log_service->get_log_entry_by_id( (int) $args[0] );
 		if ( ! empty( $email ) ) {
 			WP_CLI::line( 'Recipient(s): ' . implode( ', ', $email->get_recipients() ) );
