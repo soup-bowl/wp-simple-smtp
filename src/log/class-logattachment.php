@@ -148,12 +148,12 @@ class LogAttachment {
 	 */
 	public function to_string() {
 		return wp_json_encode(
-			[
+			array(
 				'location'  => $this->location,
 				'basename'  => $this->basename,
 				'filename'  => $this->filename,
 				'extension' => $this->extension,
-			]
+			)
 		);
 	}
 }

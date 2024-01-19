@@ -38,8 +38,8 @@ class LogService {
 	public function register_log_storage() {
 		register_post_type(
 			$this->post_type,
-			[
-				'capabilities' => [
+			array(
+				'capabilities' => array(
 					'publish_posts'       => 'manage_options',
 					'edit_others_posts'   => 'manage_options',
 					'delete_posts'        => 'manage_options',
@@ -48,9 +48,9 @@ class LogService {
 					'edit_post'           => 'manage_options',
 					'delete_post'         => 'manage_options',
 					'read_post'           => 'manage_options',
-				],
+				),
 				'label'        => _x( 'E-mail log entries', 'Post Type General Name', 'simple-smtp' ),
-			]
+			)
 		);
 	}
 
@@ -62,19 +62,19 @@ class LogService {
 	 */
 	public function new_log_entry( $log ) {
 		$post_id = wp_insert_post(
-			[
+			array(
 				'post_title'   => $log->get_subject(),
 				'post_content' => $log->get_body(),
 				'post_status'  => 'publish',
 				'post_type'    => $this->post_type,
-				'meta_input'   => [
+				'meta_input'   => array(
 					'recipients'  => wp_json_encode( $log->get_recipients() ),
 					'headers'     => wp_json_encode( $log->get_headers() ),
 					'attachments' => $log->get_attachments(),
 					'timestamp'   => $log->get_timestamp(),
 					'error'       => $log->get_error(),
-				],
-			]
+				),
+			)
 		);
 
 		return $post_id;
@@ -113,14 +113,14 @@ class LogService {
 	public function get_log_entries( $page = 0, $limit = 0 ) {
 		$get_posts = new WP_Query();
 		$get_posts->query(
-			[
+			array(
 				'post_type'      => $this->post_type,
 				'posts_per_page' => $limit,
 				'paged'          => $page,
-			]
+			)
 		);
 
-		$coll  = [];
+		$coll  = array();
 		$posts = $get_posts->get_posts();
 		foreach ( $posts as $post ) {
 			$coll[] = $this->wp_to_obj( $post );
@@ -156,7 +156,7 @@ class LogService {
 		$attachments = get_post_meta( $id, 'attachments', true );
 
 		if ( ! empty( $attachments ) ) {
-			$file_collection = [];
+			$file_collection = array();
 			foreach ( $attachments as $attachment ) {
 				$file_collection[] = ( new LogAttachment() )->unpack( $attachment );
 			}
@@ -217,9 +217,9 @@ class LogService {
 			array(
 				'post_type'   => $this->post_type,
 				'numberposts' => -1,
-				'date_query'  => [
+				'date_query'  => array(
 					'before' => gmdate( 'Y-m-d', ( time() - $int_time_diff ) ),
-				],
+				),
 			)
 		);
 
@@ -287,5 +287,4 @@ class LogService {
 
 		return $log;
 	}
-
 }

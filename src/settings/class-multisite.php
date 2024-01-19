@@ -28,9 +28,9 @@ class Multisite extends Settings {
 	public function __construct() {
 		parent::__construct( true, 'wpsimplesmtp_smtp_ms', 'wpsimplesmtp_ms_adminaccess_section' );
 
-		add_action( 'network_admin_menu', [ &$this, 'add_network_menu' ] );
-		add_action( 'admin_init', [ &$this, 'network_settings_init' ] );
-		add_action( 'network_admin_edit_wpsimplesmtpms', [ &$this, 'update_network_settings' ] );
+		add_action( 'network_admin_menu', array( &$this, 'add_network_menu' ) );
+		add_action( 'admin_init', array( &$this, 'network_settings_init' ) );
+		add_action( 'network_admin_edit_wpsimplesmtpms', array( &$this, 'update_network_settings' ) );
 
 		$this->options = new Options();
 	}
@@ -45,7 +45,7 @@ class Multisite extends Settings {
 			__( 'Network Mail', 'simple-smtp' ),
 			'manage_network_options',
 			'wpsimplesmtpms',
-			[ &$this, 'options_page' ]
+			array( &$this, 'options_page' )
 		);
 	}
 
@@ -82,7 +82,7 @@ class Multisite extends Settings {
 		$this->generate_checkbox_area(
 			'adt',
 			__( 'Options', 'simple-smtp' ),
-			function() {
+			function () {
 				$this->generate_checkbox( 'disable', __( 'Disable email services', 'simple-smtp' ), __( 'When marked, all multisite email services will be disabled.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'log', __( 'Log all sent emails to the database', 'simple-smtp' ), __( 'Works with the WordPress privacy features.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'noverifyssl', __( 'Disable SSL Verification (advanced)', 'simple-smtp' ), __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ) );
@@ -93,7 +93,7 @@ class Multisite extends Settings {
 			'wpssmtp_smtp_siteselection',
 			__( 'Site Administration Control', 'simple-smtp' ),
 			function () {
-				$collection = [];
+				$collection = array();
 				$sites      = get_sites();
 
 				foreach ( $sites as $site ) {
@@ -105,15 +105,15 @@ class Multisite extends Settings {
 						_x( 'Go to settings for %s', 'Sub site name', 'simple-smtp' ),
 						$name
 					);
-					$collection[] = [
+					$collection[] = array(
 						'id'       => $site->blog_id,
 						'url'      => $url,
 						'string'   => $string,
 						'name'     => $name,
-						'settings' => add_query_arg( [ 'page' => 'wpsimplesmtp' ], get_admin_url( $site->blog_id ) . 'options-general.php' ),
+						'settings' => add_query_arg( array( 'page' => 'wpsimplesmtp' ), get_admin_url( $site->blog_id ) . 'options-general.php' ),
 						'no_set'   => get_network_option( $site->blog_id, 'wpssmtp_disable_settings', 0 ),
 						'no_log'   => get_network_option( $site->blog_id, 'wpssmtp_disable_logging', 0 ),
-					];
+					);
 				}
 
 				?>
@@ -186,7 +186,7 @@ class Multisite extends Settings {
 
 		// Save over-ruling SMTP configurations.
 		if ( isset( $_REQUEST['wpssmtp_smtp'] ) ) {
-			$settings = [];
+			$settings = array();
 			if ( ! empty( $_REQUEST['wpssmtp_smtp']['host'] ) ) {
 				$settings['host'] = sanitize_text_field( wp_unslash( $_REQUEST['wpssmtp_smtp']['host'] ) ); }
 			if ( ! empty( $_REQUEST['wpssmtp_smtp']['port'] ) ) {
@@ -197,7 +197,7 @@ class Multisite extends Settings {
 				$settings['user'] = sanitize_text_field( wp_unslash( $_REQUEST['wpssmtp_smtp']['user'] ) ); }
 			if ( ! empty( $_REQUEST['wpssmtp_smtp']['pass'] ) ) {
 				if ( $this->dummy_password === $_REQUEST['wpssmtp_smtp']['pass'] ) {
-					$settings['pass'] = get_site_option( 'wpssmtp_smtp_ms', [ 'pass' => null ] )['pass'];
+					$settings['pass'] = get_site_option( 'wpssmtp_smtp_ms', array( 'pass' => null ) )['pass'];
 				} else {
 					$settings['pass'] = sanitize_text_field( wp_unslash( $_REQUEST['wpssmtp_smtp']['pass'] ) );
 				}

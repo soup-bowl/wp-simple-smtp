@@ -42,10 +42,10 @@ class Privacy {
 		if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
 			add_filter(
 				'wp_privacy_personal_data_erasers',
-				function( $erasers ) {
+				function ( $erasers ) {
 					$erasers['wp-simple-smtp'] = array(
 						'eraser_friendly_name' => __( 'Remove user from SMTP log', 'simple-smtp' ),
-						'callback'             => [ &$this, 'remove_data' ],
+						'callback'             => array( &$this, 'remove_data' ),
 					);
 
 					return $erasers;
@@ -64,11 +64,11 @@ class Privacy {
 	public function remove_data( $email_address, $page = 1 ) {
 		$count = $this->log_service->delete_all_logs_to_email( $email_address );
 
-		return [
+		return array(
 			'items_removed'  => $count,
 			'items_retained' => false,
-			'messages'       => [],
+			'messages'       => array(),
 			'done'           => true,
-		];
+		);
 	}
 }

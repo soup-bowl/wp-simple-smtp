@@ -60,10 +60,10 @@ class Singular extends Settings {
 	public function __construct() {
 		parent::__construct();
 
-		add_action( 'admin_menu', [ &$this, 'add_admin_menu' ] );
-		add_action( 'admin_init', [ &$this, 'settings_init' ] );
-		add_action( 'admin_init', [ &$this, 'settings_test_init' ] );
-		add_filter( 'pre_update_option_wpssmtp_smtp', [ &$this, 'post_processing' ] );
+		add_action( 'admin_menu', array( &$this, 'add_admin_menu' ) );
+		add_action( 'admin_init', array( &$this, 'settings_init' ) );
+		add_action( 'admin_init', array( &$this, 'settings_test_init' ) );
+		add_filter( 'pre_update_option_wpssmtp_smtp', array( &$this, 'post_processing' ) );
 
 		$this->options     = new Options();
 		$this->log_service = new LogService();
@@ -124,7 +124,6 @@ class Singular extends Settings {
 		} else {
 			$this->render_settings();
 		}
-
 	}
 
 	/**
@@ -136,7 +135,7 @@ class Singular extends Settings {
 			__( 'Mail', 'simple-smtp' ),
 			'manage_options',
 			'wpsimplesmtp',
-			[ &$this, 'options_page' ]
+			array( &$this, 'options_page' )
 		);
 	}
 
@@ -166,7 +165,7 @@ class Singular extends Settings {
 		$this->generate_checkbox_area(
 			'adt',
 			__( 'Options', 'simple-smtp' ),
-			function() {
+			function () {
 				$this->generate_checkbox( 'disable', __( 'Disable email services', 'simple-smtp' ), __( 'When marked, no emails will be sent from this site.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'log', __( 'Log all sent emails to the database', 'simple-smtp' ), __( 'Works with the WordPress privacy features.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'noverifyssl', __( 'Disable SSL Verification (advanced)', 'simple-smtp' ), __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ) );
@@ -198,9 +197,9 @@ class Singular extends Settings {
 			},
 			'wpsimplesmtp_smtp_test',
 			'wpsimplesmtp_test_email',
-			[
+			array(
 				'label_for' => 'wpss_test_recipient',
-			]
+			)
 		);
 
 		add_settings_field(
@@ -216,9 +215,9 @@ class Singular extends Settings {
 			},
 			'wpsimplesmtp_smtp_test',
 			'wpsimplesmtp_test_email',
-			[
+			array(
 				'label_for' => 'wpss_test_html',
-			]
+			)
 		);
 	}
 
@@ -264,13 +263,13 @@ class Singular extends Settings {
 
 						echo wp_kses(
 							"<div class='notice is-dismissible {$notice_level}'><p><strong>{$notice}</strong></p></div>",
-							[
-								'div'    => [
-									'class' => [],
-								],
-								'p'      => [],
-								'strong' => [],
-							]
+							array(
+								'div'    => array(
+									'class' => array(),
+								),
+								'p'      => array(),
+								'strong' => array(),
+							)
 						);
 					}
 
@@ -297,7 +296,7 @@ class Singular extends Settings {
 							$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
 						}
 
-						echo wp_kses( '<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>', [ 'h2' => [ 'id' => [] ] ] );
+						echo wp_kses( '<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>', array( 'h2' => array( 'id' => array() ) ) );
 						$this->log_table->display( $page );
 					}
 				}

@@ -36,9 +36,9 @@ class WP_Query {
 	 * @return WP_Post[]
 	 */
 	public function get_posts() {
-		return [
+		return array(
 			new WP_Post(),
-		];
+		);
 	}
 }
 
@@ -90,7 +90,7 @@ class LogServiceTest extends TestCase {
 	/**
 	 * Per-test constructor.
 	 */
-	public function setUp():void {
+	public function setUp(): void {
 		$this->log_service = new LogService();
 
 		/**

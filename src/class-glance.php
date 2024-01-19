@@ -21,7 +21,7 @@ class Glance {
 	public function hooks() {
 		$log_enabled = ( new Options() )->get( 'log' );
 		if ( ! empty( $log_enabled ) && true === filter_var( $log_enabled->value, FILTER_VALIDATE_BOOLEAN ) ) {
-			add_filter( 'dashboard_glance_items', [ &$this, 'at_a_glance_items' ], 10, 1 );
+			add_filter( 'dashboard_glance_items', array( &$this, 'at_a_glance_items' ), 10, 1 );
 		}
 	}
 
@@ -33,8 +33,8 @@ class Glance {
 	 * @param array $items The items to display in the `At a Glance`-dashboard.
 	 * @return array $items All existing plus the new items.
 	 */
-	public function at_a_glance_items( $items = [] ) {
-		$post_types = [ 'sbss_email_log' ];
+	public function at_a_glance_items( $items = array() ) {
+		$post_types = array( 'sbss_email_log' );
 
 		foreach ( $post_types as $type ) {
 

@@ -37,12 +37,12 @@ class MailView {
 	 */
 	public function render_email_view( $id ) {
 		$log        = $this->log_service->get_log_entry_by_id( $id );
-		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', [] ), true ) ) ? ' disabled' : '';
+		$recset     = ( in_array( (int) $id, get_option( 'wpss_resent', array() ), true ) ) ? ' disabled' : '';
 		$resend_url = add_query_arg(
-			[
+			array(
 				'eid'     => $id,
 				'ssnonce' => wp_create_nonce( 'wpss_action' ),
-			],
+			),
 			menu_page_url( 'wpsimplesmtp', false )
 		) . '&resend';
 

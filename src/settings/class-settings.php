@@ -62,12 +62,12 @@ class Settings {
 	 * @return string[]
 	 */
 	public function acceptable_security_types() {
-		return [
+		return array(
 			'def' => __( 'Default', 'simple-smtp' ),
 			'ssl' => __( 'SSL', 'simple-smtp' ),
 			'tls' => __( 'TLS', 'simple-smtp' ),
 			'off' => __( 'None', 'simple-smtp' ),
-		];
+		);
 	}
 
 	/**
@@ -98,18 +98,18 @@ class Settings {
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
+					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", array( 'span' => array( 'class' => array() ) ) );
 				}
 
 				if ( ! empty( $description ) ) {
-					echo wp_kses( $description, [ 'p' => [ 'class' => [] ] ] );
+					echo wp_kses( $description, array( 'p' => array( 'class' => array() ) ) );
 				}
 			},
 			$this->page,
 			$this->section,
-			[
+			array(
 				'label_for' => 'wpss_' . esc_attr( $name ),
-			]
+			)
 		);
 	}
 
@@ -142,18 +142,18 @@ class Settings {
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
+					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", array( 'span' => array( 'class' => array() ) ) );
 				}
 
 				if ( ! empty( $description ) ) {
-					echo wp_kses( $description, [ 'p' => [ 'class' => [] ] ] );
+					echo wp_kses( $description, array( 'p' => array( 'class' => array() ) ) );
 				}
 			},
 			$this->page,
 			$this->section,
-			[
+			array(
 				'label_for' => 'wpss_' . esc_attr( $name ),
-			]
+			)
 		);
 	}
 
@@ -168,7 +168,7 @@ class Settings {
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function() use ( &$callback ) {
+			function () use ( &$callback ) {
 				?>
 				<fieldset>
 					<?php call_user_func( $callback ); ?>
@@ -203,8 +203,8 @@ class Settings {
 		?>
 		<label for='wpss_<?php echo esc_attr( $name ); ?>'>
 			<input id='wpss_<?php echo esc_attr( $name ); ?>' type='checkbox' name='wpssmtp_smtp[<?php echo esc_attr( $name ); ?>]' <?php checked( $value->value, 1 ); ?> value='1' <?php echo esc_attr( $has_env ); ?>>
-			<?php echo esc_html( $alongside_text ); ?> <?php echo wp_kses( $debuginfo, [ 'span' => [ 'class' => [] ] ] ); ?>
-			<?php echo wp_kses( $description, [ 'p' => [ 'class' => [] ] ] ); ?>
+			<?php echo esc_html( $alongside_text ); ?> <?php echo wp_kses( $debuginfo, array( 'span' => array( 'class' => array() ) ) ); ?>
+			<?php echo wp_kses( $description, array( 'p' => array( 'class' => array() ) ) ); ?>
 		</label><br>
 		<?php
 	}
@@ -237,13 +237,13 @@ class Settings {
 					<?php endforeach; ?>
 				</select>
 				<?php
-				echo wp_kses( $description, [ 'p' => [ 'class' => [] ] ] );
+				echo wp_kses( $description, array( 'p' => array( 'class' => array() ) ) );
 			},
 			$this->page,
 			$this->section,
-			[
+			array(
 				'label_for' => 'wpss_' . esc_attr( $name ),
-			]
+			)
 		);
 	}
 

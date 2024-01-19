@@ -33,7 +33,7 @@ class Mailtest {
 	 * Hooks the class actions into the WordPress ecosystem.
 	 */
 	public function hooks() {
-		add_action( 'admin_post_ss_test_email', [ &$this, 'test_email_handler' ] );
+		add_action( 'admin_post_ss_test_email', array( &$this, 'test_email_handler' ) );
 	}
 
 	/**
@@ -45,9 +45,9 @@ class Mailtest {
 	public function resend_email( $email_id ) {
 		$email      = $this->log_service->get_log_entry_by_id( $email_id );
 		$recipients = implode( ', ', $email->get_recipients() );
-		$opts       = get_option( 'wpss_resent', [] );
+		$opts       = get_option( 'wpss_resent', array() );
 
-		$attachpaths = [];
+		$attachpaths = array();
 		if ( ! empty( $email->get_attachments() ) ) {
 			foreach ( $email->get_attachments() as $attachment ) {
 				if ( $attachment->exists() ) {
@@ -94,9 +94,9 @@ class Mailtest {
 
 			wp_safe_redirect(
 				add_query_arg(
-					[
+					array(
 						'status' => ( $success ) ? 'pass' : 'fail',
-					],
+					),
 					admin_url( 'options-general.php?page=wpsimplesmtp' )
 				)
 			);
@@ -129,10 +129,10 @@ class Mailtest {
 		// translators: %s is the website name.
 		$subject = sprintf( __( 'Test email from %s', 'simple-smtp' ), get_bloginfo( 'name' ) );
 
-		return [
+		return array(
 			'subject' => $subject,
 			'message' => $content,
-			'headers' => [ 'x-test: WP SMTP', $content_type ],
-		];
+			'headers' => array( 'x-test: WP SMTP', $content_type ),
+		);
 	}
 }

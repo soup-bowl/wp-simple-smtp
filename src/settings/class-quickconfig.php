@@ -22,48 +22,48 @@ class QuickConfig {
 	 * @return array
 	 */
 	public static function settings() {
-		return [
-			[
+		return array(
+			array(
 				'name'           => 'Gmail',
 				'server'         => 'smtp.gmail.com',
 				'port'           => '587',
 				'authentication' => true,
 				'encryption'     => 'tls',
-			],
-			[
+			),
+			array(
 				'name'           => 'Microsoft Exchange',
 				'server'         => 'smtp.office365.com',
 				'port'           => '587',
 				'authentication' => true,
 				'encryption'     => 'tls',
-			],
-			[
+			),
+			array(
 				'name'           => 'SendGrid',
 				'server'         => 'smtp.sendgrid.net',
 				'port'           => '587',
 				'authentication' => true,
 				'user'           => 'apikey',
 				'encryption'     => 'tls',
-			],
-			[
+			),
+			array(
 				'name'           => 'Pepipost',
 				'server'         => 'smtp.pepipost.com',
 				'port'           => '587',
 				'authentication' => true,
-			],
-			[
+			),
+			array(
 				'name'           => 'SendinBlue',
 				'server'         => 'smtp-relay.sendinblue.com',
 				'port'           => '587',
 				'authentication' => true,
-			],
-			[
+			),
+			array(
 				'name'           => 'Amazon SES',
 				'server'         => 'email-smtp.<CHANGE>.amazonaws.com',
 				'port'           => '465',
 				'authentication' => true,
 				'encryption'     => 'tls',
-			],
-		];
+			),
+		);
 	}
 }

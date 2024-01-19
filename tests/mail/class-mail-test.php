@@ -26,7 +26,7 @@ class MailTest extends TestCase {
 	/**
 	 * Constructor.
 	 */
-	public function setUp():void {
+	public function setUp(): void {
 		$this->mail = new Mail();
 	}
 

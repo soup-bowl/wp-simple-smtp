@@ -164,11 +164,11 @@ class Log {
 	 * @return array[]
 	 */
 	public function get_headers_as_array( $exclude_recipients = true ) {
-		$collection = [];
+		$collection = array();
 		if ( ! empty( $this->get_headers() ) ) {
 			foreach ( $this->get_headers() as $header ) {
 				$expd = explode( ':', $header );
-				if ( $exclude_recipients && in_array( strtolower( $expd[0] ), [ 'cc', 'bcc', 'from' ], true ) ) {
+				if ( $exclude_recipients && in_array( strtolower( $expd[0] ), array( 'cc', 'bcc', 'from' ), true ) ) {
 					continue;
 				} else {
 					$collection[] = $expd;
@@ -330,7 +330,7 @@ class Log {
 	 * @return string[]
 	 */
 	private function find_in_headers( $needle ) {
-		$collection = [];
+		$collection = array();
 		foreach ( $this->get_headers_as_array( false ) as $header ) {
 			if ( strtolower( $header[0] ) === strtolower( $needle ) ) {
 				$collection[] = $header[1];

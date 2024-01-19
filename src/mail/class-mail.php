@@ -43,7 +43,7 @@ class Mail {
 		if ( ! empty( $from->value ) ) {
 			add_filter(
 				'wp_mail_from',
-				function( $email ) use ( $from ) {
+				function ( $email ) use ( $from ) {
 					return $from->value;
 				}
 			);
@@ -53,18 +53,18 @@ class Mail {
 		if ( ! empty( $from_name->value ) ) {
 			add_filter(
 				'wp_mail_from_name',
-				function( $email ) use ( $from_name ) {
+				function ( $email ) use ( $from_name ) {
 					return $from_name->value;
 				}
 			);
 		}
 
-		add_action( 'phpmailer_init', [ &$this, 'process_mail' ] );
+		add_action( 'phpmailer_init', array( &$this, 'process_mail' ) );
 
 		$log_status = $this->options->get( 'log' );
 		if ( ! empty( $log_status ) && true === filter_var( $log_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
-			add_action( 'wp_mail', [ &$this, 'preprocess_mail' ] );
-			add_action( 'wp_mail_failed', [ &$this, 'process_error' ] );
+			add_action( 'wp_mail', array( &$this, 'preprocess_mail' ) );
+			add_action( 'wp_mail_failed', array( &$this, 'process_error' ) );
 		}
 	}
 
@@ -86,21 +86,21 @@ class Mail {
 			$phpmailer->SMTPAuth = $this->options->get( 'auth' )->value;
 
 			$sec = $this->options->get( 'sec' );
-			if ( ! empty( $sec ) && in_array( (string) $sec->value, [ 'ssl', 'tls' ], true ) ) {
+			if ( ! empty( $sec ) && in_array( (string) $sec->value, array( 'ssl', 'tls' ), true ) ) {
 				$phpmailer->SMTPSecure = $sec->value;
-			} elseif ( ! empty( $sec ) && in_array( (string) $sec->value, [ 'off' ], true ) ) {
+			} elseif ( ! empty( $sec ) && in_array( (string) $sec->value, array( 'off' ), true ) ) {
 				$phpmailer->SMTPAutoTLS = false;
 			}
 
 			$ssl_status = $this->options->get( 'noverifyssl' );
 			if ( ! empty( $ssl_status ) && true === filter_var( $ssl_status->value, FILTER_VALIDATE_BOOLEAN ) ) {
-				$phpmailer->SMTPOptions = [
-					'ssl' => [
+				$phpmailer->SMTPOptions = array(
+					'ssl' => array(
 						'verify_peer'       => false,
 						'verify_peer_name'  => false,
 						'allow_self_signed' => true,
-					],
-				];
+					),
+				);
 			}
 
 			$phpmailer->IsSMTP();
@@ -131,9 +131,9 @@ class Mail {
 		global $wpss_mail_id;
 
 		if ( true === filter_var( $this->options->get( 'log' )->value, FILTER_VALIDATE_BOOLEAN ) ) {
-			$recipient_array = ( is_array( $parameters['to'] ) ) ? $parameters['to'] : [ $parameters['to'] ];
+			$recipient_array = ( is_array( $parameters['to'] ) ) ? $parameters['to'] : array( $parameters['to'] );
 
-			$attachments = [];
+			$attachments = array();
 			foreach ( $parameters['attachments'] as $attachment ) {
 				$attachments[] = ( new LogAttachment() )->new( $attachment )->to_string();
 			}

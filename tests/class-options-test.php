@@ -26,7 +26,7 @@ class OptionsTest extends TestCase {
 	/**
 	 * Constructor.
 	 */
-	public function setUp():void {
+	public function setUp(): void {
 		if ( ! defined( 'SECURE_AUTH_KEY' ) ) {
 			define( 'SECURE_AUTH_KEY', 's7r0237r897d89s69r83289' );
 		}
@@ -51,10 +51,10 @@ class OptionsTest extends TestCase {
 		$string = 'ab123@*';
 
 		$e_str = $this->options->encrypt( 'teststr', $string );
-		$e_col = [
+		$e_col = array(
 			'password'   => $e_str['string'],
 			'password_d' => $e_str['d'],
-		];
+		);
 
 		$d_str = $this->options->maybe_decrypt( $e_col, 'password' );
 

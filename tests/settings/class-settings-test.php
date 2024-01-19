@@ -41,7 +41,7 @@ class SettingsTest extends TestCase {
 	/**
 	 * Constructor.
 	 */
-	public function setUp():void {
+	public function setUp(): void {
 		$this->settings           = new Settings();
 		$this->multisite_settings = new SettingsMultisite();
 		$this->options            = new Options();
@@ -52,8 +52,8 @@ class SettingsTest extends TestCase {
 	 */
 	public function test_dummy_passwords() {
 		$smtp_password = ( getenv( 'SMTP_PASS' ) !== false ) ? getenv( 'SMTP_PASS' ) : '';
-		$options_good  = [ 'pass' => 'abc' ];
-		$options_dummy = [ 'pass' => '******' ];
+		$options_good  = array( 'pass' => 'abc' );
+		$options_dummy = array( 'pass' => '******' );
 
 		// Chuck an SMTP setting at it. It should return either the password, or the encrypted variant.
 		$response_good = $this->settings->post_processing( $options_good );

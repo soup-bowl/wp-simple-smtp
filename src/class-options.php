@@ -35,52 +35,48 @@ class Options {
 		$sysname = 'SMTP_' . strtoupper( $name );
 
 		if ( ! $ms_only && ! empty( $_ENV[ $sysname ] ) ) {
-			return (object) [
+			return (object) array(
 				'value'  => $_ENV[ $sysname ],
 				'source' => 'ENV',
-			];
+			);
 		} elseif ( ! $ms_only && defined( $sysname ) ) {
-			return (object) [
+			return (object) array(
 				'value'  => constant( $sysname ),
 				'source' => 'CONST',
-			];
+			);
 		} else {
 			if ( is_multisite() ) {
 				$options = get_site_option( 'wpssmtp_smtp_ms', null );
 				if ( ! empty( $options ) && array_key_exists( $name, $options ) ) {
-					return (object) [
+					return (object) array(
 						'value'  => $this->maybe_decrypt( $options, $name ),
 						'source' => 'MULTISITE',
-					];
+					);
 				}
 			}
 
 			if ( ! $ms_only ) {
 				$options = get_option( 'wpssmtp_smtp' );
 				if ( ! empty( $options ) && array_key_exists( $name, $options ) ) {
-					return (object) [
+					return (object) array(
 						'value'  => $this->maybe_decrypt( $options, $name ),
 						'source' => 'CONFIG',
-					];
-				} else {
-					if ( $blank_obj_on_empty ) {
-						return (object) [
+					);
+				} elseif ( $blank_obj_on_empty ) {
+						return (object) array(
 							'value'  => '',
 							'source' => 'CONFIG',
-						];
-					} else {
-						return null;
-					}
-				}
-			} else {
-				if ( $blank_obj_on_empty ) {
-					return (object) [
-						'value'  => '',
-						'source' => 'MULTISITE',
-					];
+						);
 				} else {
 					return null;
 				}
+			} elseif ( $blank_obj_on_empty ) {
+					return (object) array(
+						'value'  => '',
+						'source' => 'MULTISITE',
+					);
+			} else {
+				return null;
 			}
 		}
 	}
@@ -92,10 +88,10 @@ class Options {
 	 * @param string $value Option value.
 	 */
 	public function encrypt( $name, $value ) {
-		$pl = [
+		$pl = array(
 			'string' => $value,
 			'd'      => 0,
-		];
+		);
 
 		if ( extension_loaded( 'openssl' ) ) {
 			$this->set_encryption_test();

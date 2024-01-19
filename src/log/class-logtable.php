@@ -48,12 +48,12 @@ class LogTable {
 		$entries          = $this->log_service->get_log_entries( ( $page + 1 ), $maximum_per_page );
 		$pages            = $this->log_service->get_log_entry_pages( $maximum_per_page );
 
-		$labels = [
+		$labels = array(
 			__( 'Recipient(s)', 'simple-smtp' ),
 			__( 'Subject', 'simple-smtp' ),
 			__( 'Date', 'simple-smtp' ),
 			__( 'Error', 'simple-smtp' ),
-		];
+		);
 
 		echo wp_kses(
 			'<table class="wpsmtp-log-table wp-list-table widefat fixed striped">
@@ -116,19 +116,19 @@ class LogTable {
 		}
 		echo wp_kses(
 			'<p><i>' . $message . '</i> ' . $nav_buttons->back . ' ' . $nav_buttons->next . ' ' . $nav_buttons->delete . '</p>',
-			[
-				'p'    => [],
-				'i'    => [],
-				'a'    => [
-					'href'     => [],
-					'class'    => [],
-					'disabled' => [],
-				],
-				'span' => [
-					'class'    => [],
-					'disabled' => [],
-				],
-			]
+			array(
+				'p'    => array(),
+				'i'    => array(),
+				'a'    => array(
+					'href'     => array(),
+					'class'    => array(),
+					'disabled' => array(),
+				),
+				'span' => array(
+					'class'    => array(),
+					'disabled' => array(),
+				),
+			)
 		);
 	}
 
@@ -140,22 +140,22 @@ class LogTable {
 	 * @return stdClass 'next', 'back', and 'delete' HTML buttons.
 	 */
 	private function generate_table_buttons( $current_page, $max_pages ) {
-		$nonce      = [ 'ssnonce' => wp_create_nonce( 'wpss_logtable' ) ];
+		$nonce      = array( 'ssnonce' => wp_create_nonce( 'wpss_logtable' ) );
 		$next_label = __( 'Next', 'simple-smtp' );
 		$back_label = __( 'Previous', 'simple-smtp' );
 		$current    = admin_url( 'options-general.php?page=wpsimplesmtp' );
 		$next_url   = add_query_arg(
-			[
+			array(
 				'wpss_page' => ( $current_page + 1 ),
 				$nonce,
-			],
+			),
 			$current
 		);
 		$back_url   = add_query_arg(
-			[
+			array(
 				'wpss_page' => ( $current_page - 1 ),
 				$nonce,
-			],
+			),
 			$current
 		);
 		$next_allow = '';
@@ -179,11 +179,11 @@ class LogTable {
 			menu_page_url( 'wpsimplesmtp', false )
 		) . '&delete_all';
 
-		return (object) [
+		return (object) array(
 			'next'   => '<' . $next_tag . ' href="' . esc_url( $next_url ) . '" class="button"' . $next_allow . '>' . $next_label . '</' . $next_tag . '>',
 			'back'   => '<' . $back_tag . ' href="' . esc_url( $back_url ) . '" class="button"' . $back_allow . '>' . $back_label . '</' . $back_tag . '>',
 			'delete' => '<a href="' . esc_url( $purge_all_url ) . '" class="button">' . $purge_all_label . '</a>',
-		];
+		);
 	}
 
 	/**
@@ -193,11 +193,11 @@ class LogTable {
 	 * @return string row-action html.
 	 */
 	private function render_log_entry_buttons( $entry ) {
-		$recents      = get_option( 'wpss_resent', [] );
-		$resend_param = [
+		$recents      = get_option( 'wpss_resent', array() );
+		$resend_param = array(
 			'eid'     => $entry->get_id(),
 			'ssnonce' => wp_create_nonce( 'wpss_action' ),
-		];
+		);
 
 		$view_label   = __( 'View', 'simple-smtp' );
 		$resend_label = __( 'Resend', 'simple-smtp' );
@@ -228,7 +228,7 @@ class LogTable {
 	 * @return string
 	 */
 	private function display_recipients( $log_item ) {
-		$recipients = [];
+		$recipients = array();
 
 		if ( ! empty( $log_item->get_recipients() ) ) {
 			$recipients[] = esc_html__( 'To', 'simple-smtp' ) . ': ' . implode( ', ', $log_item->get_recipients() );
@@ -254,37 +254,37 @@ class LogTable {
 	 * @return array
 	 */
 	private function allowed_table_html() {
-		return [
-			'table' => [
-				'class' => [],
-			],
-			'thead' => [],
-			'tfoot' => [],
-			'tbody' => [],
-			'th'    => [
-				'scope' => [],
-				'class' => [],
-			],
-			'tr'    => [
-				'class' => [],
-			],
-			'td'    => [
-				'class'        => [],
-				'colspan'      => [],
-				'data-colname' => [],
-			],
-			'div'   => [
-				'class' => [],
-			],
-			'span'  => [
-				'class' => [],
-			],
-			'a'     => [
-				'href' => [],
-			],
-			'abbr'  => [
-				'title' => [],
-			],
-		];
+		return array(
+			'table' => array(
+				'class' => array(),
+			),
+			'thead' => array(),
+			'tfoot' => array(),
+			'tbody' => array(),
+			'th'    => array(
+				'scope' => array(),
+				'class' => array(),
+			),
+			'tr'    => array(
+				'class' => array(),
+			),
+			'td'    => array(
+				'class'        => array(),
+				'colspan'      => array(),
+				'data-colname' => array(),
+			),
+			'div'   => array(
+				'class' => array(),
+			),
+			'span'  => array(
+				'class' => array(),
+			),
+			'a'     => array(
+				'href' => array(),
+			),
+			'abbr'  => array(
+				'title' => array(),
+			),
+		);
 	}
 }

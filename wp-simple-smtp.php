@@ -37,7 +37,7 @@ $disabled = ( new Options() )->get( 'disable' );
 if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALIDATE_BOOLEAN ) ) {
 	add_action(
 		'plugins_loaded',
-		function() {
+		function () {
 			global $phpmailer;
 			$phpmailer = new MailDisable();
 		}
@@ -45,9 +45,9 @@ if ( ! empty( $disabled ) && true === filter_var( $disabled->value, FILTER_VALID
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	WP_CLI::add_command( 'email-test', [ new wpsimplesmtp\cli\EmailTest(), 'test_email' ] );
-	WP_CLI::add_command( 'email-log', [ new wpsimplesmtp\cli\EmailLog(), 'load_log' ] );
-	WP_CLI::add_command( 'email-view', [ new wpsimplesmtp\cli\EmailLog(), 'view_email' ] );
+	WP_CLI::add_command( 'email-test', array( new wpsimplesmtp\cli\EmailTest(), 'test_email' ) );
+	WP_CLI::add_command( 'email-log', array( new wpsimplesmtp\cli\EmailLog(), 'load_log' ) );
+	WP_CLI::add_command( 'email-view', array( new wpsimplesmtp\cli\EmailLog(), 'view_email' ) );
 }
 
 if ( is_admin() ) {
@@ -64,14 +64,14 @@ new Mail();
 
 add_action(
 	'wpss_clear_resent',
-	function() {
+	function () {
 		delete_option( 'wpss_resent' );
 	}
 );
 
 add_action(
 	'wpss_clear_logs',
-	function() {
+	function () {
 		$is_disabled = apply_filters( 'simple_smtp_disable_log_prune', false );
 		// 2629800 = 1 Month.
 		if ( ! $is_disabled ) {
@@ -89,10 +89,10 @@ add_action(
 			'index.php',
 		);
 		if ( in_array( $page, $assets_pages, true ) ) {
-			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/simple-smtp.css', [], '1.4' );
+			wp_enqueue_style( 'wpss_admin_css', plugin_dir_url( __FILE__ ) . 'assets/simple-smtp.css', array(), '1.4' );
 
 			if ( 'index.php' !== $page ) {
-				wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', [ 'jquery', 'wp-i18n' ], '1.4', true );
+				wp_enqueue_script( 'wpss_config', plugin_dir_url( __FILE__ ) . 'assets/smtp-config.js', array( 'jquery', 'wp-i18n' ), '1.4', true );
 				wp_set_script_translations( 'wpss_config', 'simple-smtp' );
 
 				$smtp_settings = QuickConfig::settings();
@@ -136,7 +136,7 @@ function wpsmtp_deactivation() {
  */
 add_action(
 	'init',
-	function() {
+	function () {
 		( new LogService() )->register_log_storage();
 	}
 );
@@ -145,12 +145,12 @@ add_action(
  * Displays plugin errors on admin screen if error criteria is met.
  */
 function wpsmtp_has_error() {
-	$kses_standard = [
-		'div' => [
-			'class' => [],
-		],
-		'p'   => [],
-	];
+	$kses_standard = array(
+		'div' => array(
+			'class' => array(),
+		),
+		'p'   => array(),
+	);
 
 	if ( ! empty( get_option( 'wpssmtp_keycheck_fail' ) ) ) {
 		$notice  = '<div class="error fade"><p>';
