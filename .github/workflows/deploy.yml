@@ -21,7 +21,7 @@ jobs:
 
     - name: Update Readme
       run: |
-        echo "${{ needs.generate-changelog.outputs.changelog }}" | base64 --decode > readme.txt
+        echo "${{ needs.generate-changelog.outputs.changelog }}" | base64 --decode >> readme.txt
 
     - name: Composer Dependencies
       uses: php-actions/composer@v6
