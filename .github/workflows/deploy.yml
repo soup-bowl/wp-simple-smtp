@@ -14,6 +14,7 @@ jobs:
   tag:
     name: New tag
     runs-on: ubuntu-latest
+    needs: generate-changelog
 
     steps:
     - uses: actions/checkout@v3
