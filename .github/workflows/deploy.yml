@@ -5,12 +5,23 @@ on:
     types: [published]
 
 jobs:
+  generate-changelog:
+    uses: soup-bowl/wordpress-workflows/.github/workflows/generate-changelog.yml@main
+    with:
+      repository: soup-bowl/wp-simple-smtp
+    secrets: inherit
+
   tag:
     name: New tag
     runs-on: ubuntu-latest
+    needs: generate-changelog
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Update Readme
+      run: |
+        echo "${{ needs.generate-changelog.outputs.changelog }}" | base64 --decode >> readme.txt
 
     - name: Composer Dependencies
       uses: php-actions/composer@v6
