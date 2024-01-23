@@ -124,7 +124,6 @@ class Singular extends Settings {
 		} else {
 			$this->render_settings();
 		}
-
 	}
 
 	/**
@@ -166,7 +165,7 @@ class Singular extends Settings {
 		$this->generate_checkbox_area(
 			'adt',
 			__( 'Options', 'simple-smtp' ),
-			function() {
+			function () {
 				$this->generate_checkbox( 'disable', __( 'Disable email services', 'simple-smtp' ), __( 'When marked, no emails will be sent from this site.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'log', __( 'Log all sent emails to the database', 'simple-smtp' ), __( 'Works with the WordPress privacy features.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'noverifyssl', __( 'Disable SSL Verification (advanced)', 'simple-smtp' ), __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ) );

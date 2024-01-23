@@ -168,7 +168,7 @@ class Settings {
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function() use ( &$callback ) {
+			function () use ( &$callback ) {
 				?>
 				<fieldset>
 					<?php call_user_func( $callback ); ?>
