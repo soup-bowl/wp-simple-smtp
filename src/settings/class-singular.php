@@ -296,11 +296,17 @@ class Singular extends Settings {
 							$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
 						}
 
-						$log_limit    = apply_filters( 'simple_smtp_log_expiry', 2629800 );
-						$log_disabled = apply_filters( 'simple_smtp_disable_log_prune', false );
+						$log_limit     = apply_filters( 'simple_smtp_log_expiry', 2629800 );
+						$log_disabled  = apply_filters( 'simple_smtp_disable_log_prune', false );
+						$expiry_string = sprintf(
+							/* translators: %s: time amount or never. */
+							__( 'Log entries are deleted after: %s', 'simple-smtp' ),
+							( ( ! $log_disabled ) ? $this->seconds_to_duration( $log_limit ) : __( 'never', 'simple-smtp' ) )
+						);
+
 						echo wp_kses(
 							'<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>
-							<p>Log expiry: ' . ( ( ! $log_disabled ) ? $this->seconds_to_duration( $log_limit ) : 'never' ) . '</p>',
+							<p>' . $expiry_string . '</p>',
 							[
 								'h2' => [ 'id' => [] ],
 								'p'  => [],
@@ -329,17 +335,28 @@ class Singular extends Settings {
 		$year   = 12 * $month;
 
 		if ( $seconds < $minute ) {
-			return $seconds . ' ' . __( 'seconds', 'simple-smtp' );
+			/* translators: %s: time to deletion in seconds. */
+			return sprintf( _n( '%s second', '%s seconds', $seconds, 'simple-smtp' ), $seconds );
 		} elseif ( $seconds < $hour ) {
-			return round( $seconds / $minute ) . ' ' . __( 'minute(s)', 'simple-smtp' );
+			$minutes = round( $seconds / $minute );
+			/* translators: %s: time to deletion in minutes. */
+			return sprintf( _n( '%s minute', '%s minutes', $minutes, 'simple-smtp' ), $minutes );
 		} elseif ( $seconds < $day ) {
-			return round( $seconds / $hour ) . ' ' . __( 'hour(s)', 'simple-smtp' );
+			$hours = round( $seconds / $hour );
+			/* translators: %s: time to deletion in hours. */
+			return sprintf( _n( '%s hour', '%s hours', $hours, 'simple-smtp' ), $hours );
 		} elseif ( $seconds < $month ) {
-			return round( $seconds / $day ) . ' ' . __( 'day(s)', 'simple-smtp' );
+			$days = round( $seconds / $day );
+			/* translators: %s: time to deletion in days. */
+			return sprintf( _n( '%s day', '%s days', $days, 'simple-smtp' ), $days );
 		} elseif ( $seconds < $year ) {
-			return round( $seconds / $month ) . ' ' . __( 'month(s)', 'simple-smtp' );
+			$months = round( $seconds / $month );
+			/* translators: %s: time to deletion in months. */
+			return sprintf( _n( '%s month', '%s months', $months, 'simple-smtp' ), $months );
 		} else {
-			return round( $seconds / $year ) . ' ' . __( 'year(s)', 'simple-smtp' );
+			$years = round( $seconds / $year );
+			/* translators: %s: time to deletion in years. */
+			return sprintf( _n( '%s year', '%s years', $years, 'simple-smtp' ), $years );
 		}
 	}
 }
