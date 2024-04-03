@@ -287,5 +287,4 @@ class LogService {
 
 		return $log;
 	}
-
 }

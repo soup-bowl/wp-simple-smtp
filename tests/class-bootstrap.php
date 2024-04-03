@@ -55,11 +55,11 @@ function add_filter( $tag, $function_to_add, $priority = 10, $accepted_args = 1 
  * Mocks the WordPress get_option function.
  * See https://developer.wordpress.org/reference/functions/get_option/ for more information.
  *
- * @param string $option  Key name.
- * @param mixed  $default Default return.
+ * @param string $option         Key name.
+ * @param mixed  $default_return Default return.
  * @return mixed
  */
-function get_option( $option, $default = false ) {
+function get_option( $option, $default_return = false ) {
 	global $sbss_temp_store;
 
 	$env_loc = __DIR__ . '/../.env';
