@@ -200,7 +200,9 @@ class LogService {
 		);
 
 		foreach ( $all as $log ) {
-			wp_delete_post( $log->ID );
+			if ( $log->post_type === $this->post_type ) {
+				wp_delete_post( $log->ID );
+			}
 		}
 
 		return true;
@@ -224,7 +226,9 @@ class LogService {
 		);
 
 		foreach ( $all as $log ) {
-			wp_delete_post( $log->ID );
+			if ( $log->post_type === $this->post_type ) {
+				wp_delete_post( $log->ID );
+			}
 		}
 
 		return true;
@@ -254,7 +258,9 @@ class LogService {
 		// @phpcs:enable
 
 		foreach ( $all as $log ) {
-			wp_delete_post( $log->ID );
+			if ( $log->post_type === $this->post_type ) {
+				wp_delete_post( $log->ID );
+			}
 		}
 
 		return count( $all );
