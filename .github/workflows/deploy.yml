@@ -40,6 +40,7 @@ jobs:
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
       with:
+        dry-run: ${{ github.event.release.prerelease }}
         generate-zip: true
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
