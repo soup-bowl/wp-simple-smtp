@@ -75,7 +75,7 @@ add_action(
 		$is_disabled = apply_filters( 'simple_smtp_disable_log_prune', false );
 		// 2629800 = 1 Month.
 		if ( ! $is_disabled ) {
-			( new LogService() )->prune_logs( 2629800 );
+			( new LogService() )->prune_logs( apply_filters( 'simple_smtp_log_expiry', 2629800 ) );
 		}
 	}
 );
