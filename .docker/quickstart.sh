@@ -10,5 +10,6 @@ if [ "$1" == "beta" ]; then
 fi
 
 wp plugin install wp-crontrol --allow-root
+wp plugin install plugin-check --allow-root
 
-wp plugin activate simple-smtp wp-crontrol --allow-root
+wp plugin activate simple-smtp wp-crontrol plugin-check --allow-root

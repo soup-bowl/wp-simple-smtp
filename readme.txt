@@ -1,8 +1,8 @@
-=== WordPress Simple SMTP ===
+=== Simple SMTP ===
 Contributors: soupbowl
 Tags: mail,email,smtp,dispatch,sender
 Requires at least: 5.0
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 7.0
 Stable tag: {{VERSION_NUMBER}}
 License: MIT
