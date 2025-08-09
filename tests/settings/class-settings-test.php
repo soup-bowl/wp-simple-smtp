@@ -41,7 +41,7 @@ class SettingsTest extends TestCase {
 	/**
 	 * Constructor.
 	 */
-	public function setUp():void {
+	public function setUp(): void {
 		$this->settings           = new Settings();
 		$this->multisite_settings = new SettingsMultisite();
 		$this->options            = new Options();

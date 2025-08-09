@@ -124,7 +124,6 @@ class Singular extends Settings {
 		} else {
 			$this->render_settings();
 		}
-
 	}
 
 	/**
@@ -166,7 +165,7 @@ class Singular extends Settings {
 		$this->generate_checkbox_area(
 			'adt',
 			__( 'Options', 'simple-smtp' ),
-			function() {
+			function () {
 				$this->generate_checkbox( 'disable', __( 'Disable email services', 'simple-smtp' ), __( 'When marked, no emails will be sent from this site.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'log', __( 'Log all sent emails to the database', 'simple-smtp' ), __( 'Works with the WordPress privacy features.', 'simple-smtp' ) );
 				$this->generate_checkbox( 'noverifyssl', __( 'Disable SSL Verification (advanced)', 'simple-smtp' ), __( 'Do not disable this unless you know what you\'re doing.', 'simple-smtp' ) );
@@ -297,7 +296,22 @@ class Singular extends Settings {
 							$page = intval( wp_unslash( $_REQUEST['wpss_page'] ) );
 						}
 
-						echo wp_kses( '<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>', [ 'h2' => [ 'id' => [] ] ] );
+						$log_limit     = apply_filters( 'simple_smtp_log_expiry', 2629800 );
+						$log_disabled  = apply_filters( 'simple_smtp_disable_log_prune', false );
+						$expiry_string = sprintf(
+							/* translators: %s: time amount or never. */
+							__( 'Log entries are deleted after: %s', 'simple-smtp' ),
+							( ( ! $log_disabled ) ? $this->seconds_to_duration( $log_limit ) : __( 'never', 'simple-smtp' ) )
+						);
+
+						echo wp_kses(
+							'<h2 id="log">' . __( 'Email Log', 'simple-smtp' ) . '</h2>
+							<p>' . $expiry_string . '</p>',
+							[
+								'h2' => [ 'id' => [] ],
+								'p'  => [],
+							]
+						);
 						$this->log_table->display( $page );
 					}
 				}
@@ -305,5 +319,44 @@ class Singular extends Settings {
 			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Generates a human-readable time string from an input in second format.
+	 *
+	 * @param integer $seconds Seconds.
+	 * @return string Human-readable representation of seconds.
+	 */
+	private function seconds_to_duration( $seconds ) {
+		$minute = 60;
+		$hour   = 60 * $minute;
+		$day    = 24 * $hour;
+		$month  = 30 * $day;
+		$year   = 12 * $month;
+
+		if ( $seconds < $minute ) {
+			/* translators: %s: time to deletion in seconds. */
+			return sprintf( _n( '%s second', '%s seconds', $seconds, 'simple-smtp' ), $seconds );
+		} elseif ( $seconds < $hour ) {
+			$minutes = round( $seconds / $minute );
+			/* translators: %s: time to deletion in minutes. */
+			return sprintf( _n( '%s minute', '%s minutes', $minutes, 'simple-smtp' ), $minutes );
+		} elseif ( $seconds < $day ) {
+			$hours = round( $seconds / $hour );
+			/* translators: %s: time to deletion in hours. */
+			return sprintf( _n( '%s hour', '%s hours', $hours, 'simple-smtp' ), $hours );
+		} elseif ( $seconds < $month ) {
+			$days = round( $seconds / $day );
+			/* translators: %s: time to deletion in days. */
+			return sprintf( _n( '%s day', '%s days', $days, 'simple-smtp' ), $days );
+		} elseif ( $seconds < $year ) {
+			$months = round( $seconds / $month );
+			/* translators: %s: time to deletion in months. */
+			return sprintf( _n( '%s month', '%s months', $months, 'simple-smtp' ), $months );
+		} else {
+			$years = round( $seconds / $year );
+			/* translators: %s: time to deletion in years. */
+			return sprintf( _n( '%s year', '%s years', $years, 'simple-smtp' ), $years );
+		}
 	}
 }

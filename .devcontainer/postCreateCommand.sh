@@ -10,6 +10,5 @@ fi
 docker run --rm --tty --volume $PWD:/app --user $(id -u):$(id -g) composer install --ignore-platform-reqs
 docker-compose up -d
 echo "Pausing for setup to complete..." && sleep 5
-docker-compose exec www wp core install --url="${WP_SITE_URL}" --title="SMTP Dummy" --admin_user="admin" --admin_password="password" --admin_email="code@soupbowl.io" --allow-root
-docker-compose exec www wp plugin activate simple-smtp --allow-root
+docker-compose exec www quickstart "${WP_SITE_URL}"
 cp .env.example .env

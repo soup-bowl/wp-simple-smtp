@@ -98,7 +98,7 @@ class Settings {
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
+					echo wp_kses( "<span class='{$this->debug_info_colour( $value->source )}'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
 				}
 
 				if ( ! empty( $description ) ) {
@@ -142,7 +142,7 @@ class Settings {
 				<?php
 
 				if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					echo wp_kses( "<span class='wpsmtp-badge info'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
+					echo wp_kses( "<span class='{$this->debug_info_colour( $value->source )}'>{$value->source}</span>", [ 'span' => [ 'class' => [] ] ] );
 				}
 
 				if ( ! empty( $description ) ) {
@@ -168,7 +168,7 @@ class Settings {
 		add_settings_field(
 			'wpssmtp_smtp_' . $name,
 			$name_pretty,
-			function() use ( &$callback ) {
+			function () use ( &$callback ) {
 				?>
 				<fieldset>
 					<?php call_user_func( $callback ); ?>
@@ -197,7 +197,7 @@ class Settings {
 
 		$debuginfo = '';
 		if ( ! $this->ms && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$debuginfo = "<span class='wpsmtp-badge info'>{$value->source}</span>";
+			$debuginfo = "<span class='{$this->debug_info_colour( $value->source )}'>{$value->source}</span>";
 		}
 
 		?>
@@ -285,6 +285,24 @@ class Settings {
 			} else {
 				return false;
 			}
+		}
+	}
+
+	/**
+	 * Responds with class params to colour headers based on source type.
+	 *
+	 * Responds with green for environment, yellow for multisite, and blue for anything else.
+	 *
+	 * @param string $source The source value (ENV and MULTISITE trigger variances).
+	 * @return string HTML class elements for styling based on source type.
+	 */
+	private function debug_info_colour( $source ) {
+		if ( 'ENV' === $source ) {
+			return 'wpsmtp-badge success';
+		} elseif ( 'MULTISITE' === $source ) {
+			return 'wpsmtp-badge warning';
+		} else {
+			return 'wpsmtp-badge info';
 		}
 	}
 }

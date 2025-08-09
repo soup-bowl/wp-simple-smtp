@@ -13,6 +13,7 @@
 composer.json
 composer.lock
 DOCKER_ENV
+Dockerfile-php-build
 docker_tag
 docker-compose.yml
 output.log

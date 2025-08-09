@@ -1,4 +1,3 @@
-version: '3.6'
 services:
   db:
     image: docker.io/library/mariadb:10.5.15 # Changed due to MariaDB Docker build issues.
@@ -10,7 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: s9f6sd759r32r7f0dsf5673894956
       MYSQL_DATABASE: wordpress
   db_pma:
-    image: docker.io/phpmyadmin/phpmyadmin:latest
+    image: docker.io/library/phpmyadmin:latest
     depends_on:
     - db
     ports:
@@ -21,7 +20,7 @@ services:
       PMA_PASSWORD: s9f6sd759r32r7f0dsf5673894956
   mail:
     # Port 1025 for SMTP.
-    image: docker.io/mailhog/mailhog:latest
+    image: docker.io/axllent/mailpit
     ports:
     - 8081:8025
     - 8083:1025

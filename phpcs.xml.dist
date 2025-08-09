@@ -23,7 +23,7 @@
 		<exclude-pattern>wp-simple-smtp.php</exclude-pattern>
 	</rule>
 
-	<rule ref="Generic.Arrays.DisallowShortArraySyntax">
+	<rule ref="Universal.Arrays.DisallowShortArraySyntax">
 		<exclude-pattern>*/*</exclude-pattern>
 	</rule>
 
@@ -36,6 +36,11 @@
 	<!-- Same as above. -->
 	<rule ref="Generic.Files.OneObjectStructurePerFile.MultipleFound">
 		<exclude-pattern>tests/log/class-logservice-test.php</exclude-pattern>
+	</rule>
+
+	<!-- Some mocks will refer to variables that it will discard. -->
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter">
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 	<!-- ! Test exclusions. -->
 </ruleset>

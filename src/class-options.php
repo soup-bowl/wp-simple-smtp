@@ -62,25 +62,21 @@ class Options {
 						'value'  => $this->maybe_decrypt( $options, $name ),
 						'source' => 'CONFIG',
 					];
-				} else {
-					if ( $blank_obj_on_empty ) {
+				} elseif ( $blank_obj_on_empty ) {
 						return (object) [
 							'value'  => '',
 							'source' => 'CONFIG',
 						];
-					} else {
-						return null;
-					}
+				} else {
+					return null;
 				}
-			} else {
-				if ( $blank_obj_on_empty ) {
+			} elseif ( $blank_obj_on_empty ) {
 					return (object) [
 						'value'  => '',
 						'source' => 'MULTISITE',
 					];
-				} else {
-					return null;
-				}
+			} else {
+				return null;
 			}
 		}
 	}

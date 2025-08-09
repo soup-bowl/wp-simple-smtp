@@ -14,7 +14,7 @@ const { __ } = wp.i18n;
 function wpss_loadin() {
 	if ( null !== document.getElementById( 'wpss-conf' ) ) {
 		wpss_load_quicksettings( wpss_qc_settings );
-		document.getElementById( 'wpss-quickset' ).onchange = function( stuff ) {
+		document.getElementById( 'wpss-quickset' ).onchange = function ( stuff ) {
 			wpss_input_selection( wpss_qc_settings, stuff.target.value );
 		};
 	}
