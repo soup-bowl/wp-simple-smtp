@@ -11,7 +11,7 @@ jobs:
   generate-changelog:
     uses: soup-bowl/wordpress-workflows/.github/workflows/generate-changelog.yml@main
     with:
-      repository: soup-bowl/wp-simple-smtp
+      repository: soup-bowl/simple-smtp
     secrets: inherit
 
   tag:
