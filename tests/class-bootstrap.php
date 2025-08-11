@@ -101,3 +101,14 @@ function update_option( $name, $value ) {
 
 	return true;
 }
+
+/**
+ * Mocks the WordPress sanitize_text_field function.
+ * See https://developer.wordpress.org/reference/functions/sanitize_text_field/ for more information.
+ *
+ * @param string $str Input string.
+ * @return string
+ */
+function sanitize_text_field( $str ) {
+    return $str;
+}
