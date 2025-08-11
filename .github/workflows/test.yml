@@ -3,7 +3,6 @@ on:
   push:
     branches:
     - main
-    - develop
     paths-ignore:
     - '.devcontainer/**'
     - '.docker/**'
@@ -11,7 +10,7 @@ on:
     - '.vscode/**'
   pull_request:
     branches:
-    - develop
+    - main
   workflow_dispatch:
 
 jobs:
