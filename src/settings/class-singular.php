@@ -143,7 +143,14 @@ class Singular extends Settings {
 	 * Initialises the settings implementation.
 	 */
 	public function settings_init() {
-		register_setting( 'wpsimplesmtp_smtp', 'wpssmtp_smtp' );
+		register_setting(
+			'wpsimplesmtp_smtp',
+			'wpssmtp_smtp',
+			array(
+				'type'              => 'array',
+				'sanitize_callback' => array( $this, 'sanitize_smtp_settings' ),
+			)
+		);
 
 		add_settings_section(
 			'wpsimplesmtp_smtp_section',

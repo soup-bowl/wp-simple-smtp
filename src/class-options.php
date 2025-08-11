@@ -36,7 +36,7 @@ class Options {
 
 		if ( ! $ms_only && ! empty( $_ENV[ $sysname ] ) ) {
 			return (object) [
-				'value'  => $_ENV[ $sysname ],
+				'value'  => sanitize_text_field( $_ENV[ $sysname ] ),
 				'source' => 'ENV',
 			];
 		} elseif ( ! $ms_only && defined( $sysname ) ) {

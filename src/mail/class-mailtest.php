@@ -78,25 +78,39 @@ class Mailtest {
 	 * Custom admin endpoint to dispatch a test email.
 	 */
 	public static function test_email_handler() {
-		if ( isset( $_REQUEST['_wpnonce'], $_REQUEST['_wp_http_referer'], $_REQUEST['wpssmtp_test_email_recipient'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'simple-smtp-test-email' ) ) {
-			$email = self::generate_test_email( ( isset( $_REQUEST['wpssmtp_test_email_is_html'] ) ) ? true : false );
+		if (
+			isset( $_REQUEST['_wpnonce'], $_REQUEST['_wp_http_referer'], $_REQUEST['wpssmtp_test_email_recipient'] ) &&
+			wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'simple-smtp-test-email' )
+		) {
+			$email = self::generate_test_email( isset( $_REQUEST['wpssmtp_test_email_is_html'] ) ? true : false );
 
-			// Sanitize rule disabled here as it doesn't detect the later sanitize call. Feel free to refactor.
-			// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$recipients = explode( ';', wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) );
-			$recp_count = count( $recipients );
-			// phpcs:enable
-			for ( $i = 0; $i < $recp_count; $i++ ) {
-				$recipients[ $i ] = sanitize_email( trim( $recipients[ $i ] ) );
+			// Sanitize the entire recipient string first
+			$raw_recipients = sanitize_text_field( wp_unslash( $_REQUEST['wpssmtp_test_email_recipient'] ) );
+
+			// Split recipients by semicolon
+			$emails = explode( ';', $raw_recipients );
+
+			$recipients = [];
+
+			// Sanitize and validate each email
+			foreach ( $emails as $email_address ) {
+				$sanitized_email = sanitize_email( trim( $email_address ) );
+				if ( is_email( $sanitized_email ) ) {
+					$recipients[] = $sanitized_email;
+				}
+			}
+
+			if ( empty( $recipients ) ) {
+				wp_die( esc_html__( 'No valid email addresses provided.', 'simple-smtp' ) );
 			}
 
 			$success = wp_mail( $recipients, $email['subject'], $email['message'], $email['headers'] );
 
 			wp_safe_redirect(
 				add_query_arg(
-					[
-						'status' => ( $success ) ? 'pass' : 'fail',
-					],
+					array(
+						'status' => $success ? 'pass' : 'fail',
+					),
 					admin_url( 'options-general.php?page=wpsimplesmtp' )
 				)
 			);
