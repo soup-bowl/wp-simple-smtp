@@ -6,6 +6,7 @@ Tested up to: 6.8
 Requires PHP: 7.0
 Stable tag: {{VERSION_NUMBER}}
 License: MIT
+GitHub Plugin URI: https://github.com/soup-bowl/simple-smtp
 
 Adds a simple mail configuration panel into your WordPress installation. Supports temporary logging and config variables.
 
