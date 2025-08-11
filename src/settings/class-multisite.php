@@ -60,7 +60,14 @@ class Multisite extends Settings {
 	 * Initialises the settings implementation.
 	 */
 	public function network_settings_init() {
-		register_setting( 'wpsimplesmtp_smtp_ms', 'wpssmtp_smtp_ms' );
+		register_setting(
+			'wpsimplesmtp_smtp_ms',
+			'wpssmtp_smtp_ms',
+			array(
+				'type'              => 'array',
+				'sanitize_callback' => array( $this, 'sanitize_smtp_settings' ),
+			)
+		);
 
 		add_settings_section(
 			'wpsimplesmtp_ms_adminaccess_section',
@@ -150,7 +157,7 @@ class Multisite extends Settings {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Network Mail', 'simple-smtp' ); ?></h1>
-			<form action='edit.php?action=wpsimplesmtpms' method='post'>	
+			<form action='edit.php?action=wpsimplesmtpms' method='post'>
 				<?php
 				wp_nonce_field( 'simple-smtp-ms' );
 				do_settings_sections( 'wpsimplesmtp_smtp_ms' );
