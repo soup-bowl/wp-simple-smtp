@@ -172,7 +172,7 @@ class Multisite extends Settings {
 	 * Retrieves the settings page when the administrator has sent changed settings.
 	 */
 	public function update_network_settings() {
-		if ( isset( $_REQUEST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'simple-smtp-ms' ) ) {
+		if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'simple-smtp-ms' ) ) {
 			wp_die( esc_attr_e( 'Your nonce key has expired.', 'simple-smtp' ) );
 		}
 
