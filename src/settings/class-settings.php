@@ -305,4 +305,53 @@ class Settings {
 			return 'wpsmtp-badge info';
 		}
 	}
+
+	/**
+	 * Sanitizes and validates SMTP settings input.
+	 *
+	 * @param array $input Associative array of SMTP settings, potentially
+	 *                     containing keys: 'host', 'port', 'auth', 'user', 'pass',
+	 *                     'from', 'fromname', 'sec', 'noverifyssl', 'disable', 'log'.
+	 *
+	 * @return array Sanitized and validated SMTP settings ready for storage.
+	 */
+	public function sanitize_smtp_settings( $input ) {
+		$output = array();
+
+		if ( ! empty( $input['host'] ) ) {
+			$output['host'] = sanitize_text_field( wp_unslash( $input['host'] ) );
+		}
+		if ( ! empty( $input['port'] ) ) {
+			$output['port'] = (int) $input['port'];
+		}
+		if ( isset( $input['auth'] ) ) {
+			$output['auth'] = (int) $input['auth'];
+		}
+		if ( ! empty( $input['user'] ) ) {
+			$output['user'] = sanitize_text_field( wp_unslash( $input['user'] ) );
+		}
+		if ( ! empty( $input['pass'] ) ) {
+			$output['pass'] = sanitize_text_field( wp_unslash( $input['pass'] ) );
+		}
+		if ( ! empty( $input['from'] ) ) {
+			$output['from'] = sanitize_email( wp_unslash( $input['from'] ) );
+		}
+		if ( ! empty( $input['fromname'] ) ) {
+			$output['fromname'] = sanitize_text_field( wp_unslash( $input['fromname'] ) );
+		}
+		if ( ! empty( $input['sec'] ) ) {
+			$output['sec'] = sanitize_text_field( wp_unslash( $input['sec'] ) );
+		}
+		if ( isset( $input['noverifyssl'] ) ) {
+			$output['noverifyssl'] = (int) $input['noverifyssl'];
+		}
+		if ( isset( $input['disable'] ) ) {
+			$output['disable'] = (int) $input['disable'];
+		}
+		if ( isset( $input['log'] ) ) {
+			$output['log'] = (int) $input['log'];
+		}
+
+		return $output;
+	}
 }
