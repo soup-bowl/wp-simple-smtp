@@ -10,7 +10,6 @@
 .gitignore
 .gitpod.yml
 .travis.yml
-composer.json
 composer.lock
 DOCKER_ENV
 Dockerfile-php-build
