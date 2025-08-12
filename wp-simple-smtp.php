@@ -16,6 +16,8 @@
  * License:           MIT
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 use wpsimplesmtp\LogService;
 use wpsimplesmtp\Singular as Settings;
 use wpsimplesmtp\Multisite as SettingsMultisite;
